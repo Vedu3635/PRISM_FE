@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "tertiary-fixed": "#ffdbcc",
+                        "on-secondary": "#00344d",
+                        "on-error-container": "#ffdad6",
+                        "surface-container-low": "#181c21",
+                        "error-container": "#93000a",
+                        "primary-fixed-dim": "#c0c1ff",
+                        "secondary": "#89ceff",
+                        "on-tertiary-container": "#ffd2be",
+                        "on-tertiary-fixed": "#351000",
+                        "on-primary-container": "#d9d8ff",
+                        "inverse-primary": "#494bd6",
+                        "surface-variant": "#31353b",
+                        "outline": "#918fa1",
+                        "on-surface-variant": "#c7c4d8",
+                        "on-surface": "#e0e2ea",
+                        "inverse-on-surface": "#2d3136",
+                        "secondary-fixed": "#c9e6ff",
+                        "primary-fixed": "#e1e0ff",
+                        "inverse-surface": "#e0e2ea",
+                        "on-primary": "#1000a9",
+                        "secondary-container": "#00a2e6",
+                        "on-background": "#e0e2ea",
+                        "surface-container-lowest": "#0a0e13",
+                        "secondary-fixed-dim": "#89ceff",
+                        "on-tertiary-fixed-variant": "#7b2f00",
+                        "primary": "#c0c1ff",
+                        "on-secondary-container": "#00344e",
+                        "surface": "#101419",
+                        "outline-variant": "#464555",
+                        "on-tertiary": "#571f00",
+                        "background": "#101419",
+                        "error": "#ffb4ab",
+                        "tertiary-fixed-dim": "#ffb695",
+                        "on-secondary-fixed": "#001e2f",
+                        "surface-tint": "#c0c1ff",
+                        "surface-dim": "#101419",
+                        "tertiary-container": "#a44100",
+                        "surface-bright": "#36393f",
+                        "primary-container": "#4b4dd8",
+                        "tertiary": "#ffb695",
+                        "on-primary-fixed-variant": "#2f2ebe",
+                        "surface-container": "#1c2025",
+                        "surface-container-highest": "#31353b",
+                        "on-secondary-fixed-variant": "#004c6e",
+                        "on-primary-fixed": "#07006c",
+                        "surface-container-high": "#262a30",
+                        "on-error": "#690005"
+                    },
+                    fontFamily: {
+                        "headline": ["Inter"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .prism-card-glow {
+            box-shadow: inset 0 1px 0 0 rgba(192, 193, 255, 0.1);
+        }
+        .tabular-nums {
+            font-variant-numeric: tabular-nums;
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body selection:bg-primary/30 min-h-screen flex flex-col items-center justify-center overflow-x-hidden">
+<!-- Onboarding Container -->
+<main class="w-full max-w-2xl px-6 py-12 flex flex-col items-center">
+<!-- Branding Anchor (Logo) -->
+<div class="mb-12">
+<span class="text-2xl font-black tracking-tighter text-white">PRISM</span>
+</div>
+<!-- Progress Indicator -->
+<div class="w-full max-w-md mb-10">
+<div class="flex justify-between items-end mb-3">
+<span class="text-[0.6875rem] font-semibold uppercase tracking-widest text-outline">Onboarding</span>
+<span class="text-xs font-medium text-primary">Step 1 of 3</span>
+</div>
+<div class="h-1 w-full bg-surface-container-high rounded-full overflow-hidden">
+<div class="h-full w-1/3 bg-gradient-to-r from-primary-container to-secondary-container rounded-full"></div>
+</div>
+</div>
+<!-- Content Card -->
+<div class="w-full bg-surface-container-low prism-card-glow rounded-xl p-8 md:p-12 shadow-2xl shadow-black/60 relative overflow-hidden">
+<!-- Subtle Prism Tint Glow -->
+<div class="absolute top-0 left-0 w-32 h-32 bg-surface-tint opacity-10 blur-[80px]"></div>
+<header class="mb-10 text-center relative z-10">
+<h1 class="text-3xl md:text-4xl font-bold tracking-tight text-white mb-4">What's your annual income?</h1>
+<p class="text-on-surface-variant text-sm md:text-base max-w-sm mx-auto">This helps Prism calibrate your wealth intelligence engine for personalized growth trajectories.</p>
+</header>
+<!-- Selection Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-12 relative z-10">
+<!-- Option 1 -->
+<button class="group flex items-center justify-between p-5 bg-surface-container-high hover:bg-surface-container-highest border border-transparent hover:border-primary/20 rounded-xl transition-all duration-300 text-left">
+<div class="flex flex-col">
+<span class="text-[0.6875rem] font-bold text-outline uppercase tracking-wider mb-1">Standard</span>
+<span class="text-lg font-semibold text-white tabular-nums">Under $50k</span>
+</div>
+<div class="w-6 h-6 rounded-full border-2 border-outline-variant group-hover:border-primary transition-colors flex items-center justify-center">
+<div class="w-2.5 h-2.5 rounded-full bg-primary opacity-0 group-hover:opacity-100 scale-50 group-hover:scale-100 transition-all"></div>
+</div>
+</button>
+<!-- Option 2 -->
+<button class="group flex items-center justify-between p-5 bg-surface-container-high hover:bg-surface-container-highest border border-transparent hover:border-primary/20 rounded-xl transition-all duration-300 text-left">
+<div class="flex flex-col">
+<span class="text-[0.6875rem] font-bold text-outline uppercase tracking-wider mb-1">Professional</span>
+<span class="text-lg font-semibold text-white tabular-nums">$50k – $100k</span>
+</div>
+<div class="w-6 h-6 rounded-full border-2 border-outline-variant group-hover:border-primary transition-colors flex items-center justify-center">
+<div class="w-2.5 h-2.5 rounded-full bg-primary opacity-0 group-hover:opacity-100 scale-50 group-hover:scale-100 transition-all"></div>
+</div>
+</button>
+<!-- Option 3 (Selected State Simulation) -->
+<button class="group flex items-center justify-between p-5 bg-surface-container-highest border border-primary/40 rounded-xl transition-all duration-300 text-left ring-1 ring-primary/20 shadow-[0_0_20px_-5px_rgba(75,77,216,0.3)]">
+<div class="flex flex-col">
+<span class="text-[0.6875rem] font-bold text-primary uppercase tracking-wider mb-1">Executive</span>
+<span class="text-lg font-semibold text-white tabular-nums">$100k – $200k</span>
+</div>
+<div class="w-6 h-6 rounded-full border-2 border-primary transition-colors flex items-center justify-center">
+<div class="w-2.5 h-2.5 rounded-full bg-primary scale-100 transition-all"></div>
+</div>
+</button>
+<!-- Option 4 -->
+<button class="group flex items-center justify-between p-5 bg-surface-container-high hover:bg-surface-container-highest border border-transparent hover:border-primary/20 rounded-xl transition-all duration-300 text-left">
+<div class="flex flex-col">
+<span class="text-[0.6875rem] font-bold text-outline uppercase tracking-wider mb-1">Ultra</span>
+<span class="text-lg font-semibold text-white tabular-nums">$200k+</span>
+</div>
+<div class="w-6 h-6 rounded-full border-2 border-outline-variant group-hover:border-primary transition-colors flex items-center justify-center">
+<div class="w-2.5 h-2.5 rounded-full bg-primary opacity-0 group-hover:opacity-100 scale-50 group-hover:scale-100 transition-all"></div>
+</div>
+</button>
+</div>
+<!-- Action Footer -->
+<div class="flex flex-col items-center gap-6 relative z-10">
+<button class="w-full py-4 px-8 bg-gradient-to-r from-primary-container to-secondary-container text-on-primary-container font-bold rounded-xl shadow-lg shadow-primary-container/20 hover:opacity-90 active:scale-[0.98] transition-all duration-150">
+                    Continue to Net Worth
+                </button>
+<button class="text-outline hover:text-on-surface text-[0.6875rem] font-bold uppercase tracking-[0.2em] transition-colors">
+                    Skip for now
+                </button>
+</div>
+<!-- Background Decorative Element (Prism Geometric) -->
+<div class="absolute -bottom-20 -right-20 w-64 h-64 border border-outline-variant/10 rounded-full"></div>
+<div class="absolute -bottom-16 -right-16 w-48 h-48 border border-outline-variant/5 rounded-full"></div>
+</div>
+<!-- Security/Trust Badge -->
+<div class="mt-12 flex items-center gap-3 opacity-40">
+<span class="material-symbols-outlined text-sm">lock</span>
+<span class="text-[0.6875rem] font-medium tracking-wide">256-bit AES Encryption • Data Vault Protected</span>
+</div>
+</main>
+<!-- Footer Decorative Texture -->
+<div class="fixed bottom-0 left-0 w-full h-1/3 pointer-events-none z-[-1]">
+<div class="w-full h-full bg-gradient-to-t from-surface-container-lowest to-transparent opacity-50"></div>
+</div>
+</body></html>

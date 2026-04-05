@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { AuthProvider } from './context/AuthContext';
 import PublicLayout from './layouts/PublicLayout';
 import AuthenticatedLayout from './layouts/AuthenticatedLayout';
 import LandingPage from './pages/LandingPage';
@@ -17,7 +18,8 @@ import Settings from './pages/Settings';
 
 function App() {
   return (
-    <BrowserRouter>
+    <AuthProvider>
+      <BrowserRouter>
       <Routes>
         {/* Public Routes */}
         <Route element={<PublicLayout />}>
@@ -44,7 +46,8 @@ function App() {
         {/* Catch-all redirect */}
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
-    </BrowserRouter>
+      </BrowserRouter>
+    </AuthProvider>
   );
 }
 

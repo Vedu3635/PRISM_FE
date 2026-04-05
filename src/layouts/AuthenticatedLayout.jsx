@@ -1,9 +1,16 @@
 import React, { useState } from 'react';
-import { Outlet, Link, useLocation } from 'react-router-dom';
+import { Outlet, Link, useLocation, Navigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 
 const AuthenticatedLayout = () => {
   const location = useLocation();
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const { user, token, logout } = useAuth();
+
+  // Protect route
+  if (!token) {
+    return <Navigate to="/login" replace />;
+  }
 
   const navItems = [
     { label: 'Dashboard', icon: 'dashboard', path: '/dashboard' },
@@ -67,12 +74,21 @@ const AuthenticatedLayout = () => {
             
             <div className="bg-surface-container-low p-2 rounded-md flex items-center gap-3 border border-white/5">
               <div className="w-8 h-8 rounded bg-surface-container-highest border border-white/10 flex items-center justify-center">
-                <span className="text-[10px] font-bold text-white uppercase">AM</span>
+                <span className="text-[10px] font-bold text-white uppercase">
+                   {user ? (user.name || user.email || 'XX').substring(0, 2).toUpperCase() : 'ME'}
+                </span>
               </div>
               <div className="flex-1 overflow-hidden">
-                <p className="text-xs font-semibold text-white truncate">Architect Mode</p>
-                <p className="text-[10px] text-on-surface-variant truncate">Premium Tier</p>
+                <p className="text-xs font-semibold text-white truncate">{user?.name || 'PRISM User'}</p>
+                <p className="text-[10px] text-on-surface-variant truncate">{user?.email || 'Active'}</p>
               </div>
+              <button 
+                onClick={logout} 
+                className="material-symbols-outlined text-[18px] text-on-surface-variant hover:text-red-400 transition-colors ml-auto" 
+                title="Logout"
+              >
+                logout
+              </button>
             </div>
           </div>
         </div>

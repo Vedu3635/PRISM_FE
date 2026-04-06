@@ -1,69 +1,78 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { authService } from '../shared/api';
-import { STORAGE_KEYS } from '../config';
+import { onIdTokenChanged } from 'firebase/auth';
+import { api } from '../services';
+import { auth, STORAGE_KEYS } from '../config';
 import { AuthContext } from './AuthContextBase';
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(() => {
     const rawUser = localStorage.getItem(STORAGE_KEYS.USER);
     if (!rawUser) return null;
-
     try {
       return JSON.parse(rawUser);
     } catch {
       return null;
     }
   });
+  
   const [token, setToken] = useState(
-    localStorage.getItem(STORAGE_KEYS.TOKEN) || null,
+    localStorage.getItem(STORAGE_KEYS.TOKEN) || null
   );
+  
   const [loading, setLoading] = useState(true);
-
-  // Track whether login() was called explicitly to skip the validation fetch
   const justLoggedIn = useRef(false);
 
   const logout = useCallback(() => {
     setUser(null);
     setToken(null);
     Object.values(STORAGE_KEYS).forEach((key) => localStorage.removeItem(key));
+    // Also sign out from Firebase to be thorough
+    auth.signOut().catch(() => {});
   }, []);
 
+  /**
+   * Sync with Firebase ID Token Lifecycle
+   * ─────────────────────────────────────
+   * This is the "proper" way to handle Firebase sessions.
+   * It fires on initial load, token refresh, and sign-in/out.
+   */
   useEffect(() => {
-    const fetchUser = async () => {
-      // If login() was just called, the user is already set — skip /me
-      if (justLoggedIn.current) {
-        justLoggedIn.current = false;
-        setLoading(false);
-        return;
-      }
+    const unsubscribe = onIdTokenChanged(auth, async (firebaseUser) => {
+      if (firebaseUser) {
+        const idToken = await firebaseUser.getIdToken();
+        setToken(idToken);
+        localStorage.setItem(STORAGE_KEYS.TOKEN, idToken);
 
-      if (token) {
-        try {
-          const data = await authService.getMe();
-          setUser(data.user || data);
-        } catch (error) {
-          // Only clear storage for real auth failures. For network timeouts
-          // or temporary backend outages, preserve local session data.
-          const status = error?.status || error?.response?.status;
-          if (status === 401 || status === 403) {
-            logout();
+        // If we don't have user display data yet, fetch from backend /me
+        if (!user || justLoggedIn.current) {
+          try {
+            const data = await api.auth.getMe();
+            const profile = data.user || data;
+            setUser(profile);
+            localStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(profile));
+          } catch (err) {
+            console.error('Failed to sync profile with PRISM backend:', err);
+            // If /me fails with 401, logout
+            if (err.status === 401) logout();
+          } finally {
+            justLoggedIn.current = false;
           }
         }
+      } else {
+        // No Firebase user — clear session
+        if (token) logout();
       }
       setLoading(false);
-    };
+    });
 
-    fetchUser();
-  }, [token, logout]);
+    return () => unsubscribe();
+  }, [token, user, logout]);
 
   /**
-   * Persist auth state after a successful login or social-login.
-   * @param {object}  userData   – user profile from API
-   * @param {string}  idToken    – Firebase ID token (Bearer)
-   * @param {string}  [refreshTk] – optional refresh token
+   * Manual login entry point.
    */
   const login = (userData, idToken, refreshTk) => {
-    justLoggedIn.current = true; // prevent useEffect from re-fetching /me
+    justLoggedIn.current = true;
     setUser(userData);
     setToken(idToken);
     localStorage.setItem(STORAGE_KEYS.TOKEN, idToken);

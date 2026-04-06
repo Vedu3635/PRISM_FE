@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { signInWithPopup } from 'firebase/auth';
 import { useAuth } from '../context/useAuth';
-import { authService } from '../services';
+import { api } from '../services';
 import { auth, googleProvider, ROUTES, STORAGE_KEYS } from '../config';
 
 const Login = () => {
@@ -15,7 +15,7 @@ const Login = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isGoogleLoading, setIsGoogleLoading] = useState(false);
 
-  // ── Email / Password login via POST /auth/token ──
+  // ── Manual Login ──
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
@@ -28,57 +28,34 @@ const Login = () => {
     setIsLoading(true);
 
     try {
-      const data = await authService.getToken(email, password);
+      const data = await api.auth.getToken(email, password);
 
       if (!data?.id_token) {
-        setError('Login succeeded but no token received. Please try again.');
-        setIsLoading(false);
+        setError('Authentication succeeded but session token is missing.');
         return;
       }
 
-      // Temporarily set token so the interceptor can attach it for /me
       localStorage.setItem(STORAGE_KEYS.TOKEN, data.id_token);
-
-      // Try to fetch profile, but don't block login if it fails
       let userProfile = { email: data.email || email };
+      
       try {
-        const meData = await authService.getMe();
+        const meData = await api.auth.getMe();
         userProfile = meData.user || meData || userProfile;
       } catch {
-        // /me failed — use email as fallback profile, login is still valid
-        console.warn('Could not fetch /me profile, using email fallback');
+        console.warn('Backend profile sync delayed');
       }
 
       login(userProfile, data.id_token, data.refresh_token);
       navigate(ROUTES.DASHBOARD);
     } catch (err) {
-      // Clean up any partially stored token
       localStorage.removeItem(STORAGE_KEYS.TOKEN);
-
-      const status = err.response?.status;
-      const serverMsg = err.response?.data?.error;
-
-      if (serverMsg) {
-        setError(serverMsg);
-      } else if (status === 400) {
-        setError('Invalid email or password format.');
-      } else if (status === 401) {
-        setError('Invalid email or password.');
-      } else if (status === 307) {
-        setError('Server redirect error. Please try again.');
-      } else if (err.code === 'ECONNABORTED' || err.message?.includes('timeout')) {
-        setError('Request timed out. The server may be starting up — please wait a moment and try again.');
-      } else if (!err.response) {
-        setError('Network error. Please check your connection and try again.');
-      } else {
-        setError('An error occurred during login. Please try again.');
-      }
+      setError(err.message || 'Verification failed. Please check your credentials.');
     } finally {
       setIsLoading(false);
     }
   };
 
-  // ── Google Sign-In via Firebase popup → POST /auth/social-login ──
+  // ── Google Login ──
   const handleGoogleLogin = async () => {
     setError('');
     setIsGoogleLoading(true);
@@ -88,31 +65,23 @@ const Login = () => {
       const idToken = await result.user.getIdToken();
 
       let userData = { email: result.user.email, displayName: result.user.displayName };
-      let finalToken = idToken;
 
       try {
-        const data = await authService.socialLogin(idToken);
+        const data = await api.auth.socialLogin(idToken);
         userData = data.user || userData;
-        finalToken = data.token || data.id_token || idToken;
+        const finalToken = data.token || data.id_token || idToken;
         login(userData, finalToken, data.refresh_token);
       } catch {
-        // Social login backend call failed — still authenticate with Firebase token
-        console.warn('Backend social-login failed, using Firebase token directly');
+        console.warn('Backend sync failed, using Firebase session');
         login(userData, idToken);
       }
 
       navigate(ROUTES.DASHBOARD);
     } catch (err) {
       if (err.code === 'auth/popup-closed-by-user') {
-        setError('Sign-in cancelled. Please try again.');
-      } else if (err.code === 'auth/account-exists-with-different-credential') {
-        setError('An account already exists with the same email. Try a different login method.');
-      } else if (err.response?.data?.error) {
-        setError(err.response.data.error);
-      } else if (err.code?.startsWith('auth/')) {
-        setError('Firebase authentication failed. Please try again.');
+        setError('Login cancelled.');
       } else {
-        setError('Google sign-in failed. Please try again.');
+        setError(err.message || 'Google authentication failed.');
       }
     } finally {
       setIsGoogleLoading(false);

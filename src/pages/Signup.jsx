@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { signInWithPopup } from 'firebase/auth';
 import { useAuth } from '../context/useAuth';
-import { authService } from '../services';
+import { api } from '../services';
 import { auth, googleProvider, ROUTES, STORAGE_KEYS } from '../config';
 
 const Signup = () => {
@@ -34,57 +34,38 @@ const Signup = () => {
     setIsLoading(true);
 
     try {
-      // Step 1: Register the account
-      await authService.signup(fullName, username, email, password);
+      // Step 1: Register Account
+      await api.auth.signup(fullName, username, email, password);
 
-      // Step 2: Auto-login — get token
+      // Step 2: Auto-login
       let tokenData;
       try {
-        tokenData = await authService.getToken(email, password);
+        tokenData = await api.auth.getToken(email, password);
       } catch {
-        // Signup succeeded but token fetch failed — redirect to login
-        navigate(ROUTES.LOGIN);
+        navigate(ROUTES.LOGIN + '?signup=success');
         return;
       }
 
       if (!tokenData?.id_token) {
-        // Signup succeeded, but no token — redirect to login
-        navigate(ROUTES.LOGIN);
+        navigate(ROUTES.LOGIN + '?signup=success');
         return;
       }
 
-      // Step 3: Try to get profile (non-blocking)
+      // Step 3: Fetch Profile
       localStorage.setItem(STORAGE_KEYS.TOKEN, tokenData.id_token);
       let userProfile = { email: tokenData.email || email, fullName, username };
       try {
-        const meData = await authService.getMe();
+        const meData = await api.auth.getMe();
         userProfile = meData.user || meData || userProfile;
       } catch {
-        console.warn('Could not fetch /me profile after signup, using fallback');
+        console.warn('Backend sync delayed after signup');
       }
 
       login(userProfile, tokenData.id_token, tokenData.refresh_token);
       navigate(ROUTES.DASHBOARD);
     } catch (err) {
-      // Clean up any partially stored token
       localStorage.removeItem(STORAGE_KEYS.TOKEN);
-
-      const serverMsg = err.response?.data?.error;
-      const status = err.response?.status;
-
-      if (serverMsg) {
-        setError(serverMsg);
-      } else if (status === 400) {
-        setError('Invalid signup data. Please check your inputs.');
-      } else if (status === 409 || serverMsg?.toLowerCase()?.includes('exists')) {
-        setError('An account with this email already exists. Try signing in.');
-      } else if (err.code === 'ECONNABORTED' || err.message?.includes('timeout')) {
-        setError('Request timed out. The server may be starting up — please wait and try again.');
-      } else if (!err.response) {
-        setError('Network error. Please check your connection and try again.');
-      } else {
-        setError('An error occurred during signup. Please try again.');
-      }
+      setError(err.message || 'An error occurred during signup. Please try again.');
     } finally {
       setIsLoading(false);
     }
@@ -100,31 +81,23 @@ const Signup = () => {
       const idToken = await result.user.getIdToken();
 
       let userData = { email: result.user.email, displayName: result.user.displayName };
-      let finalToken = idToken;
 
       try {
-        const data = await authService.socialLogin(idToken);
+        const data = await api.auth.socialLogin(idToken);
         userData = data.user || userData;
-        finalToken = data.token || data.id_token || idToken;
+        const finalToken = data.token || data.id_token || idToken;
         login(userData, finalToken, data.refresh_token);
       } catch {
-        // Backend social-login failed — still use Firebase token
-        console.warn('Backend social-login failed, using Firebase token directly');
+        console.warn('Backend social-login sync failed, using Firebase session');
         login(userData, idToken);
       }
 
       navigate(ROUTES.DASHBOARD);
     } catch (err) {
       if (err.code === 'auth/popup-closed-by-user') {
-        setError('Sign-up cancelled. Please try again.');
-      } else if (err.code === 'auth/account-exists-with-different-credential') {
-        setError('An account already exists with the same email. Try signing in instead.');
-      } else if (err.response?.data?.error) {
-        setError(err.response.data.error);
-      } else if (err.code?.startsWith('auth/')) {
-        setError('Firebase authentication failed. Please try again.');
+        setError('Sign-up cancelled.');
       } else {
-        setError('Google sign-up failed. Please try again.');
+        setError(err.message || 'Google sign-up failed.');
       }
     } finally {
       setIsGoogleLoading(false);

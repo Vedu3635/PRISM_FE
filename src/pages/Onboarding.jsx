@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { ROUTES } from '../config';
 
 const Onboarding = () => {
   const navigate = useNavigate();
@@ -87,7 +88,7 @@ const Onboarding = () => {
           ))}
         </div>
         <div className="flex justify-between items-center py-5 border-t border-white/5">
-           <Link to="/login" className="px-5 py-2 text-sm font-semibold text-on-surface-variant hover:text-white transition-colors">Cancel Setup</Link>
+           <Link to={ROUTES.LOGIN} className="px-5 py-2 text-sm font-semibold text-on-surface-variant hover:text-white transition-colors">Cancel Setup</Link>
            <button 
              onClick={nextStep}
              disabled={!formData.incomeTier}
@@ -255,7 +256,7 @@ const Onboarding = () => {
 
         <button 
            disabled={initPercent < 100}
-           onClick={() => navigate('/signup')}
+           onClick={() => navigate(ROUTES.SIGNUP)}
            className={`px-8 py-3 rounded-md font-semibold text-sm transition-colors w-full max-w-sm ${
             initPercent === 100
               ? 'bg-primary hover:bg-white text-black'

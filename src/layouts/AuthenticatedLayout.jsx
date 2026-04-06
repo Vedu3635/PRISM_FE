@@ -1,25 +1,22 @@
 import React, { useState } from 'react';
-import { Outlet, Link, useLocation, Navigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
+import { Outlet, Link, useLocation } from 'react-router-dom';
+import { useAuth } from '../app/providers';
+import { ROUTES } from '../config';
 
 const AuthenticatedLayout = () => {
   const location = useLocation();
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-  const { user, token, logout } = useAuth();
-
-  // Protect route
-  if (!token) {
-    return <Navigate to="/login" replace />;
-  }
+  const { user, logout } = useAuth();
 
   const navItems = [
-    { label: 'Dashboard', icon: 'dashboard', path: '/dashboard' },
-    { label: 'Transactions', icon: 'receipt_long', path: '/transactions' },
-    { label: 'Analytics', icon: 'insights', path: '/analytics' },
-    { label: 'AI Assistant', icon: 'magic_button', path: '/ai-insights' },
-    { label: 'Strategic Goals', icon: 'flag', path: '/goals' },
-    { label: 'Operational Budgets', icon: 'event_repeat', path: '/budgets' },
-    { label: 'Notifications', icon: 'notifications', path: '/notifications' },
+    { label: 'Dashboard', icon: 'dashboard', path: ROUTES.DASHBOARD },
+    { label: 'Transactions', icon: 'receipt_long', path: ROUTES.TRANSACTIONS },
+    { label: 'Analytics', icon: 'insights', path: ROUTES.ANALYTICS },
+    { label: 'AI Assistant', icon: 'magic_button', path: ROUTES.AI_INSIGHTS },
+    { label: 'Strategic Goals', icon: 'flag', path: ROUTES.GOALS },
+    { label: 'Operational Budgets', icon: 'event_repeat', path: ROUTES.BUDGETS },
+    { label: 'Groups', icon: 'groups', path: ROUTES.GROUPS },
+    { label: 'Notifications', icon: 'notifications', path: ROUTES.NOTIFICATIONS },
   ];
 
   const isActive = (path) => location.pathname === path;
@@ -63,9 +60,9 @@ const AuthenticatedLayout = () => {
           {/* User Profile / Bottom Actions */}
           <div className="p-3 mt-auto border-t border-white/5">
             <Link 
-              to="/settings"
+              to={ROUTES.SETTINGS}
               className={`flex items-center gap-3 px-3 py-2 rounded-md mb-2 transition-colors ${
-                isActive('/settings') ? 'bg-surface-container-highest text-white' : 'text-on-surface-variant hover:bg-surface-container-high hover:text-white'
+                isActive(ROUTES.SETTINGS) ? 'bg-surface-container-highest text-white' : 'text-on-surface-variant hover:bg-surface-container-high hover:text-white'
               }`}
             >
               <span className="material-symbols-outlined text-[18px]">settings</span>
@@ -111,7 +108,7 @@ const AuthenticatedLayout = () => {
 
            <div className="flex items-center gap-3">
               <Link 
-                to="/notifications"
+                to={ROUTES.NOTIFICATIONS}
                 className="w-8 h-8 rounded-md flex items-center justify-center hover:bg-surface-container-high text-on-surface-variant hover:text-white relative transition-colors"
               >
                 <span className="material-symbols-outlined text-[18px]">notifications</span>

@@ -3,8 +3,84 @@
 @tailwind utilities;
 
 @layer base {
+  :root {
+    color-scheme: dark;
+  }
+
+  *,
+  *::before,
+  *::after {
+    @apply border-outline-variant/40;
+  }
+
+  html,
+  body,
+  #root {
+    min-height: 100%;
+  }
+
   body {
-    @apply bg-background text-on-surface font-body selection:bg-primary/30 antialiased;
+    @apply bg-background text-on-surface font-body selection:bg-primary/30 antialiased text-[15px];
+  }
+
+  ::-webkit-scrollbar {
+    width: 12px;
+    height: 12px;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-surface-container-low;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply rounded-full bg-surface-container-high border-2 border-surface-container-low;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-surface-bright;
+  }
+
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: #464555 #181c21;
+  }
+}
+
+@layer components {
+  .prism-card {
+    @apply rounded-xl border border-white/10 bg-surface-container/90 shadow-[0_12px_35px_rgba(0,0,0,0.35)] backdrop-blur-sm;
+  }
+
+  .prism-input {
+    @apply w-full h-11 rounded-lg border border-white/15 bg-surface px-3 text-sm text-white placeholder:text-on-surface-variant/60 outline-none transition-all duration-200 hover:border-white/30 focus:border-primary/70 focus:ring-2 focus:ring-primary/25;
+  }
+
+  .prism-input-lg {
+    @apply prism-input h-14 text-xl font-semibold tracking-tight tnum;
+  }
+
+  .prism-label {
+    @apply block text-xs font-semibold uppercase tracking-wide text-on-surface-variant;
+  }
+
+  .prism-btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-sm font-semibold transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary/35 disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  .prism-btn-primary {
+    @apply prism-btn border border-primary/40 bg-gradient-to-br from-primary-container to-primary text-on-primary shadow-[0_10px_24px_rgba(75,77,216,0.35)] hover:brightness-110;
+  }
+
+  .prism-btn-secondary {
+    @apply prism-btn border border-white/15 bg-surface-container text-white hover:bg-surface-container-high;
+  }
+
+  .prism-btn-ghost {
+    @apply prism-btn border border-transparent bg-transparent text-on-surface-variant hover:bg-surface-container-high hover:text-white;
+  }
+
+  .prism-chip {
+    @apply inline-flex items-center rounded-full border border-primary/30 bg-primary/15 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider text-primary;
   }
 }
 

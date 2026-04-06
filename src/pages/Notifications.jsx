@@ -1,6 +1,6 @@
 import React from 'react';
 
-const NotificationCard = ({ type, title, text, date, icon, colorClass }) => {
+const NotificationCard = ({ type, title, text, date, icon }) => {
   // Map our old colorClasses to modern minimalist ones
   let dotColor = 'bg-primary';
   let iconColor = 'text-primary';

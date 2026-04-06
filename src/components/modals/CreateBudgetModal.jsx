@@ -5,8 +5,8 @@ const CategoryOption = ({ icon, label, selected, onClick }) => (
   <button 
     type="button"
     onClick={onClick}
-    className={`p-4 rounded-lg border transition-colors flex flex-col items-center gap-2 group ${
-      selected ? 'bg-primary/10 border-primary text-primary' : 'bg-surface border-white/10 hover:border-white/20 text-on-surface-variant hover:text-white'
+    className={`p-4 rounded-xl border transition-colors flex flex-col items-center gap-2 group ${
+      selected ? 'bg-primary/10 border-primary text-primary shadow-[0_0_0_1px_rgba(75,77,216,0.3)]' : 'bg-surface border-white/10 hover:border-white/20 text-on-surface-variant hover:text-white'
     }`}
   >
      <span className="material-symbols-outlined text-[24px]">{icon}</span>
@@ -40,7 +40,7 @@ const CreateBudgetModal = ({ isOpen, onClose }) => {
 
          <div className="space-y-2 pt-2">
             <div className="flex justify-between items-end mb-1">
-               <label className="text-xs font-semibold text-on-surface-variant">Monthly Target</label>
+               <label className="prism-label">Monthly Target</label>
                <div className="text-right">
                   <p className="text-[10px] text-on-surface-variant font-medium">Current Average</p>
                   <p className="text-xs font-semibold text-white tnum">$842.50 / mo</p>
@@ -50,12 +50,12 @@ const CreateBudgetModal = ({ isOpen, onClose }) => {
             <div className="relative">
                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-lg font-bold text-white">$</span>
                <input 
-                 className="w-full h-14 bg-background border border-white/10 rounded-lg pl-8 pr-4 text-xl font-bold text-white focus:border-primary/50 outline-none transition-colors tnum"
+                 className="prism-input-lg pl-8 pr-24"
                  placeholder="1,500.00"
                  value={amount}
                  onChange={(e) => setAmount(e.target.value)}
                />
-               <div className="absolute right-4 top-1/2 -translate-y-1/2 text-[10px] font-semibold text-primary bg-primary/10 px-2 py-0.5 rounded">
+               <div className="absolute right-4 top-1/2 -translate-y-1/2 prism-chip">
                  +12% vs avg
                </div>
             </div>
@@ -81,13 +81,13 @@ const CreateBudgetModal = ({ isOpen, onClose }) => {
             <button 
               type="button"
               onClick={onClose}
-              className="py-2.5 rounded-md border border-white/10 text-on-surface-variant hover:text-white hover:bg-white/5 font-semibold text-xs transition-colors"
+              className="prism-btn-secondary w-full"
             >
                Cancel
             </button>
             <button 
               type="submit"
-              className="py-2.5 rounded-md bg-white text-black font-semibold text-xs hover:bg-neutral-200 transition-colors"
+              className="prism-btn-primary w-full"
             >
                Save Budget
             </button>

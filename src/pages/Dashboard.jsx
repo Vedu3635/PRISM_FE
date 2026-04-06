@@ -10,7 +10,6 @@ const Dashboard = () => {
 
   // Dynamic placeholders for future API binding
   const netWorth = 1245890.34;
-  const mtDChange = 12450.00;
   const inflows = 42500;
   const outflows = 18200;
 

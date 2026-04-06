@@ -1,13 +1,16 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 import Modal from '../Modal';
 import PRISMSelect from '../PRISMSelect';
+import { useCreatePersonalTransaction } from '../../utils/transactions/hooks/usePersonalTransactions';
+import { useCreateGroupTransaction } from '../../utils/transactions/hooks/useGroupTransactions';
+import { useGroups } from '../../utils/groups/hooks/useGroups';
 
 const FormField = ({ label, type = 'text', placeholder, value, onChange }) => (
   <div className="space-y-2">
-     <label className="text-xs font-semibold text-on-surface-variant block">{label}</label>
+     <label className="prism-label">{label}</label>
      <input 
        type={type}
-       className="w-full h-10 bg-surface border border-white/10 rounded-md px-3 text-sm text-white placeholder:text-outline/30 focus:border-primary/50 outline-none transition-colors hover:border-white/20"
+       className="prism-input"
        placeholder={placeholder}
        value={value}
        onChange={onChange}
@@ -15,17 +18,77 @@ const FormField = ({ label, type = 'text', placeholder, value, onChange }) => (
   </div>
 );
 
-const AddTransactionModal = ({ isOpen, onClose }) => {
+const AddTransactionModal = ({ isOpen, onClose, initialGroupId = null }) => {
   const [amount, setAmount] = useState('');
   const [isExpense, setIsExpense] = useState(true);
   const [category, setCategory] = useState('Technology');
-  const [isRecurring, setIsRecurring] = useState(false);
+  const [title, setTitle] = useState('');
+  const [notes, setNotes] = useState('');
+  const [receiptUrl, setReceiptUrl] = useState('');
+  const [transactedAt, setTransactedAt] = useState('');
+  
+  // New states for transaction separation
+  const [transactionType, setTransactionType] = useState('personal'); // 'personal' | 'group'
+  const [selectedGroupId, setSelectedGroupId] = useState('');
+
+  const { data: groups, isLoading: loadingGroups } = useGroups();
+  const createPersonalTx = useCreatePersonalTransaction();
+  const createGroupTx = useCreateGroupTransaction();
+
+  useEffect(() => {
+    if (initialGroupId) {
+      setTransactionType('group');
+      setSelectedGroupId(initialGroupId);
+    } else {
+      setTransactionType('personal');
+      setSelectedGroupId('');
+    }
+  }, [initialGroupId, isOpen]);
+
+  const nowLocal = useMemo(() => {
+    const d = new Date();
+    const pad = (n) => String(n).padStart(2, '0');
+    return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(
+      d.getHours(),
+    )}:${pad(d.getMinutes())}`;
+  }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // API Call logic would go here
-    onClose();
+    const parsed = Number(amount);
+    if (!Number.isFinite(parsed)) return;
+
+    const signedAmount = isExpense ? -Math.abs(parsed) : Math.abs(parsed);
+    const effectiveTitle = title?.trim() || 'Untitled';
+    
+    const payload = {
+      amount: signedAmount,
+      category,
+      title: effectiveTitle,
+      transacted_at: new Date(transactedAt || nowLocal).toISOString(),
+      notes: notes?.trim() || '',
+      receipt_url: receiptUrl?.trim() || '',
+    };
+
+    if (transactionType === 'group' && selectedGroupId) {
+      createGroupTx.mutate(
+        { ...payload, group_id: selectedGroupId },
+        { onSuccess: () => onClose() }
+      );
+    } else {
+      createPersonalTx.mutate(
+        payload,
+        { onSuccess: () => onClose() }
+      );
+    }
   };
+
+  const groupOptions = useMemo(() => {
+    if (!groups) return [];
+    return groups.map(g => ({ value: g.id, label: g.name }));
+  }, [groups]);
+
+  const isPending = createPersonalTx.isPending || createGroupTx.isPending;
 
   return (
     <Modal 
@@ -35,18 +98,52 @@ const AddTransactionModal = ({ isOpen, onClose }) => {
       subtitle="Record a new inflow or outflow"
     >
       <form onSubmit={handleSubmit} className="space-y-6 mt-4">
-         <div className="flex bg-surface-container rounded-md border border-white/5 p-1">
+         {/* Transaction Type Toggle */}
+         <div className="flex bg-surface-container rounded-lg border border-white/10 p-1.5 mb-2">
+            <button 
+              type="button"
+              onClick={() => setTransactionType('personal')}
+              className={`prism-btn !py-2 !rounded-md !text-xs !font-semibold !px-2 flex-1 ${transactionType === 'personal' ? 'bg-surface-container-highest text-white shadow-sm' : 'text-on-surface-variant hover:text-white hover:bg-white/5'}`}
+            >
+              Personal
+            </button>
+            <button 
+              type="button"
+              onClick={() => setTransactionType('group')}
+              className={`prism-btn !py-2 !rounded-md !text-xs !font-semibold !px-2 flex-1 ${transactionType === 'group' ? 'bg-surface-container-highest text-white shadow-sm' : 'text-on-surface-variant hover:text-white hover:bg-white/5'}`}
+            >
+              Group
+            </button>
+         </div>
+
+         {/* Group Selection Dropdown */}
+         {transactionType === 'group' && (
+           <div className="space-y-2 animate-in fade-in slide-in-from-top-2 duration-300">
+             <PRISMSelect 
+                label="Assign to Group" 
+                options={groupOptions.length > 0 ? groupOptions.map(o => o.label) : ['No groups available']} 
+                value={groupOptions.find(o => o.value === selectedGroupId)?.label || 'Select Group'}
+                onChange={(label) => {
+                  const opt = groupOptions.find(o => o.label === label);
+                  if (opt) setSelectedGroupId(opt.value);
+                }}
+             />
+             {loadingGroups && <p className="text-[10px] text-primary animate-pulse">Loading your groups...</p>}
+           </div>
+         )}
+
+         <div className="flex bg-surface-container rounded-lg border border-white/10 p-1.5">
             <button 
               type="button"
               onClick={() => setIsExpense(true)}
-              className={`flex-1 py-1.5 text-xs font-semibold rounded-sm transition-colors ${isExpense ? 'bg-surface-container-highest text-white shadow-sm' : 'text-on-surface-variant hover:text-white'}`}
+              className={`prism-btn !py-2 !rounded-md !text-xs !font-semibold !px-2 flex-1 ${isExpense ? 'bg-surface-container-highest text-white shadow-sm' : 'text-on-surface-variant hover:text-white hover:bg-white/5'}`}
             >
               Expense
             </button>
             <button 
               type="button"
               onClick={() => setIsExpense(false)}
-              className={`flex-1 py-1.5 text-xs font-semibold rounded-sm transition-colors ${!isExpense ? 'bg-surface-container-highest text-white shadow-sm' : 'text-on-surface-variant hover:text-white'}`}
+              className={`prism-btn !py-2 !rounded-md !text-xs !font-semibold !px-2 flex-1 ${!isExpense ? 'bg-surface-container-highest text-white shadow-sm' : 'text-on-surface-variant hover:text-white hover:bg-white/5'}`}
             >
               Income
             </button>
@@ -57,7 +154,7 @@ const AddTransactionModal = ({ isOpen, onClose }) => {
                {isExpense ? '-' : '+'}
             </span>
             <input 
-              className="w-full h-16 bg-background border border-white/10 rounded-lg pl-9 pr-4 text-2xl font-bold text-white focus:border-primary/50 outline-none transition-colors tnum"
+              className="prism-input-lg pl-9"
               placeholder="0.00"
               value={amount}
               onChange={(e) => setAmount(e.target.value)}
@@ -65,7 +162,12 @@ const AddTransactionModal = ({ isOpen, onClose }) => {
          </div>
 
          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 border-t border-white/5 pt-6">
-            <FormField label="Merchant / Source" placeholder="e.g. Apple, Google..." />
+            <FormField
+              label="Title (required)"
+              placeholder="e.g. Apple, Salary, Rent..."
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+            />
             <PRISMSelect 
               label="Category" 
               options={['Technology', 'Investment', 'Dining', 'Fixed Assets', 'Travel', 'Lifestyle']} 
@@ -74,35 +176,45 @@ const AddTransactionModal = ({ isOpen, onClose }) => {
             />
          </div>
 
-         <div 
-           onClick={() => setIsRecurring(!isRecurring)}
-           className="flex items-center justify-between p-4 rounded-lg bg-surface-container border border-white/5 hover:border-white/10 transition-colors cursor-pointer"
-         >
-            <div className="flex gap-3 items-center">
-               <span className="material-symbols-outlined text-on-surface-variant">autorenew</span>
-               <div>
-                  <p className="text-sm font-semibold text-white">Monthly Recurring</p>
-                  <p className="text-xs text-on-surface-variant mt-0.5">Automate this vault entry</p>
-               </div>
-            </div>
-            <div className={`w-10 h-6 rounded-full relative p-1 transition-colors ${isRecurring ? 'bg-primary' : 'bg-surface-container-highest'}`}>
-               <div className={`w-4 h-4 bg-white rounded-full transition-all ${isRecurring ? 'ml-auto' : ''}`}></div>
-            </div>
+         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <FormField
+              label="Transacted at (required)"
+              type="datetime-local"
+              value={transactedAt || nowLocal}
+              onChange={(e) => setTransactedAt(e.target.value)}
+            />
+            <FormField
+              label="Receipt URL (optional)"
+              placeholder="https://..."
+              value={receiptUrl}
+              onChange={(e) => setReceiptUrl(e.target.value)}
+            />
+         </div>
+
+         <div className="space-y-2">
+            <label className="prism-label">Notes (optional)</label>
+            <textarea
+              className="w-full min-h-[96px] rounded-lg border border-white/15 bg-surface px-3 py-2.5 text-sm text-white placeholder:text-on-surface-variant/60 outline-none transition-all duration-200 hover:border-white/30 focus:border-primary/70 focus:ring-2 focus:ring-primary/25"
+              placeholder="Add context for this record..."
+              value={notes}
+              onChange={(e) => setNotes(e.target.value)}
+            />
          </div>
 
          <div className="grid grid-cols-2 gap-3 pt-6 border-t border-white/10">
             <button 
               type="button"
               onClick={onClose}
-              className="py-2.5 rounded-md border border-white/10 text-on-surface-variant hover:text-white hover:bg-white/5 font-semibold text-xs transition-colors"
+              className="prism-btn-secondary w-full"
             >
                Cancel
             </button>
             <button 
               type="submit"
-              className="py-2.5 rounded-md bg-white text-black font-semibold text-xs hover:bg-neutral-200 transition-colors"
+              className="prism-btn-primary w-full"
+              disabled={isPending || (transactionType === 'group' && !selectedGroupId)}
             >
-               Save Record
+               {isPending ? 'Saving...' : 'Save Record'}
             </button>
          </div>
       </form>

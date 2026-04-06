@@ -29,7 +29,7 @@ const Message = ({ sender, text, type }) => {
 };
 
 const AIAssistant = () => {
-  const [messages, setMessages] = useState([
+  const [messages] = useState([
     { sender: 'PRISM', text: "How can I assist your wealth today? I have processed your latest 42 transactions. Your net worth has increased by 2.4% this month.", type: 'intro' },
     { sender: 'You', text: "Analyze my subscriptions. Which ones have seen price increases in the last quarter?", type: 'user' },
     { sender: 'PRISM', text: "Based on your transaction history, I've identified three subscriptions with updated pricing including Cloud Alpha and StreamMax.", type: 'tip' }

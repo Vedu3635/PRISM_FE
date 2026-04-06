@@ -1,12 +1,24 @@
 import React from 'react';
 import { Button as MuiButton } from '@mui/material';
 
-const Button = ({ children, variant = "contained", color = "primary", ...props }) => {
+const Button = ({ children, variant = "contained", color = "primary", sx, ...props }) => {
+  const baseSx = {
+    borderRadius: '10px',
+    fontWeight: 600,
+    textTransform: 'none',
+    letterSpacing: '0.01em',
+    boxShadow: 'none',
+    '&:hover': {
+      boxShadow: 'none',
+    },
+  };
+
   if (variant === 'secondary-dark') {
     return (
       <MuiButton
         variant="contained"
         sx={{
+          ...baseSx,
           backgroundColor: 'rgba(255,255,255,0.05)',
           color: 'text.primary',
           border: '1px solid rgba(255,255,255,0.1)',
@@ -27,6 +39,7 @@ const Button = ({ children, variant = "contained", color = "primary", ...props }
         <MuiButton
           variant="contained"
           sx={{
+            ...baseSx,
             background: 'linear-gradient(135deg, #3B82F6 0%, #2563EB 100%)',
             color: 'white',
             fontWeight: 600,
@@ -45,7 +58,15 @@ const Button = ({ children, variant = "contained", color = "primary", ...props }
   }
 
   return (
-    <MuiButton variant={variant} color={color} {...props}>
+    <MuiButton
+      variant={variant}
+      color={color}
+      sx={{
+        ...baseSx,
+        ...(sx || {}),
+      }}
+      {...props}
+    >
       {children}
     </MuiButton>
   );

@@ -1,6 +1,6 @@
 import React from 'react';
-
 import { Link } from 'react-router-dom';
+import { ROUTES } from '../config';
 
 const LandingPage = () => {
   return (
@@ -14,8 +14,8 @@ const LandingPage = () => {
             <span className="text-lg font-bold text-white tracking-wide">PRISM</span>
          </div>
          <div className="flex items-center gap-6">
-            <Link to="/login" className="text-sm font-semibold text-on-surface-variant hover:text-white transition-colors hidden sm:block">Login</Link>
-            <Link to="/onboarding" className="px-5 py-2 bg-white text-black rounded-md text-sm font-semibold hover:bg-neutral-200 transition-colors">Get Started</Link>
+            <Link to={ROUTES.LOGIN} className="text-sm font-semibold text-on-surface-variant hover:text-white transition-colors hidden sm:block">Login</Link>
+            <Link to={ROUTES.ONBOARDING} className="px-5 py-2 bg-white text-black rounded-md text-sm font-semibold hover:bg-neutral-200 transition-colors">Get Started</Link>
          </div>
       </nav>
 
@@ -35,10 +35,10 @@ const LandingPage = () => {
                    PRISM is the modern architect of your financial future. Securely aggregate accounts, forecast net worth with precise modeling, and receive actionable insights.
                 </p>
                 <div className="flex flex-wrap gap-4 pt-4">
-                   <Link to="/onboarding" className="px-6 py-3 bg-primary text-black font-semibold rounded-md hover:bg-white transition-colors">
+                   <Link to={ROUTES.ONBOARDING} className="px-6 py-3 bg-primary text-black font-semibold rounded-md hover:bg-white transition-colors">
                       Start Building
                    </Link>
-                   <Link to="/onboarding" className="px-6 py-3 bg-surface border border-white/10 text-white font-semibold rounded-md hover:bg-surface-container-high transition-colors flex items-center gap-2">
+                   <Link to={ROUTES.ONBOARDING} className="px-6 py-3 bg-surface border border-white/10 text-white font-semibold rounded-md hover:bg-surface-container-high transition-colors flex items-center gap-2">
                       <span className="material-symbols-outlined text-[20px]" style={{ fontVariationSettings: "'FILL' 1" }}>play_circle</span>
                       View Demo
                    </Link>

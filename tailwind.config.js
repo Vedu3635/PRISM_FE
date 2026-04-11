@@ -62,9 +62,9 @@ export default {
         "label": ["Inter"]
       },
       borderRadius: {
-        "DEFAULT": "0.25rem", 
-        "lg": "0.5rem", 
-        "xl": "0.75rem", 
+        "DEFAULT": "0.25rem",
+        "lg": "0.5rem",
+        "xl": "0.75rem",
         "full": "9999px"
       },
     },

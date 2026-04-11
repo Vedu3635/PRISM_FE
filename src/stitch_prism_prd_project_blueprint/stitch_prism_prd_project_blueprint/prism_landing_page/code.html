@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "on-tertiary-fixed": "#351000",
+              "on-error": "#690005",
+              "inverse-primary": "#494bd6",
+              "surface-container-highest": "#31353b",
+              "outline-variant": "#464555",
+              "inverse-on-surface": "#2d3136",
+              "surface-container-low": "#181c21",
+              "secondary-container": "#00a2e6",
+              "secondary": "#89ceff",
+              "surface-bright": "#36393f",
+              "on-primary": "#1000a9",
+              "primary-fixed-dim": "#c0c1ff",
+              "primary": "#c0c1ff",
+              "surface-container": "#1c2025",
+              "surface-tint": "#c0c1ff",
+              "tertiary-fixed-dim": "#ffb695",
+              "secondary-fixed": "#c9e6ff",
+              "surface-dim": "#101419",
+              "inverse-surface": "#e0e2ea",
+              "surface-container-high": "#262a30",
+              "on-secondary-fixed-variant": "#004c6e",
+              "on-primary-fixed-variant": "#2f2ebe",
+              "background": "#101419",
+              "surface": "#101419",
+              "secondary-fixed-dim": "#89ceff",
+              "on-tertiary-fixed-variant": "#7b2f00",
+              "on-error-container": "#ffdad6",
+              "on-background": "#e0e2ea",
+              "error-container": "#93000a",
+              "tertiary-fixed": "#ffdbcc",
+              "tertiary-container": "#a44100",
+              "primary-container": "#4b4dd8",
+              "outline": "#918fa1",
+              "tertiary": "#ffb695",
+              "surface-container-lowest": "#0a0e13",
+              "on-secondary-fixed": "#001e2f",
+              "error": "#ffb4ab",
+              "on-secondary-container": "#00344e",
+              "on-tertiary-container": "#ffd2be",
+              "surface-variant": "#31353b",
+              "on-surface-variant": "#c7c4d8",
+              "primary-fixed": "#e1e0ff",
+              "on-primary-container": "#d9d8ff",
+              "on-tertiary": "#571f00",
+              "on-surface": "#e0e2ea",
+              "on-secondary": "#00344d",
+              "on-primary-fixed": "#07006c"
+            },
+            fontFamily: {
+              "headline": ["Inter"],
+              "body": ["Inter"],
+              "label": ["Inter"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-card {
+            background: rgba(49, 53, 59, 0.4);
+            backdrop-filter: blur(24px);
+            border: 0.5px solid rgba(192, 193, 255, 0.15);
+        }
+        .prism-glow {
+            box-shadow: 0 0 40px -10px rgba(75, 77, 216, 0.3);
+        }
+        .tnum { font-feature-settings: "tnum"; }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body selection:bg-primary/30 antialiased">
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full z-50 bg-[#101419]/80 backdrop-blur-xl font-['Inter'] antialiased shadow-[0_24px_40px_-15px_rgba(0,0,0,0.4)]">
+<div class="flex justify-between items-center max-w-7xl mx-auto px-6 h-20">
+<div class="text-2xl font-bold tracking-tighter text-white">PRISM</div>
+<div class="hidden md:flex items-center gap-8">
+<a class="text-white border-b-2 border-indigo-500 pb-1" href="#">Features</a>
+<a class="text-gray-400 hover:text-white transition-colors" href="#">Vault</a>
+<a class="text-gray-400 hover:text-white transition-colors" href="#">Analytics</a>
+<a class="text-gray-400 hover:text-white transition-colors" href="#">Pricing</a>
+</div>
+<div class="flex items-center gap-4">
+<button class="hidden sm:block text-gray-400 hover:text-white transition-colors px-4 py-2 text-sm font-medium">Login</button>
+<button class="bg-indigo-500 text-white px-6 py-2.5 rounded-lg font-semibold text-sm hover:bg-indigo-600 transition-all prism-glow">Get Started</button>
+</div>
+</div>
+</nav>
+<main class="pt-20">
+<!-- Hero Section -->
+<section class="relative pt-24 pb-32 overflow-hidden">
+<div class="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-16 items-center">
+<div class="relative z-10">
+<span class="inline-block py-1 px-3 mb-6 rounded-full bg-primary-container/20 text-primary text-[10px] font-bold tracking-[0.2em] uppercase">Intelligence Redefined</span>
+<h1 class="text-6xl md:text-7xl font-bold text-white tracking-tight leading-[1.05] mb-8">
+                        Your Wealth, <br/>
+<span class="text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary">Reimagined by AI.</span>
+</h1>
+<p class="text-lg text-on-surface-variant max-w-lg mb-10 leading-relaxed">
+                        PRISM is the obsidian architect of your financial future. Securely aggregate accounts, forecast net worth with predictive modeling, and receive institutional-grade insights.
+                    </p>
+<div class="flex flex-wrap gap-4">
+<button class="px-8 py-4 bg-gradient-to-br from-primary-container to-secondary-container text-white font-bold rounded-xl prism-glow hover:scale-[1.02] transition-transform">
+                            Get Started Free
+                        </button>
+<button class="px-8 py-4 bg-surface-container-high text-primary font-bold rounded-xl flex items-center gap-2 hover:bg-surface-container-highest transition-colors">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">play_circle</span>
+                            Watch Demo
+                        </button>
+</div>
+</div>
+<div class="relative lg:h-[600px] flex items-center">
+<div class="glass-card w-full aspect-[4/3] rounded-2xl overflow-hidden relative prism-glow group">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="Futuristic dark financial dashboard UI with glowing indigo line charts, complex data visualizations, and minimalist obsidian texture surfaces" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD17pZ5WNHFF1FtaM78MyTijECfX0tLgA4sCpkBvf_5i-xs8kPcEXp0zCuXWtAb5mbBlbM5h2YLDt0tziUdHWp1py5hTPBTavsUgUgfcGHIjXB3SZmY83C448vx03BHlChJdn75jbrItdBMMrHFSFHpYy8LDSCul6YKK-dAbYXOyNnLHzOopJxftZdSUCN5OlW38T_w5OlGe0Wb9cX8yEoQ4pGTw-ciyDEtXVgNUQoZDB14rsIBoykmYOQHgmONAMlJwcKMSY3q1i7r"/>
+<div class="absolute inset-0 bg-gradient-to-t from-surface-container-lowest to-transparent opacity-40"></div>
+</div>
+<!-- Floating Stat UI -->
+<div class="absolute -bottom-8 -left-8 glass-card p-6 rounded-xl hidden md:block">
+<p class="text-label-sm text-outline mb-1 uppercase tracking-widest">Net Worth Forecast</p>
+<p class="text-3xl font-bold text-white tnum tracking-tighter">+$142,000.00</p>
+<div class="flex items-center gap-2 text-tertiary mt-2">
+<span class="material-symbols-outlined text-sm">trending_up</span>
+<span class="text-xs font-bold">+12.4% vs last year</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Ambient Background Glow -->
+<div class="absolute top-[-10%] right-[-5%] w-[500px] h-[500px] bg-primary/10 blur-[120px] rounded-full -z-10"></div>
+<div class="absolute bottom-[5%] left-[0%] w-[400px] h-[400px] bg-secondary/5 blur-[100px] rounded-full -z-10"></div>
+</section>
+<!-- Trusted By -->
+<section class="py-12 bg-surface-container-lowest/50">
+<div class="max-w-7xl mx-auto px-6 text-center">
+<p class="text-[10px] font-bold text-outline tracking-[0.3em] uppercase mb-10">Integrated with Industry Leaders</p>
+<div class="flex flex-wrap justify-center items-center gap-12 opacity-40 grayscale hover:grayscale-0 transition-all duration-500">
+<div class="h-8 w-32 bg-on-surface-variant/20 rounded"></div>
+<div class="h-8 w-24 bg-on-surface-variant/20 rounded"></div>
+<div class="h-8 w-40 bg-on-surface-variant/20 rounded"></div>
+<div class="h-8 w-28 bg-on-surface-variant/20 rounded"></div>
+<div class="h-8 w-36 bg-on-surface-variant/20 rounded"></div>
+</div>
+</div>
+</section>
+<!-- Feature Grid (Bento Style) -->
+<section class="py-32 bg-surface">
+<div class="max-w-7xl mx-auto px-6">
+<div class="mb-20">
+<h2 class="text-4xl md:text-5xl font-bold text-white tracking-tight mb-4">Master Your Capital.</h2>
+<p class="text-on-surface-variant text-lg">Sophisticated tools for the modern wealth architect.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+<!-- Feature 1: Large Bento -->
+<div class="md:col-span-2 glass-card p-10 rounded-2xl relative overflow-hidden flex flex-col justify-between h-[500px] hover:border-primary/40 transition-colors">
+<div>
+<span class="material-symbols-outlined text-primary text-4xl mb-6">psychology</span>
+<h3 class="text-3xl font-bold text-white mb-4">AI-Driven Insights</h3>
+<p class="text-on-surface-variant leading-relaxed max-w-sm">
+                                Beyond simple tracking. PRISM analyzes thousands of nodes to offer proactive advice on tax harvesting, spending optimization, and hidden fee discovery.
+                            </p>
+</div>
+<div class="relative mt-8 rounded-lg overflow-hidden border border-white/5 h-48">
+<img class="w-full h-full object-cover opacity-50" data-alt="Extreme close-up of a digital crystalline structure with blue and violet light refractions representing AI intelligence" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDoY041R5E-FjY490xHzwnLNVRvgPyWH57a-PkRYc8kDqauAPJXgxX8MMf8RfNv1sLS2kvh0vBh2-kINWo9hcgazW9tCzYsfR8mCeNN5lkBo_IdmkCDBuHjqJCryxs0_OJhtlAob29mLqEFATxmjeS07fiLooVvReBhug1HVK63S5UWim2ncDKyp5fN4qW-sIDWQxCXyoxKyRIPsZjmDiMcG-o1aanR9AoETi6gf987utyFq4gvDZYvJ6wDq9DmU4-GEiSm2ZWZPsyY"/>
+<div class="absolute bottom-4 left-4 right-4 glass-card p-3 rounded-lg flex justify-between items-center">
+<span class="text-xs text-white">Insight: Reduce recurring subscriptions</span>
+<span class="text-tertiary text-xs font-bold">+$45/mo</span>
+</div>
+</div>
+</div>
+<!-- Feature 2: Tall Bento -->
+<div class="bg-surface-container-high p-10 rounded-2xl flex flex-col justify-between hover:bg-surface-container-highest transition-all group">
+<div class="h-full flex flex-col">
+<span class="material-symbols-outlined text-secondary text-4xl mb-6" data-weight="fill">shield</span>
+<h3 class="text-2xl font-bold text-white mb-4">The Vault</h3>
+<p class="text-on-surface-variant leading-relaxed text-sm">
+                                Military-grade encryption for all your accounts. Bank-level security that keeps your data invisible to everyone but you.
+                            </p>
+<div class="mt-auto pt-10 flex justify-center">
+<div class="relative w-40 h-40">
+<div class="absolute inset-0 border-[8px] border-white/5 rounded-full"></div>
+<div class="absolute inset-0 border-[8px] border-t-primary rounded-full animate-spin duration-[3000ms] group-hover:duration-1000"></div>
+<div class="absolute inset-0 flex items-center justify-center">
+<span class="material-symbols-outlined text-white text-3xl">lock</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Feature 3: Full Width Forecaster -->
+<div class="md:col-span-3 glass-card p-10 rounded-2xl flex flex-col md:flex-row gap-12 items-center">
+<div class="flex-1">
+<span class="material-symbols-outlined text-tertiary text-4xl mb-6">timeline</span>
+<h3 class="text-3xl font-bold text-white mb-4">Predictive Analytics</h3>
+<p class="text-on-surface-variant leading-relaxed mb-6">
+                                See the future of your net worth. Our Monte Carlo simulations project your 12-month wealth based on current trends and volatile market conditions.
+                            </p>
+<ul class="space-y-3">
+<li class="flex items-center gap-3 text-sm text-white/80">
+<span class="material-symbols-outlined text-primary text-sm">check_circle</span>
+                                    Scenario modeling for major purchases
+                                </li>
+<li class="flex items-center gap-3 text-sm text-white/80">
+<span class="material-symbols-outlined text-primary text-sm">check_circle</span>
+                                    Inflation-adjusted growth tracking
+                                </li>
+</ul>
+</div>
+<div class="flex-1 w-full h-64 bg-surface-container-lowest rounded-xl p-8 relative overflow-hidden">
+<!-- Visual representation of forecasting -->
+<div class="absolute bottom-0 left-0 right-0 h-40 flex items-end gap-1 px-4">
+<div class="flex-1 bg-primary/20 h-[30%] rounded-t-sm"></div>
+<div class="flex-1 bg-primary/30 h-[35%] rounded-t-sm"></div>
+<div class="flex-1 bg-primary/40 h-[45%] rounded-t-sm"></div>
+<div class="flex-1 bg-primary/50 h-[40%] rounded-t-sm"></div>
+<div class="flex-1 bg-primary/60 h-[55%] rounded-t-sm"></div>
+<div class="flex-1 bg-primary/70 h-[65%] rounded-t-sm"></div>
+<div class="flex-1 bg-primary/80 h-[80%] rounded-t-sm"></div>
+<div class="flex-1 bg-secondary/90 h-[95%] rounded-t-sm animate-pulse"></div>
+</div>
+<div class="absolute top-8 right-8 text-right">
+<span class="text-label-sm text-outline block">ESTIMATED OCT 2025</span>
+<span class="text-2xl font-bold text-white tnum">$1.24M</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Social Proof -->
+<section class="py-24 bg-surface-container-lowest">
+<div class="max-w-4xl mx-auto px-6 text-center">
+<span class="material-symbols-outlined text-primary text-5xl mb-8" style="font-variation-settings: 'FILL' 1;">format_quote</span>
+<blockquote class="text-3xl md:text-4xl font-semibold text-white leading-snug mb-12">
+                    "PRISM has completely changed how I perceive my net worth. It's no longer a static number, but a living, breathing architectural plan for my retirement."
+                </blockquote>
+<div class="flex flex-col items-center gap-4">
+<img class="w-16 h-16 rounded-full border-2 border-primary grayscale hover:grayscale-0 transition-all duration-300" data-alt="Portrait of a sophisticated male executive in his 40s, professional studio lighting, dark neutral background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAJYKg5j4GFGfuTIIPuD152pgDzdYPZhbT6W0NY7AnCaE9IFNKfisw4LvbTjZDhtkreCfC9xjg7NUWYfjkvFzoMWECqCIxP3BsHVbWaqmrYYtnuex31FELt0jeJC-iSheltAwHKaDtb3FVL1p9xdgHc8Vzrvkva211UE5vWLDr3QbSOQ_aDNURRvRMReQRS0rw39o1gDZ8b5Hi6zf_iH1MQxGLZvwr0INkRETCpzxIbTmEZbh5XVrid-95e5Hm062RX1xstbrBJiFzE"/>
+<div>
+<p class="text-white font-bold">Marcus Thorne</p>
+<p class="text-outline text-xs tracking-widest uppercase">Venture Partner, Obsidian Capital</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Pricing Preview -->
+<section class="py-32">
+<div class="max-w-7xl mx-auto px-6">
+<div class="text-center mb-20">
+<h2 class="text-4xl font-bold text-white mb-4">Invest in Clarity.</h2>
+<p class="text-on-surface-variant">Plans designed for every stage of wealth creation.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+<!-- Free -->
+<div class="bg-surface-container-low p-10 rounded-2xl border border-white/5 flex flex-col">
+<div class="mb-10">
+<h3 class="text-xl font-bold text-white mb-2">Essential</h3>
+<div class="flex items-baseline gap-1">
+<span class="text-4xl font-bold text-white">$0</span>
+<span class="text-outline">/mo</span>
+</div>
+</div>
+<ul class="space-y-4 mb-10 flex-grow">
+<li class="flex items-center gap-3 text-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-sm">check</span> 3 Account Connections
+                            </li>
+<li class="flex items-center gap-3 text-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-sm">check</span> Basic Expense Tracking
+                            </li>
+<li class="flex items-center gap-3 text-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-sm">check</span> 30-Day Forecasting
+                            </li>
+</ul>
+<button class="w-full py-3 rounded-xl bg-surface-container-highest text-white font-bold hover:bg-surface-variant transition-colors">Get Started</button>
+</div>
+<!-- Premium -->
+<div class="glass-card p-10 rounded-2xl border-primary/20 flex flex-col relative prism-glow scale-105 z-10">
+<div class="absolute top-0 right-10 -translate-y-1/2 bg-primary text-on-primary text-[10px] font-extrabold px-3 py-1 rounded-full uppercase tracking-widest">Most Popular</div>
+<div class="mb-10">
+<h3 class="text-xl font-bold text-white mb-2">Premium</h3>
+<div class="flex items-baseline gap-1">
+<span class="text-4xl font-bold text-white">$19</span>
+<span class="text-outline">/mo</span>
+</div>
+</div>
+<ul class="space-y-4 mb-10 flex-grow">
+<li class="flex items-center gap-3 text-sm text-white">
+<span class="material-symbols-outlined text-primary text-sm">check</span> Unlimited Connections
+                            </li>
+<li class="flex items-center gap-3 text-sm text-white">
+<span class="material-symbols-outlined text-primary text-sm">check</span> AI Financial Coaching
+                            </li>
+<li class="flex items-center gap-3 text-sm text-white">
+<span class="material-symbols-outlined text-primary text-sm">check</span> 12-Month Predictive Engine
+                            </li>
+<li class="flex items-center gap-3 text-sm text-white">
+<span class="material-symbols-outlined text-primary text-sm">check</span> Priority Vault Security
+                            </li>
+</ul>
+<button class="w-full py-3 rounded-xl bg-gradient-to-br from-primary-container to-secondary-container text-white font-bold hover:brightness-110 transition-all">Go Premium</button>
+</div>
+<!-- Enterprise -->
+<div class="bg-surface-container-low p-10 rounded-2xl border border-white/5 flex flex-col">
+<div class="mb-10">
+<h3 class="text-xl font-bold text-white mb-2">Architect</h3>
+<div class="flex items-baseline gap-1">
+<span class="text-4xl font-bold text-white">$49</span>
+<span class="text-outline">/mo</span>
+</div>
+</div>
+<ul class="space-y-4 mb-10 flex-grow">
+<li class="flex items-center gap-3 text-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-sm">check</span> Everything in Premium
+                            </li>
+<li class="flex items-center gap-3 text-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-sm">check</span> Multi-Entity Management
+                            </li>
+<li class="flex items-center gap-3 text-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-sm">check</span> Custom API Access
+                            </li>
+<li class="flex items-center gap-3 text-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-sm">check</span> Dedicated Concierge
+                            </li>
+</ul>
+<button class="w-full py-3 rounded-xl bg-surface-container-highest text-white font-bold hover:bg-surface-variant transition-colors">Contact Sales</button>
+</div>
+</div>
+</div>
+</section>
+<!-- Final CTA -->
+<section class="py-32 relative overflow-hidden">
+<div class="max-w-5xl mx-auto px-6 relative z-10 text-center">
+<div class="bg-gradient-to-br from-surface-container-high to-surface-container-low p-16 md:p-24 rounded-3xl border border-white/5 prism-glow">
+<h2 class="text-4xl md:text-6xl font-bold text-white mb-8 tracking-tight">Join the Future of Finance.</h2>
+<p class="text-on-surface-variant text-lg mb-12 max-w-2xl mx-auto">
+                        Stop tracking the past. Start architecting the future. Get early access to the PRISM obsidian interface today.
+                    </p>
+<div class="flex flex-col sm:flex-row gap-4 justify-center">
+<input class="bg-surface-container-lowest border-none text-white px-6 py-4 rounded-xl w-full sm:w-80 focus:ring-1 focus:ring-primary placeholder:text-outline" placeholder="Enter your work email" type="email"/>
+<button class="px-10 py-4 bg-primary text-on-primary font-bold rounded-xl hover:bg-primary-container transition-all">Sign Up Now</button>
+</div>
+</div>
+</div>
+<!-- Background Decals -->
+<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-primary/5 blur-[150px] rounded-full -z-10"></div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-[#0a0e13] w-full py-12 px-6 border-t border-white/5">
+<div class="flex flex-col md:flex-row justify-between items-center max-w-7xl mx-auto gap-8">
+<div class="flex flex-col gap-2">
+<div class="text-lg font-bold text-white">PRISM AI</div>
+<p class="text-gray-500 text-[10px] tracking-widest uppercase">© 2024 PRISM AI. The Obsidian Architect of Finance.</p>
+</div>
+<div class="flex flex-wrap justify-center gap-8">
+<a class="text-xs font-['Inter'] tracking-widest uppercase text-gray-500 hover:text-indigo-300 transition-colors" href="#">Privacy Policy</a>
+<a class="text-xs font-['Inter'] tracking-widest uppercase text-gray-500 hover:text-indigo-300 transition-colors" href="#">Terms of Service</a>
+<a class="text-xs font-['Inter'] tracking-widest uppercase text-gray-500 hover:text-indigo-300 transition-colors" href="#">Security</a>
+<a class="text-xs font-['Inter'] tracking-widest uppercase text-gray-500 hover:text-indigo-300 transition-colors" href="#">API Documentation</a>
+</div>
+<div class="flex gap-4">
+<span class="material-symbols-outlined text-indigo-400 cursor-pointer">hub</span>
+<span class="material-symbols-outlined text-indigo-400 cursor-pointer">terminal</span>
+<span class="material-symbols-outlined text-indigo-400 cursor-pointer">database</span>
+</div>
+</div>
+</footer>
+</body></html>

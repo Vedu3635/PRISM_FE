@@ -1,5 +1,9 @@
 {
+<<<<<<< HEAD
   "name": "prism-v2",
+=======
+  "name": "prism-react-v2.0.0",
+>>>>>>> main
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -10,6 +14,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+<<<<<<< HEAD
     "@radix-ui/react-slot": "latest",
     "class-variance-authority": "latest",
     "clsx": "latest",
@@ -19,21 +24,37 @@
     "recharts": "^3.8.1",
     "tailwind-merge": "latest",
     "tailwindcss-animate": "latest"
+=======
+    "axios": "^1.14.0",
+    "firebase": "^12.11.0",
+    "lucide-react": "^1.7.0",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "react-router-dom": "^7.1.5"
+>>>>>>> main
   },
   "devDependencies": {
     "@babel/core": "^7.29.0",
     "@eslint/js": "^9.39.4",
+<<<<<<< HEAD
     "@rolldown/plugin-babel": "^0.2.2",
     "@tailwindcss/postcss": "^4.0.0",
+=======
+    "@rolldown/plugin-babel": "^0.2.1",
+>>>>>>> main
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^6.0.1",
     "autoprefixer": "^10.4.27",
+<<<<<<< HEAD
     "axios": "^1.15.0",
+=======
+>>>>>>> main
     "babel-plugin-react-compiler": "^1.0.0",
     "eslint": "^9.39.4",
     "eslint-plugin-react-hooks": "^7.0.1",
     "eslint-plugin-react-refresh": "^0.5.2",
+<<<<<<< HEAD
     "framer-motion": "^12.38.0",
     "globals": "^17.4.0",
     "lucide-react": "^1.7.0",
@@ -42,5 +63,11 @@
     "react-router-dom": "^7.14.0",
     "tailwindcss": "^4.2.2",
     "vite": "^8.0.4"
+=======
+    "globals": "^17.4.0",
+    "postcss": "^8.5.8",
+    "tailwindcss": "^3.4.19",
+    "vite": "^8.0.1"
+>>>>>>> main
   }
 }

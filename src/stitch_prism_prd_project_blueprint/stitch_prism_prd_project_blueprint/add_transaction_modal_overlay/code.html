@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "background": "#101419",
+                        "surface-container-highest": "#31353b",
+                        "surface-tint": "#c0c1ff",
+                        "on-error-container": "#ffdad6",
+                        "on-secondary-fixed-variant": "#004c6e",
+                        "on-tertiary-fixed": "#351000",
+                        "on-tertiary-fixed-variant": "#7b2f00",
+                        "on-primary-fixed-variant": "#2f2ebe",
+                        "tertiary-container": "#a44100",
+                        "outline": "#918fa1",
+                        "secondary-container": "#00a2e6",
+                        "inverse-on-surface": "#2d3136",
+                        "surface-dim": "#101419",
+                        "surface-container": "#1c2025",
+                        "outline-variant": "#464555",
+                        "tertiary-fixed-dim": "#ffb695",
+                        "surface-variant": "#31353b",
+                        "on-background": "#e0e2ea",
+                        "surface-container-lowest": "#0a0e13",
+                        "tertiary-fixed": "#ffdbcc",
+                        "on-tertiary": "#571f00",
+                        "on-primary": "#1000a9",
+                        "surface-container-low": "#181c21",
+                        "surface-bright": "#36393f",
+                        "primary-fixed-dim": "#c0c1ff",
+                        "on-tertiary-container": "#ffd2be",
+                        "secondary": "#89ceff",
+                        "on-surface-variant": "#c7c4d8",
+                        "primary-fixed": "#e1e0ff",
+                        "on-secondary-container": "#00344e",
+                        "error-container": "#93000a",
+                        "primary-container": "#4b4dd8",
+                        "primary": "#c0c1ff",
+                        "on-secondary-fixed": "#001e2f",
+                        "error": "#ffb4ab",
+                        "surface": "#101419",
+                        "on-surface": "#e0e2ea",
+                        "on-primary-container": "#d9d8ff",
+                        "on-secondary": "#00344d",
+                        "secondary-fixed": "#c9e6ff",
+                        "on-error": "#690005",
+                        "secondary-fixed-dim": "#89ceff",
+                        "inverse-primary": "#494bd6",
+                        "surface-container-high": "#262a30",
+                        "inverse-surface": "#e0e2ea",
+                        "tertiary": "#ffb695",
+                        "on-primary-fixed": "#07006c"
+                    },
+                    fontFamily: {
+                        "headline": ["Inter"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .prism-gradient-border {
+            background: linear-gradient(#101419, #101419) padding-box,
+                        linear-gradient(135deg, #4b4dd8, #00a2e6) border-box;
+            border: 1px solid transparent;
+        }
+        .prism-cta {
+            background: linear-gradient(135deg, #4b4dd8, #00a2e6);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body antialiased">
+<!-- Background: Transactions Management Screen -->
+<div class="fixed inset-0 overflow-hidden flex flex-col md:flex-row blur-md">
+<!-- SideNavBar (Contextual Mapping: Transactions is Active) -->
+<aside class="hidden md:flex flex-col h-full py-8 bg-[#0a0e13] w-64 fixed left-0 top-0">
+<div class="px-6 mb-10">
+<span class="text-indigo-500 font-bold uppercase text-xs tracking-widest block">Financial Vault</span>
+<span class="text-on-surface-variant text-[10px] uppercase tracking-tighter opacity-60">Impenetrable Security</span>
+</div>
+<nav class="flex-1 space-y-2 px-4">
+<a class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:bg-[#262a30] transition-all rounded-lg font-['Inter'] label-sm uppercase tracking-widest" href="#">
+<span class="material-symbols-outlined">dashboard</span> Overview
+                </a>
+<a class="flex items-center gap-3 px-4 py-3 bg-indigo-500/10 text-indigo-400 border-r-2 border-indigo-500 transition-all font-['Inter'] label-sm uppercase tracking-widest" href="#">
+<span class="material-symbols-outlined">account_balance_wallet</span> Transactions
+                </a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:bg-[#262a30] transition-all rounded-lg font-['Inter'] label-sm uppercase tracking-widest" href="#">
+<span class="material-symbols-outlined">pie_chart</span> Budgets
+                </a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:bg-[#262a30] transition-all rounded-lg font-['Inter'] label-sm uppercase tracking-widest" href="#">
+<span class="material-symbols-outlined">savings</span> Accounts
+                </a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:bg-[#262a30] transition-all rounded-lg font-['Inter'] label-sm uppercase tracking-widest" href="#">
+<span class="material-symbols-outlined">query_stats</span> Insights
+                </a>
+</nav>
+<div class="px-4 mt-auto">
+<a class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:bg-[#262a30] transition-all rounded-lg font-['Inter'] label-sm uppercase tracking-widest" href="#">
+<span class="material-symbols-outlined">logout</span> Logout
+                </a>
+</div>
+</aside>
+<!-- Main Content Area (Background) -->
+<main class="flex-1 md:ml-64 p-8">
+<header class="flex justify-between items-end mb-12">
+<div>
+<span class="text-label-sm font-semibold uppercase tracking-[0.2em] text-primary mb-2 block">Ledger</span>
+<h1 class="text-headline-md font-bold tracking-tight">Transactions Management</h1>
+</div>
+<div class="h-12 w-12 rounded-full bg-surface-container-high overflow-hidden">
+<img alt="User profile" data-alt="close-up portrait of a professional man in a minimalist dark grey environment soft cinematic lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBuZLspsNBbPVx923Qwf8bH5r6Wil43SV_18b1JhgCh4BkBuO7-MLCQBjPCEie5GZrbDCFwZ3lvT0oKjE1oj6cYQbEKEo80SJG2BsCA7KvQXlbEPCjqBZAmxscQ4Bml5kHsiFKjG6wdsEQc9lrxEFR_6V6CIOTkSWp6FwPAsckI918fpNE8mD2gNC9MJWr1u9gNv9CzbcGqVToDeWzxzvUlV650VXS-J4LGXupqNgeFviHNYNG6Ru0YV7VjvPi3wLxLN0c5Xhtih888"/>
+</div>
+</header>
+<!-- Bento Grid of Transactions (Blurred Background Content) -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+<div class="lg:col-span-2 space-y-4">
+<div class="p-6 bg-surface-container-low rounded-xl flex items-center justify-between">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-full bg-surface-container-highest flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">shopping_cart</span>
+</div>
+<div>
+<p class="font-medium">Apple Store</p>
+<p class="text-label-sm text-outline uppercase tracking-wider">Tech &amp; Electronics</p>
+</div>
+</div>
+<p class="font-headline text-lg font-bold tnum">-$1,299.00</p>
+</div>
+<div class="p-6 bg-surface-container-low rounded-xl flex items-center justify-between">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-full bg-surface-container-highest flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">restaurant</span>
+</div>
+<div>
+<p class="font-medium">Blue Bottle Coffee</p>
+<p class="text-label-sm text-outline uppercase tracking-wider">Dining</p>
+</div>
+</div>
+<p class="font-headline text-lg font-bold tnum">-$12.50</p>
+</div>
+<div class="p-6 bg-surface-container-low rounded-xl flex items-center justify-between">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-full bg-surface-container-highest flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">payments</span>
+</div>
+<div>
+<p class="font-medium">Salary Deposit</p>
+<p class="text-label-sm text-outline uppercase tracking-wider">Income</p>
+</div>
+</div>
+<p class="font-headline text-lg font-bold tnum text-secondary">+$8,400.00</p>
+</div>
+</div>
+<div class="bg-surface-container rounded-xl p-8 flex flex-col justify-center items-center text-center">
+<div class="mb-4">
+<span class="text-label-sm text-outline uppercase tracking-widest block mb-2">Total Balance</span>
+<span class="text-display-lg font-bold tracking-tighter tnum">$142,500.24</span>
+</div>
+<div class="w-full h-32 bg-surface-container-lowest rounded-lg flex items-end px-2 pb-2 gap-1">
+<div class="bg-primary h-1/2 w-full rounded-sm opacity-20"></div>
+<div class="bg-primary h-3/4 w-full rounded-sm opacity-40"></div>
+<div class="bg-primary h-2/3 w-full rounded-sm opacity-60"></div>
+<div class="bg-primary h-full w-full rounded-sm"></div>
+<div class="bg-primary h-5/6 w-full rounded-sm opacity-80"></div>
+</div>
+</div>
+</div>
+</main>
+</div>
+<!-- Modal Overlay -->
+<div class="fixed inset-0 z-[100] flex items-center justify-center bg-black/40 backdrop-blur-md p-4">
+<!-- Modal Card -->
+<div class="prism-gradient-border w-full max-w-xl bg-background rounded-xl overflow-hidden shadow-2xl">
+<div class="p-8">
+<!-- Header -->
+<div class="flex justify-between items-center mb-8">
+<div>
+<h2 class="text-headline-md font-bold tracking-tight text-white">New Transaction</h2>
+<p class="text-outline text-body-md">Vault entry protocol initiated</p>
+</div>
+<button class="text-outline hover:text-white transition-colors">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+<form class="space-y-6">
+<!-- Amount Field -->
+<div class="space-y-2">
+<label class="text-label-sm font-semibold uppercase tracking-[0.2em] text-outline">Amount</label>
+<div class="relative group">
+<span class="absolute left-6 top-1/2 -translate-y-1/2 text-display-lg font-bold text-primary opacity-50">$</span>
+<input class="w-full bg-surface-container-lowest border-none rounded-xl py-6 pl-16 pr-6 text-display-lg font-bold tracking-tighter tnum focus:ring-1 focus:ring-primary/40 focus:bg-surface-container-low transition-all placeholder:text-surface-container-highest" placeholder="0.00" step="0.01" type="number"/>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<!-- Category Dropdown -->
+<div class="space-y-2">
+<label class="text-label-sm font-semibold uppercase tracking-[0.2em] text-outline">Category</label>
+<div class="relative group">
+<select class="w-full bg-surface-container-lowest border-none rounded-lg py-3 px-4 appearance-none focus:ring-1 focus:ring-primary/40 focus:bg-surface-container-low transition-all">
+<option>Dining</option>
+<option>Groceries</option>
+<option>Tech</option>
+<option>Transport</option>
+<option>Entertainment</option>
+</select>
+<span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-outline text-sm">keyboard_arrow_down</span>
+</div>
+</div>
+<!-- Date Picker -->
+<div class="space-y-2">
+<label class="text-label-sm font-semibold uppercase tracking-[0.2em] text-outline">Date</label>
+<div class="relative">
+<input class="w-full bg-surface-container-lowest border-none rounded-lg py-3 px-4 focus:ring-1 focus:ring-primary/40 focus:bg-surface-container-low transition-all [color-scheme:dark]" type="date"/>
+</div>
+</div>
+</div>
+<!-- Account Selection -->
+<div class="space-y-2">
+<label class="text-label-sm font-semibold uppercase tracking-[0.2em] text-outline">Account Source</label>
+<div class="flex gap-2">
+<label class="flex-1">
+<input checked="" class="peer hidden" name="account" type="radio"/>
+<div class="cursor-pointer text-center p-3 rounded-lg bg-surface-container-lowest border border-transparent peer-checked:bg-primary-container/20 peer-checked:border-primary/40 transition-all text-body-md">Main Savings</div>
+</label>
+<label class="flex-1">
+<input class="peer hidden" name="account" type="radio"/>
+<div class="cursor-pointer text-center p-3 rounded-lg bg-surface-container-lowest border border-transparent peer-checked:bg-primary-container/20 peer-checked:border-primary/40 transition-all text-body-md">Credit Card</div>
+</label>
+<label class="flex-1">
+<input class="peer hidden" name="account" type="radio"/>
+<div class="cursor-pointer text-center p-3 rounded-lg bg-surface-container-lowest border border-transparent peer-checked:bg-primary-container/20 peer-checked:border-primary/40 transition-all text-body-md">Crypto</div>
+</label>
+</div>
+</div>
+<!-- Notes -->
+<div class="space-y-2">
+<div class="flex justify-between items-center">
+<label class="text-label-sm font-semibold uppercase tracking-[0.2em] text-outline">AI Notes</label>
+<span class="text-[10px] text-primary/60 uppercase font-bold tracking-widest">Natural Language Processing Active</span>
+</div>
+<textarea class="w-full bg-surface-container-lowest border-none rounded-lg py-3 px-4 focus:ring-1 focus:ring-primary/40 focus:bg-surface-container-low transition-all placeholder:text-outline/40" placeholder="e.g., 'Coffee at Blue Bottle with the team'" rows="2"></textarea>
+</div>
+<!-- Recurring Toggle -->
+<div class="flex items-center justify-between p-4 bg-surface-container-low/50 rounded-xl">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary">event_repeat</span>
+<div>
+<p class="text-body-md font-medium">Monthly Recurring</p>
+<p class="text-label-sm text-outline opacity-70">Automate this vault entry</p>
+</div>
+</div>
+<button class="w-12 h-6 rounded-full bg-surface-container-highest relative flex items-center px-1 transition-colors group" type="button">
+<div class="w-4 h-4 rounded-full bg-outline group-hover:bg-primary transition-all"></div>
+</button>
+</div>
+<!-- Actions -->
+<div class="flex flex-col sm:flex-row gap-4 pt-4">
+<button class="flex-1 py-4 text-outline font-semibold hover:text-white transition-colors border border-outline-variant/30 rounded-lg" type="button">
+                            Cancel
+                        </button>
+<button class="prism-cta flex-1 py-4 text-white font-bold rounded-lg shadow-lg shadow-primary/20 hover:brightness-110 transition-all active:scale-95" type="submit">
+                            Add Transaction
+                        </button>
+</div>
+</form>
+</div>
+<!-- Prism AI Insight Decorator -->
+<div class="h-1 w-full bg-gradient-to-r from-transparent via-primary/30 to-transparent"></div>
+</div>
+</div>
+</body></html>

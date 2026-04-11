@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>PRISM | Wealth Intelligence</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#c0c1ff",
+              "tertiary-container": "#a44100",
+              "error-container": "#93000a",
+              "on-error-container": "#ffdad6",
+              "surface-tint": "#c0c1ff",
+              "inverse-on-surface": "#2d3136",
+              "on-surface-variant": "#c7c4d8",
+              "surface-container-lowest": "#0a0e13",
+              "secondary": "#89ceff",
+              "surface-container-high": "#262a30",
+              "on-tertiary": "#571f00",
+              "tertiary-fixed": "#ffdbcc",
+              "surface": "#101419",
+              "on-tertiary-fixed": "#351000",
+              "on-primary-container": "#d9d8ff",
+              "on-primary-fixed": "#07006c",
+              "on-primary": "#1000a9",
+              "on-primary-fixed-variant": "#2f2ebe",
+              "error": "#ffb4ab",
+              "on-secondary-container": "#00344e",
+              "on-secondary-fixed": "#001e2f",
+              "on-error": "#690005",
+              "surface-variant": "#31353b",
+              "primary-fixed-dim": "#c0c1ff",
+              "secondary-container": "#00a2e6",
+              "outline": "#918fa1",
+              "on-secondary-fixed-variant": "#004c6e",
+              "background": "#101419",
+              "surface-container-highest": "#31353b",
+              "surface-dim": "#101419",
+              "tertiary": "#ffb695",
+              "primary-container": "#4b4dd8",
+              "surface-bright": "#36393f",
+              "secondary-fixed": "#c9e6ff",
+              "on-tertiary-fixed-variant": "#7b2f00",
+              "outline-variant": "#464555",
+              "on-tertiary-container": "#ffd2be",
+              "surface-container": "#1c2025",
+              "on-secondary": "#00344d",
+              "inverse-surface": "#e0e2ea",
+              "primary-fixed": "#e1e0ff",
+              "tertiary-fixed-dim": "#ffb695",
+              "on-surface": "#e0e2ea",
+              "inverse-primary": "#494bd6",
+              "secondary-fixed-dim": "#89ceff",
+              "on-background": "#e0e2ea",
+              "surface-container-low": "#181c21"
+            },
+            fontFamily: {
+              "headline": ["Inter"],
+              "body": ["Inter"],
+              "label": ["Inter"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .tabular-nums { font-variant-numeric: tabular-nums; }
+        .glass-morphism {
+            background: rgba(49, 53, 59, 0.4);
+            backdrop-filter: blur(24px);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body min-h-screen selection:bg-primary/30">
+<!-- SideNavBar (Execution from JSON) -->
+<aside class="hidden md:flex flex-col h-screen w-64 fixed left-0 top-0 bg-[#101419] border-r border-[#262a30]/15 shadow-2xl shadow-black/40 py-6 px-4 z-50">
+<div class="mb-10 px-2">
+<h1 class="text-xl font-bold tracking-tighter text-white">PRISM</h1>
+<p class="text-[10px] uppercase tracking-[0.2em] text-outline mt-1">Wealth Intelligence</p>
+</div>
+<nav class="flex-1 space-y-2">
+<!-- Active Item: Dashboard -->
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-white border-r-2 border-[#4F46E5] bg-gradient-to-r from-[#4F46E5]/10 to-transparent font-['Inter'] title-sm font-medium tracking-tight" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span>Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-[#262a30] hover:text-white transition-colors duration-200 hover:bg-[#262a30]/50 font-['Inter'] title-sm font-medium tracking-tight" href="#">
+<span class="material-symbols-outlined" data-icon="receipt_long">receipt_long</span>
+<span>Transactions</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-[#262a30] hover:text-white transition-colors duration-200 hover:bg-[#262a30]/50 font-['Inter'] title-sm font-medium tracking-tight" href="#">
+<span class="material-symbols-outlined" data-icon="insights">insights</span>
+<span>Analytics</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-[#262a30] hover:text-white transition-colors duration-200 hover:bg-[#262a30]/50 font-['Inter'] title-sm font-medium tracking-tight" href="#">
+<span class="material-symbols-outlined" data-icon="magic_button">magic_button</span>
+<span>AI Assistant</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-[#262a30] hover:text-white transition-colors duration-200 hover:bg-[#262a30]/50 font-['Inter'] title-sm font-medium tracking-tight" href="#">
+<span class="material-symbols-outlined" data-icon="target">target</span>
+<span>Goals</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-[#262a30] hover:text-white transition-colors duration-200 hover:bg-[#262a30]/50 font-['Inter'] title-sm font-medium tracking-tight" href="#">
+<span class="material-symbols-outlined" data-icon="account_balance_wallet">account_balance_wallet</span>
+<span>Budgets</span>
+</a>
+</nav>
+<div class="mt-auto pt-6 border-t border-outline-variant/10">
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-[#262a30] hover:text-white transition-colors duration-200 hover:bg-[#262a30]/50 font-['Inter'] title-sm font-medium tracking-tight" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span>Settings</span>
+</a>
+</div>
+</aside>
+<!-- TopNavBar (Execution from JSON) -->
+<header class="fixed top-0 right-0 h-16 z-40 flex items-center justify-between px-8 w-full md:pl-72 bg-[#101419]/80 backdrop-blur-xl border-b border-[#262a30]/15">
+<div class="flex items-center gap-4 flex-1">
+<div class="relative w-full max-w-md">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-sm">search</span>
+<input class="w-full bg-surface-container-lowest border-none rounded-full py-2 pl-10 pr-4 text-sm focus:ring-1 focus:ring-[#4F46E5]/50 transition-all font-['Inter'] body-md tabular-nums" placeholder="Search wealth insights..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<button class="relative text-gray-400 hover:bg-[#262a30] p-2 rounded-lg transition-colors">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 bg-primary-container rounded-full"></span>
+</button>
+<div class="flex items-center gap-3 pl-4 border-l border-outline-variant/20">
+<div class="text-right hidden sm:block">
+<p class="text-xs font-bold text-white leading-none">Alexander Thorne</p>
+<p class="text-[10px] text-outline">Elite Member</p>
+</div>
+<button class="w-10 h-10 rounded-full bg-surface-container-high overflow-hidden border border-outline-variant/20">
+<img alt="User Profile" class="w-full h-full object-cover" data-alt="minimalist portrait of a professional man with sharp features on a clean monochromatic background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBNLBsxyZSiX9XQS-ecIcHun7_Mp6f_93h9ChqfuTEhR0RGsT4nB4wRtioYMWtNAAA3QOGNWsE3CbmqE1LqYdKCgSVz3hPnTp3eP5R4D-fMNM8MeakMfs2pdKM-ST520ZD8Lrifgn3IAKDR19-Z-XuTBaA-Jt0hU3XhHU9Mtr6pZXimNn0X7nQzFyOrabMAsUf0BkTwj4oxjqtyR5PQ96Ww1hpGDLk54tXCWfD19gUDTzbd3flL9_8pF85P1WOj7lquUtn1sLykbDcQ"/>
+</button>
+</div>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="md:pl-64 pt-16 min-h-screen">
+<div class="p-8 max-w-7xl mx-auto space-y-8">
+<!-- Header Section -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
+<div>
+<span class="text-label-sm font-semibold text-primary tracking-[0.3em] uppercase">Market Overview</span>
+<h2 class="text-[3.5rem] font-bold tracking-tighter text-white leading-none mt-2">Dashboard</h2>
+</div>
+<div class="flex gap-3">
+<button class="px-6 py-3 bg-surface-container-high text-primary rounded-xl font-semibold title-sm transition-all hover:bg-surface-container-highest flex items-center gap-2">
+<span class="material-symbols-outlined" data-icon="add">add</span>
+                        Set Budget
+                    </button>
+<button class="px-6 py-3 bg-gradient-to-br from-primary-container to-secondary-container text-white rounded-xl font-semibold title-sm transition-all hover:opacity-90 flex items-center gap-2 shadow-lg shadow-primary-container/20">
+<span class="material-symbols-outlined" data-icon="payments">payments</span>
+                        Add Transaction
+                    </button>
+</div>
+</div>
+<!-- Bento Grid: Balance Cards -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<!-- Total Balance -->
+<div class="p-8 rounded-2xl bg-surface-container-high relative overflow-hidden group">
+<div class="relative z-10">
+<p class="text-label-sm font-semibold text-outline tracking-wider uppercase">Total Wealth</p>
+<h3 class="text-4xl font-bold text-white mt-2 tabular-nums tracking-tight">$412,984.50</h3>
+<div class="mt-4 flex items-center gap-2 text-primary">
+<span class="material-symbols-outlined text-sm" data-icon="trending_up">trending_up</span>
+<span class="text-sm font-medium">+12.4% this month</span>
+</div>
+</div>
+<div class="absolute -right-4 -bottom-4 opacity-5 group-hover:opacity-10 transition-opacity">
+<span class="material-symbols-outlined text-9xl" data-icon="account_balance">account_balance</span>
+</div>
+</div>
+<!-- Income -->
+<div class="p-8 rounded-2xl bg-surface-container-low border border-outline-variant/15">
+<p class="text-label-sm font-semibold text-outline tracking-wider uppercase">Monthly Income</p>
+<h3 class="text-3xl font-bold text-white mt-2 tabular-nums">$24,500.00</h3>
+<div class="mt-4 w-full bg-surface-container-highest h-1 rounded-full overflow-hidden">
+<div class="bg-primary h-full w-[85%] rounded-full"></div>
+</div>
+<p class="text-xs text-outline mt-2">85% of target reached</p>
+</div>
+<!-- Expenses -->
+<div class="p-8 rounded-2xl bg-surface-container-low border border-outline-variant/15">
+<p class="text-label-sm font-semibold text-outline tracking-wider uppercase">Monthly Expenses</p>
+<h3 class="text-3xl font-bold text-white mt-2 tabular-nums">$8,124.20</h3>
+<div class="mt-4 flex gap-1">
+<div class="h-1 flex-1 bg-primary rounded-full opacity-30"></div>
+<div class="h-1 flex-1 bg-primary rounded-full opacity-30"></div>
+<div class="h-1 flex-1 bg-primary rounded-full opacity-30"></div>
+<div class="h-1 flex-1 bg-outline-variant rounded-full"></div>
+<div class="h-1 flex-1 bg-outline-variant rounded-full"></div>
+</div>
+<p class="text-xs text-outline mt-2">32% of monthly limit</p>
+</div>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+<!-- AI Insight Card (Prism Special) -->
+<div class="lg:col-span-12 glass-morphism rounded-3xl p-1 border border-white/5 relative overflow-hidden">
+<div class="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-primary/10 via-transparent to-transparent"></div>
+<div class="p-8 flex flex-col md:flex-row gap-8 items-center relative z-10">
+<div class="w-16 h-16 rounded-2xl bg-primary/20 flex items-center justify-center text-primary shrink-0">
+<span class="material-symbols-outlined text-4xl" data-icon="auto_awesome" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+</div>
+<div class="flex-1 space-y-2">
+<h4 class="text-xl font-bold text-white">AI Wealth Projection</h4>
+<p class="text-on-surface-variant leading-relaxed">Based on your current spending trajectory and 4.2% APY trends, you're on track to exceed your "Retirement Alpha" goal 8 months earlier than projected. Consider reallocating <span class="text-primary font-bold tabular-nums">$2,400</span> into the Technology Sector for optimal growth.</p>
+</div>
+<button class="px-6 py-3 bg-white text-surface font-bold rounded-xl whitespace-nowrap hover:bg-primary transition-colors">
+                            Execute Strategy
+                        </button>
+</div>
+</div>
+<!-- Main Chart (Asymmetric Layout) -->
+<div class="lg:col-span-8 space-y-6">
+<div class="bg-surface-container rounded-3xl p-8 h-[400px] flex flex-col">
+<div class="flex items-center justify-between mb-8">
+<h4 class="text-headline-md font-semibold text-white">Cash Flow</h4>
+<div class="flex gap-4">
+<div class="flex items-center gap-2">
+<span class="w-3 h-3 rounded-full bg-primary"></span>
+<span class="text-xs text-outline">Income</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="w-3 h-3 rounded-full bg-outline-variant"></span>
+<span class="text-xs text-outline">Expense</span>
+</div>
+</div>
+</div>
+<div class="flex-1 flex items-end gap-3 pb-2">
+<!-- Visual Chart Mock -->
+<div class="flex-1 flex flex-col justify-end gap-2 group">
+<div class="w-full bg-outline-variant/20 h-24 rounded-t-lg relative transition-all group-hover:bg-outline-variant/30"></div>
+<div class="w-full bg-primary h-40 rounded-t-lg relative shadow-lg shadow-primary/10"></div>
+<span class="text-[10px] text-center text-outline mt-2 uppercase font-bold">Jan</span>
+</div>
+<div class="flex-1 flex flex-col justify-end gap-2 group">
+<div class="w-full bg-outline-variant/20 h-32 rounded-t-lg"></div>
+<div class="w-full bg-primary h-48 rounded-t-lg"></div>
+<span class="text-[10px] text-center text-outline mt-2 uppercase font-bold">Feb</span>
+</div>
+<div class="flex-1 flex flex-col justify-end gap-2 group">
+<div class="w-full bg-outline-variant/20 h-20 rounded-t-lg"></div>
+<div class="w-full bg-primary h-60 rounded-t-lg"></div>
+<span class="text-[10px] text-center text-outline mt-2 uppercase font-bold">Mar</span>
+</div>
+<div class="flex-1 flex flex-col justify-end gap-2 group">
+<div class="w-full bg-outline-variant/20 h-28 rounded-t-lg"></div>
+<div class="w-full bg-primary h-52 rounded-t-lg"></div>
+<span class="text-[10px] text-center text-outline mt-2 uppercase font-bold">Apr</span>
+</div>
+<div class="flex-1 flex flex-col justify-end gap-2 group">
+<div class="w-full bg-outline-variant/20 h-16 rounded-t-lg"></div>
+<div class="w-full bg-primary h-72 rounded-t-lg"></div>
+<span class="text-[10px] text-center text-outline mt-2 uppercase font-bold">May</span>
+</div>
+</div>
+</div>
+<!-- Recent Transactions -->
+<div class="bg-surface-container rounded-3xl p-8">
+<div class="flex items-center justify-between mb-6">
+<h4 class="text-headline-md font-semibold text-white">Recent Transactions</h4>
+<button class="text-primary text-sm font-semibold hover:underline">View All</button>
+</div>
+<div class="space-y-1">
+<!-- Transaction Row -->
+<div class="flex items-center justify-between p-4 rounded-xl hover:bg-surface-container-low transition-colors group cursor-pointer">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-xl bg-surface-container-high flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined" data-icon="shopping_bag">shopping_bag</span>
+</div>
+<div>
+<p class="text-white font-semibold">Apple Store</p>
+<p class="text-xs text-outline">Today, 2:45 PM • Electronics</p>
+</div>
+</div>
+<p class="text-white font-bold tabular-nums">-$1,299.00</p>
+</div>
+<div class="flex items-center justify-between p-4 rounded-xl hover:bg-surface-container-low transition-colors group cursor-pointer">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-xl bg-surface-container-high flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined" data-icon="restaurant">restaurant</span>
+</div>
+<div>
+<p class="text-white font-semibold">The Nomad Club</p>
+<p class="text-xs text-outline">Today, 12:15 PM • Dining</p>
+</div>
+</div>
+<p class="text-white font-bold tabular-nums">-$142.50</p>
+</div>
+<div class="flex items-center justify-between p-4 rounded-xl hover:bg-surface-container-low transition-colors group cursor-pointer">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-xl bg-surface-container-high flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined" data-icon="work" style="font-variation-settings: 'FILL' 1;">work</span>
+</div>
+<div>
+<p class="text-white font-semibold">Stripe Payout</p>
+<p class="text-xs text-outline">Yesterday • Salary</p>
+</div>
+</div>
+<p class="text-primary font-bold tabular-nums">+$8,400.00</p>
+</div>
+<div class="flex items-center justify-between p-4 rounded-xl hover:bg-surface-container-low transition-colors group cursor-pointer">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-xl bg-surface-container-high flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined" data-icon="electric_car">electric_car</span>
+</div>
+<div>
+<p class="text-white font-semibold">Tesla Charging</p>
+<p class="text-xs text-outline">May 14, 2024 • Transport</p>
+</div>
+</div>
+<p class="text-white font-bold tabular-nums">-$24.12</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Secondary Column (Donut Chart & Quick Stats) -->
+<div class="lg:col-span-4 space-y-8">
+<!-- Donut Chart -->
+<div class="bg-surface-container rounded-3xl p-8">
+<h4 class="text-headline-md font-semibold text-white mb-8">Allocation</h4>
+<div class="relative w-48 h-48 mx-auto">
+<!-- SVG Donut -->
+<svg class="w-full h-full -rotate-90" viewbox="0 0 100 100">
+<circle cx="50" cy="50" fill="transparent" r="40" stroke="#262a30" stroke-width="12"></circle>
+<circle cx="50" cy="50" fill="transparent" r="40" stroke="#4F46E5" stroke-dasharray="160 251" stroke-linecap="round" stroke-width="12"></circle>
+<circle cx="50" cy="50" fill="transparent" r="40" stroke="#c0c1ff" stroke-dasharray="60 251" stroke-dashoffset="-160" stroke-linecap="round" stroke-width="12"></circle>
+</svg>
+<div class="absolute inset-0 flex flex-col items-center justify-center">
+<span class="text-2xl font-bold text-white tabular-nums">64%</span>
+<span class="text-[10px] text-outline uppercase font-bold tracking-widest">Active</span>
+</div>
+</div>
+<div class="mt-8 space-y-4">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-[#4F46E5]"></span>
+<span class="text-sm text-on-surface-variant">Housing</span>
+</div>
+<span class="text-sm font-bold text-white tabular-nums">42%</span>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-primary"></span>
+<span class="text-sm text-on-surface-variant">Investment</span>
+</div>
+<span class="text-sm font-bold text-white tabular-nums">22%</span>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-surface-container-high"></span>
+<span class="text-sm text-on-surface-variant">Leisure</span>
+</div>
+<span class="text-sm font-bold text-white tabular-nums">36%</span>
+</div>
+</div>
+</div>
+<!-- Market Pulse Card -->
+<div class="p-8 rounded-3xl bg-gradient-to-br from-surface-container-high to-surface-container border border-outline-variant/10">
+<div class="flex items-center gap-2 mb-6">
+<span class="w-2 h-2 rounded-full bg-tertiary animate-pulse"></span>
+<h4 class="text-label-sm font-bold text-white tracking-widest uppercase">Portfolio Pulse</h4>
+</div>
+<div class="space-y-6">
+<div class="flex justify-between items-end">
+<div>
+<p class="text-outline text-xs mb-1">NASDAQ 100</p>
+<p class="text-white font-bold tabular-nums">18,652.12</p>
+</div>
+<span class="text-tertiary text-xs font-bold">+1.24%</span>
+</div>
+<div class="flex justify-between items-end">
+<div>
+<p class="text-outline text-xs mb-1">BTC / USD</p>
+<p class="text-white font-bold tabular-nums">67,120.50</p>
+</div>
+<span class="text-tertiary text-xs font-bold">+4.10%</span>
+</div>
+</div>
+</div>
+<!-- Quick Map Context -->
+<div class="rounded-3xl overflow-hidden h-48 bg-surface-container-high relative">
+<img alt="World Map View" class="w-full h-full object-cover opacity-40 grayscale" data-alt="a dark stylized topographic world map with glowing light nodes indicating financial data centers and market hubs" data-location="New York" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDFksvf4L7Uz_L0cNBB_V9AW8yfY073tLs936k3CUSpq4JqPdwB3_QXOQ-SKx2162_Bxw9BnKSTYj1T-rdhR1EDdJChEpq8D74hWlskLVnkLUZ4owJPL77tPhyDL_dM7RWQXBw5Rk1_nhHqdI7idQKsy7RtNGKawGMQXUlD4fy1cLLqGQmgf9yvLZR2V47jvXtGZN0vDYR8BSskIZkKFGQ-AYPZ0kYMB4vJbRO-IMyE8-zSPmKX4LUVWCSv-Y6yJIiYqW3QnzqtyufP"/>
+<div class="absolute inset-0 bg-gradient-to-t from-surface-container to-transparent"></div>
+<div class="absolute bottom-4 left-6">
+<p class="text-[10px] text-primary font-bold uppercase tracking-widest">Global Markets</p>
+<p class="text-white font-bold">New York Stock Exchange</p>
+<p class="text-xs text-outline">Trading: Open</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Mobile Bottom Nav -->
+<nav class="md:hidden fixed bottom-0 left-0 right-0 h-16 glass-morphism border-t border-white/5 flex items-center justify-around px-4 z-50">
+<a class="text-primary flex flex-col items-center" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">dashboard</span>
+<span class="text-[10px] mt-1">Dash</span>
+</a>
+<a class="text-outline flex flex-col items-center" href="#">
+<span class="material-symbols-outlined">receipt_long</span>
+<span class="text-[10px] mt-1">Trans</span>
+</a>
+<div class="w-12 h-12 bg-primary rounded-full -translate-y-6 flex items-center justify-center text-on-primary shadow-xl shadow-primary/40">
+<span class="material-symbols-outlined" data-icon="add">add</span>
+</div>
+<a class="text-outline flex flex-col items-center" href="#">
+<span class="material-symbols-outlined">insights</span>
+<span class="text-[10px] mt-1">Intel</span>
+</a>
+<a class="text-outline flex flex-col items-center" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="text-[10px] mt-1">Set</span>
+</a>
+</nav>
+</body></html>

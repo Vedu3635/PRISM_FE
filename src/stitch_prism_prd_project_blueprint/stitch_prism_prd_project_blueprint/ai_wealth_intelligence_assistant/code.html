@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>PRISM AI Assistant</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#c0c1ff",
+                        "tertiary-container": "#a44100",
+                        "error-container": "#93000a",
+                        "on-error-container": "#ffdad6",
+                        "surface-tint": "#c0c1ff",
+                        "inverse-on-surface": "#2d3136",
+                        "on-surface-variant": "#c7c4d8",
+                        "surface-container-lowest": "#0a0e13",
+                        "secondary": "#89ceff",
+                        "surface-container-high": "#262a30",
+                        "on-tertiary": "#571f00",
+                        "tertiary-fixed": "#ffdbcc",
+                        "surface": "#101419",
+                        "on-tertiary-fixed": "#351000",
+                        "on-primary-container": "#d9d8ff",
+                        "on-primary-fixed": "#07006c",
+                        "on-primary": "#1000a9",
+                        "on-primary-fixed-variant": "#2f2ebe",
+                        "error": "#ffb4ab",
+                        "on-secondary-container": "#00344e",
+                        "on-secondary-fixed": "#001e2f",
+                        "on-error": "#690005",
+                        "surface-variant": "#31353b",
+                        "primary-fixed-dim": "#c0c1ff",
+                        "secondary-container": "#00a2e6",
+                        "outline": "#918fa1",
+                        "on-secondary-fixed-variant": "#004c6e",
+                        "background": "#101419",
+                        "surface-container-highest": "#31353b",
+                        "surface-dim": "#101419",
+                        "tertiary": "#ffb695",
+                        "primary-container": "#4b4dd8",
+                        "surface-bright": "#36393f",
+                        "secondary-fixed": "#c9e6ff",
+                        "on-tertiary-fixed-variant": "#7b2f00",
+                        "outline-variant": "#464555",
+                        "on-tertiary-container": "#ffd2be",
+                        "surface-container": "#1c2025",
+                        "on-secondary": "#00344d",
+                        "inverse-surface": "#e0e2ea",
+                        "primary-fixed": "#e1e0ff",
+                        "tertiary-fixed-dim": "#ffb695",
+                        "on-surface": "#e0e2ea",
+                        "inverse-primary": "#494bd6",
+                        "secondary-fixed-dim": "#89ceff",
+                        "on-background": "#e0e2ea",
+                        "surface-container-low": "#181c21"
+                    },
+                    fontFamily: {
+                        "headline": ["Inter"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .tabular-nums { font-variant-numeric: tabular-nums; }
+        .glass-effect {
+            background: rgba(49, 53, 59, 0.4);
+            backdrop-filter: blur(24px);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body selection:bg-primary/30">
+<!-- SideNavBar Component -->
+<aside class="h-screen w-64 fixed left-0 top-0 flex flex-col bg-[#0a0e13] border-r border-[#262a30]/15 shadow-2xl shadow-black/40 hidden md:flex z-50">
+<div class="py-6 px-4 flex flex-col h-full">
+<div class="flex items-center gap-3 px-2 mb-10">
+<div class="w-8 h-8 rounded bg-primary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-white" style="font-variation-settings: 'FILL' 1;">deployed_code</span>
+</div>
+<div>
+<h1 class="text-xl font-bold tracking-tighter text-white">PRISM</h1>
+<p class="text-[10px] uppercase tracking-widest text-outline">Wealth Intelligence</p>
+</div>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#262a30] hover:text-white transition-colors duration-200 hover:bg-[#262a30]/50 group" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-['Inter'] title-sm font-medium tracking-tight">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#262a30] hover:text-white transition-colors duration-200 hover:bg-[#262a30]/50 group" href="#">
+<span class="material-symbols-outlined">receipt_long</span>
+<span class="font-['Inter'] title-sm font-medium tracking-tight">Transactions</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#262a30] hover:text-white transition-colors duration-200 hover:bg-[#262a30]/50 group" href="#">
+<span class="material-symbols-outlined">insights</span>
+<span class="font-['Inter'] title-sm font-medium tracking-tight">Analytics</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-white border-r-2 border-[#4F46E5] bg-gradient-to-r from-[#4F46E5]/10 to-transparent group" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">magic_button</span>
+<span class="font-['Inter'] title-sm font-medium tracking-tight">AI Assistant</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#262a30] hover:text-white transition-colors duration-200 hover:bg-[#262a30]/50 group" href="#">
+<span class="material-symbols-outlined">target</span>
+<span class="font-['Inter'] title-sm font-medium tracking-tight">Goals</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#262a30] hover:text-white transition-colors duration-200 hover:bg-[#262a30]/50 group" href="#">
+<span class="material-symbols-outlined">account_balance_wallet</span>
+<span class="font-['Inter'] title-sm font-medium tracking-tight">Budgets</span>
+</a>
+</nav>
+<div class="mt-auto pt-6 border-t border-[#262a30]/15">
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#262a30] hover:text-white transition-colors duration-200 hover:bg-[#262a30]/50 group" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-['Inter'] title-sm font-medium tracking-tight">Settings</span>
+</a>
+</div>
+</div>
+</aside>
+<!-- TopNavBar Component -->
+<header class="fixed top-0 right-0 h-16 z-40 flex items-center justify-between px-8 w-full md:pl-72 bg-[#101419]/80 backdrop-blur-xl border-b border-[#262a30]/15">
+<div class="flex items-center flex-1 max-w-xl">
+<div class="relative w-full group">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-sm">search</span>
+<input class="w-full bg-surface-container-lowest border-none rounded-lg pl-10 pr-4 py-2 text-sm focus:ring-1 focus:ring-[#4F46E5]/50 transition-all placeholder:text-outline-variant" placeholder="Search commands or data..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-4 ml-4">
+<button class="w-10 h-10 flex items-center justify-center rounded-lg hover:bg-[#262a30] transition-colors text-outline">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<div class="h-8 w-px bg-[#262a30]/15"></div>
+<button class="flex items-center gap-2 px-2 py-1 rounded-lg hover:bg-[#262a30] transition-colors">
+<div class="w-8 h-8 rounded-full overflow-hidden bg-surface-container-high">
+<img class="w-full h-full object-cover" data-alt="professional headshot of a person with friendly expression in soft studio lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAFkx9-mQIGFxouH9yU5Zovnyw6jUABqyiQVy2GSxdherLsUcrZNnp0B-5w_sDriUuMbW2eUf_wh7eSwnMZ5rHTX79EKZNfwXj-tw_9zXzlts5Er_iFlbC5FkVYGVXh_MC9nS2WhxJdDjbmhLrvHcS5v-ygjqcWi5NGuJJcIIVs_gDFrruWHUyhF7i-G6acgVOIBInG9gOUidKOVRPQkATpnH9MTZojXIMojJnW5taoDJYvJljFfotPqXzdWBWlPi4OgMZHfEsmyFC4"/>
+</div>
+<span class="material-symbols-outlined text-outline">account_circle</span>
+</button>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="pt-16 md:pl-64 flex h-screen overflow-hidden">
+<!-- Chat Container -->
+<div class="flex-1 flex flex-col relative bg-surface">
+<!-- Scrollable History -->
+<div class="flex-1 overflow-y-auto px-4 md:px-12 py-8 space-y-10">
+<!-- System/AI Greeting -->
+<div class="flex flex-col items-center justify-center text-center max-w-2xl mx-auto py-12">
+<div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-primary-container to-secondary-container flex items-center justify-center shadow-xl shadow-primary-container/20 mb-6">
+<span class="material-symbols-outlined text-3xl text-white" style="font-variation-settings: 'FILL' 1;">magic_button</span>
+</div>
+<h2 class="text-3xl font-bold text-white tracking-tight mb-2">How can I assist your wealth today?</h2>
+<p class="text-on-surface-variant text-body-md max-w-sm">I have processed your latest 42 transactions. Your net worth has increased by 2.4% this month.</p>
+</div>
+<!-- User Message -->
+<div class="flex justify-end gap-4 max-w-3xl ml-auto">
+<div class="flex flex-col items-end">
+<div class="bg-surface-container-high rounded-2xl rounded-tr-none px-5 py-4 text-on-surface">
+<p class="body-md">Analyze my subscriptions. Which ones have seen price increases in the last quarter?</p>
+</div>
+<span class="label-sm text-outline-variant mt-2 tabular-nums">10:24 AM</span>
+</div>
+</div>
+<!-- AI Message -->
+<div class="flex gap-4 max-w-3xl">
+<div class="w-10 h-10 shrink-0 rounded-lg bg-gradient-to-br from-primary-container to-secondary-container flex items-center justify-center shadow-lg">
+<span class="material-symbols-outlined text-white text-xl" style="font-variation-settings: 'FILL' 1;">magic_button</span>
+</div>
+<div class="flex flex-col items-start w-full">
+<div class="w-full bg-surface-container-lowest border border-outline-variant/15 rounded-2xl rounded-tl-none p-6 space-y-4">
+<p class="body-md text-on-surface">Based on your transaction history, I've identified three subscriptions with updated pricing:</p>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+<div class="bg-surface-container-high p-4 rounded-xl">
+<div class="flex justify-between items-start mb-2">
+<span class="label-sm text-primary uppercase">Streaming Plus</span>
+<span class="text-error text-xs font-semibold">+15%</span>
+</div>
+<p class="text-white font-bold tabular-nums">$14.99 <span class="text-outline font-normal text-xs">/mo</span></p>
+</div>
+<div class="bg-surface-container-high p-4 rounded-xl">
+<div class="flex justify-between items-start mb-2">
+<span class="label-sm text-primary uppercase">Cloud Storage</span>
+<span class="text-error text-xs font-semibold">+8%</span>
+</div>
+<p class="text-white font-bold tabular-nums">$9.99 <span class="text-outline font-normal text-xs">/mo</span></p>
+</div>
+</div>
+<div class="p-3 bg-primary-container/10 border-l-2 border-primary rounded-r-lg">
+<p class="text-sm text-primary">Prism Tip: You have two overlapping streaming services. Canceling the least used one would save you $179 annually.</p>
+</div>
+</div>
+<span class="label-sm text-outline-variant mt-2 tabular-nums">10:25 AM</span>
+</div>
+</div>
+<!-- Suggested Prompts -->
+<div class="flex flex-wrap gap-2 justify-center py-4">
+<button class="px-4 py-2 bg-surface-container-low border border-outline-variant/10 rounded-full text-sm text-on-surface-variant hover:bg-surface-container-high hover:text-white transition-all">
+                        "Show my spending by category"
+                    </button>
+<button class="px-4 py-2 bg-surface-container-low border border-outline-variant/10 rounded-full text-sm text-on-surface-variant hover:bg-surface-container-high hover:text-white transition-all">
+                        "Predict my balance for next month"
+                    </button>
+<button class="px-4 py-2 bg-surface-container-low border border-outline-variant/10 rounded-full text-sm text-on-surface-variant hover:bg-surface-container-high hover:text-white transition-all">
+                        "Find duplicate charges"
+                    </button>
+</div>
+</div>
+<!-- Chat Input Anchor -->
+<div class="p-6 md:px-12 bg-surface border-t border-outline-variant/10">
+<div class="max-w-4xl mx-auto">
+<div class="relative bg-surface-container-lowest rounded-2xl p-2 shadow-inner focus-within:ring-1 focus-within:ring-[#4F46E5]/50 transition-all">
+<textarea class="w-full bg-transparent border-none focus:ring-0 text-on-surface py-3 px-4 resize-none min-h-[56px] placeholder:text-outline-variant" placeholder="Ask Prism anything about your finances..." rows="1"></textarea>
+<div class="flex items-center justify-between px-2 pb-2">
+<div class="flex items-center gap-1">
+<button class="p-2 text-outline hover:text-primary hover:bg-primary/10 rounded-lg transition-all">
+<span class="material-symbols-outlined">attach_file</span>
+</button>
+<button class="p-2 text-outline hover:text-primary hover:bg-primary/10 rounded-lg transition-all">
+<span class="material-symbols-outlined">analytics</span>
+</button>
+<button class="p-2 text-outline hover:text-primary hover:bg-primary/10 rounded-lg transition-all">
+<span class="material-symbols-outlined">image</span>
+</button>
+</div>
+<button class="bg-gradient-to-br from-primary-container to-secondary-container text-white px-5 py-2 rounded-xl flex items-center gap-2 font-semibold hover:opacity-90 active:scale-95 transition-all">
+<span>Send</span>
+<span class="material-symbols-outlined text-sm">send</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Insights Panel (Expandable Right) -->
+<aside class="hidden xl:flex flex-col w-80 bg-surface-container-low border-l border-[#262a30]/15 overflow-y-auto">
+<div class="p-6 border-b border-[#262a30]/15">
+<h3 class="headline-md text-white font-bold">Real-time Insights</h3>
+<p class="label-sm text-outline uppercase tracking-wider mt-1">Market: Open</p>
+</div>
+<div class="p-6 space-y-6">
+<!-- Net Worth Metric -->
+<div class="space-y-2">
+<span class="label-sm text-outline uppercase">Portfolio Value</span>
+<h4 class="text-4xl font-black text-white tabular-nums tracking-tighter">$142,850.42</h4>
+<div class="flex items-center gap-1 text-tertiary">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">trending_up</span>
+<span class="text-xs font-bold tabular-nums">+$3,420 (2.4%)</span>
+</div>
+</div>
+<!-- AI Prism Card -->
+<div class="bg-surface-container-high rounded-xl p-5 relative overflow-hidden border border-outline-variant/15">
+<div class="absolute top-0 left-0 w-12 h-12 bg-primary/10 blur-xl"></div>
+<div class="flex items-center gap-2 mb-4">
+<span class="material-symbols-outlined text-primary text-sm" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+<span class="title-sm text-white font-semibold">AI Prediction</span>
+</div>
+<p class="text-xs text-on-surface-variant leading-relaxed mb-4">You are projected to reach your "House Fund" goal 4 months ahead of schedule at current saving rates.</p>
+<div class="w-full bg-surface-container-lowest h-1.5 rounded-full overflow-hidden">
+<div class="bg-primary h-full w-4/5"></div>
+</div>
+<div class="flex justify-between mt-2">
+<span class="label-sm text-outline">Progress</span>
+<span class="label-sm text-white font-bold">82%</span>
+</div>
+</div>
+<!-- Asset Mix -->
+<div class="space-y-4">
+<span class="label-sm text-outline uppercase">Asset Allocation</span>
+<div class="space-y-3">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-2 h-2 rounded-full bg-primary"></div>
+<span class="body-md text-on-surface">Equities</span>
+</div>
+<span class="body-md text-white font-bold tabular-nums">64%</span>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-2 h-2 rounded-full bg-secondary"></div>
+<span class="body-md text-on-surface">Cash</span>
+</div>
+<span class="body-md text-white font-bold tabular-nums">22%</span>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-2 h-2 rounded-full bg-tertiary"></div>
+<span class="body-md text-on-surface">Crypto</span>
+</div>
+<span class="body-md text-white font-bold tabular-nums">14%</span>
+</div>
+</div>
+</div>
+<!-- Visual Accent -->
+<div class="rounded-2xl overflow-hidden aspect-square relative group cursor-pointer">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" data-alt="abstract 3D financial chart visualization with glowing blue and purple neon lines on dark background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDqd1MstuzCm_JcC106TWm6YgY4Yb_USG9IXODmkqjdmVUbBPSZ9r8OZtvtqPtalL9eGQVI5NRjWU51I9W9vUJFq5zk3HEVlZSP1UjcQZZsASLDu8GUEyeyGzVyMbRIHXg5Urg3XXnM1Pc-FNLw3Nc1BG6YYaRaMyX7DqwWvOXLXoDRKCFv6bx5Q296B7-H2M91up5AcR6mFBWaAvH3TmXmporhZJneXuy7gjiPvk06ExPBWpSQ0Q0kb2rmROh3iaIfXqki8e1Uoau1"/>
+<div class="absolute inset-0 bg-gradient-to-t from-surface-container-lowest to-transparent opacity-60"></div>
+<div class="absolute bottom-4 left-4 right-4">
+<p class="text-xs font-bold text-white uppercase tracking-widest mb-1">Weekly Digest</p>
+<p class="text-sm text-on-surface-variant font-medium">Your financial health score improved by 4 points.</p>
+</div>
+</div>
+</div>
+</aside>
+</main>
+</body></html>

@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>PRISM - Wealth Intelligence Login</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#c0c1ff",
+              "tertiary-container": "#a44100",
+              "error-container": "#93000a",
+              "on-error-container": "#ffdad6",
+              "surface-tint": "#c0c1ff",
+              "inverse-on-surface": "#2d3136",
+              "on-surface-variant": "#c7c4d8",
+              "surface-container-lowest": "#0a0e13",
+              "secondary": "#89ceff",
+              "surface-container-high": "#262a30",
+              "on-tertiary": "#571f00",
+              "tertiary-fixed": "#ffdbcc",
+              "surface": "#101419",
+              "on-tertiary-fixed": "#351000",
+              "on-primary-container": "#d9d8ff",
+              "on-primary-fixed": "#07006c",
+              "on-primary": "#1000a9",
+              "on-primary-fixed-variant": "#2f2ebe",
+              "error": "#ffb4ab",
+              "on-secondary-container": "#00344e",
+              "on-secondary-fixed": "#001e2f",
+              "on-error": "#690005",
+              "surface-variant": "#31353b",
+              "primary-fixed-dim": "#c0c1ff",
+              "secondary-container": "#00a2e6",
+              "outline": "#918fa1",
+              "on-secondary-fixed-variant": "#004c6e",
+              "background": "#101419",
+              "surface-container-highest": "#31353b",
+              "surface-dim": "#101419",
+              "tertiary": "#ffb695",
+              "primary-container": "#4b4dd8",
+              "surface-bright": "#36393f",
+              "secondary-fixed": "#c9e6ff",
+              "on-tertiary-fixed-variant": "#7b2f00",
+              "outline-variant": "#464555",
+              "on-tertiary-container": "#ffd2be",
+              "surface-container": "#1c2025",
+              "on-secondary": "#00344d",
+              "inverse-surface": "#e0e2ea",
+              "primary-fixed": "#e1e0ff",
+              "tertiary-fixed-dim": "#ffb695",
+              "on-surface": "#e0e2ea",
+              "inverse-primary": "#494bd6",
+              "secondary-fixed-dim": "#89ceff",
+              "on-background": "#e0e2ea",
+              "surface-container-low": "#181c21"
+            },
+            fontFamily: {
+              "headline": ["Inter"],
+              "body": ["Inter"],
+              "label": ["Inter"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .prism-gradient {
+            background: linear-gradient(135deg, #4b4dd8 0%, #00a2e6 100%);
+        }
+        .prism-glass {
+            background: rgba(49, 53, 59, 0.4);
+            backdrop-filter: blur(24px);
+        }
+        input:focus {
+            box-shadow: 0 0 0 3px rgba(192, 193, 255, 0.2);
+            outline: none;
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body min-h-screen flex items-center justify-center relative overflow-hidden">
+<!-- Background Decorative Elements -->
+<div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] rounded-full bg-primary/5 blur-[120px]"></div>
+<div class="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] rounded-full bg-secondary/5 blur-[120px]"></div>
+<!-- Main Auth Container -->
+<div class="w-full max-w-md px-6 py-12 relative z-10">
+<!-- Header / Logo Section -->
+<div class="flex flex-col items-center mb-10 text-center">
+<div class="w-16 h-16 prism-gradient rounded-xl flex items-center justify-center mb-6 shadow-2xl shadow-primary/20">
+<span class="material-symbols-outlined text-white text-3xl" style="font-variation-settings: 'FILL' 1;">diamond</span>
+</div>
+<h1 class="text-white font-headline text-3xl font-black tracking-tighter mb-2 uppercase">PRISM</h1>
+<p class="text-on-surface-variant font-label text-xs font-semibold tracking-widest uppercase">Wealth Intelligence</p>
+</div>
+<!-- Login Card -->
+<div class="bg-surface-container-high rounded-xl p-8 shadow-2xl shadow-black/50 relative overflow-hidden group">
+<!-- Ghost Border Fallback -->
+<div class="absolute inset-0 border border-outline-variant/15 rounded-xl pointer-events-none"></div>
+<!-- Prism Subtle Tint Glow -->
+<div class="absolute top-0 left-0 w-32 h-32 bg-surface-tint/10 blur-[40px] pointer-events-none"></div>
+<form class="space-y-6">
+<!-- Email Input -->
+<div class="space-y-2">
+<label class="block text-on-surface-variant text-[0.6875rem] font-bold tracking-wider uppercase ml-1" for="email">
+                        Email Address
+                    </label>
+<div class="relative">
+<div class="absolute inset-y-0 left-4 flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-outline text-lg">alternate_email</span>
+</div>
+<input class="w-full bg-surface-container-lowest border-none text-on-surface rounded-lg py-3.5 pl-12 pr-4 transition-all duration-200 placeholder:text-outline/50 tabular-nums" id="email" placeholder="name@workspace.com" type="email"/>
+</div>
+</div>
+<!-- Password Input -->
+<div class="space-y-2">
+<div class="flex justify-between items-center px-1">
+<label class="block text-on-surface-variant text-[0.6875rem] font-bold tracking-wider uppercase" for="password">
+                            Password
+                        </label>
+<a class="text-primary text-[0.6875rem] font-bold tracking-wider uppercase hover:text-white transition-colors" href="#">
+                            Forgot?
+                        </a>
+</div>
+<div class="relative">
+<div class="absolute inset-y-0 left-4 flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-outline text-lg">lock</span>
+</div>
+<input class="w-full bg-surface-container-lowest border-none text-on-surface rounded-lg py-3.5 pl-12 pr-4 transition-all duration-200 placeholder:text-outline/50" id="password" placeholder="••••••••" type="password"/>
+<button class="absolute inset-y-0 right-4 flex items-center text-outline hover:text-on-surface" type="button">
+<span class="material-symbols-outlined text-lg">visibility</span>
+</button>
+</div>
+</div>
+<!-- Primary Action -->
+<button class="w-full prism-gradient py-4 rounded-lg text-white font-headline font-bold text-sm tracking-tight shadow-lg shadow-primary-container/20 hover:opacity-90 active:scale-[0.99] transition-all duration-150" type="submit">
+                    Sign in to Workspace
+                </button>
+</form>
+<!-- Divider -->
+<div class="relative my-8">
+<div class="absolute inset-0 flex items-center">
+<div class="w-full border-t border-outline-variant/15"></div>
+</div>
+<div class="relative flex justify-center text-[0.6875rem] font-bold uppercase tracking-widest">
+<span class="bg-surface-container-high px-4 text-outline">or continue with</span>
+</div>
+</div>
+<!-- Social Logins -->
+<div class="grid grid-cols-2 gap-4">
+<button class="flex items-center justify-center gap-3 bg-surface-container-lowest hover:bg-surface-variant transition-colors py-3 rounded-lg border border-outline-variant/10">
+<img alt="Google" class="w-5 h-5 grayscale hover:grayscale-0 transition-all" data-alt="Google logo with vibrant colors and clean minimalist design on white background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCjgNZaC7_nl9r21SlW7p56-C8wSLnDcMyeumr1GqAmSC78-0TpSiRjXU3pG_2X0rda6rAm1cCg8n8bLoWhalzLx7WBl7JBC_M2NxKARO4ss96YYhzVBpmEW_eXfmXiZh6szoE6q1_yzJvqZBAwVRqbNr74d2qyZTw3of73wf2hybeS0NBz6wlQLXVfSijEAEtupX5wSotS4nZYKXmEDe0anGy4DwUguu8V81R_DgVVd0WjPcP9Ea-NQLDOQhkC_1RGDIu3gNqVLI5Y"/>
+<span class="text-white text-[0.6875rem] font-bold uppercase tracking-widest">Google</span>
+</button>
+<button class="flex items-center justify-center gap-3 bg-surface-container-lowest hover:bg-surface-variant transition-colors py-3 rounded-lg border border-outline-variant/10">
+<span class="material-symbols-outlined text-white text-xl" style="font-variation-settings: 'FILL' 1;">ios</span>
+<span class="text-white text-[0.6875rem] font-bold uppercase tracking-widest">Apple</span>
+</button>
+</div>
+</div>
+<!-- Footer Footer CTA -->
+<div class="mt-10 text-center">
+<p class="text-on-surface-variant text-sm font-medium tracking-tight">
+                New to the platform? 
+                <a class="text-primary font-bold hover:underline ml-1" href="#">Create an account</a>
+</p>
+</div>
+</div>
+<!-- Decorative Illustration/Context (Asymmetric Layout Hint) -->
+<div class="hidden lg:block absolute right-[5%] top-1/2 -translate-y-1/2 w-[30%] pointer-events-none">
+<div class="prism-glass border border-outline-variant/15 rounded-2xl p-6 shadow-2xl">
+<div class="flex items-center gap-4 mb-6">
+<div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-white text-lg">magic_button</span>
+</div>
+<div>
+<div class="text-xs font-bold text-primary tracking-widest uppercase">AI Insight</div>
+<div class="text-sm font-semibold text-white">Your portfolio grew by 12% last month.</div>
+</div>
+</div>
+<div class="h-32 w-full bg-surface-container-lowest rounded-lg flex items-end p-4 gap-2">
+<div class="w-full bg-primary-container h-12 rounded-t-sm"></div>
+<div class="w-full bg-primary-container h-24 rounded-t-sm"></div>
+<div class="w-full bg-primary-container h-16 rounded-t-sm"></div>
+<div class="w-full bg-primary-container h-20 rounded-t-sm"></div>
+<div class="w-full bg-secondary-container h-28 rounded-t-sm"></div>
+</div>
+</div>
+</div>
+</body></html>

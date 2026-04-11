@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Goals &amp; Budgets | Digital Luminescence</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "on-secondary-fixed-variant": "#004c6e",
+                        "on-primary": "#1000a9",
+                        "tertiary": "#ffb695",
+                        "surface-dim": "#101419",
+                        "on-tertiary-fixed": "#351000",
+                        "on-secondary-fixed": "#001e2f",
+                        "surface-container-low": "#181c21",
+                        "on-error": "#690005",
+                        "surface-variant": "#31353b",
+                        "primary-container": "#4b4dd8",
+                        "on-tertiary": "#571f00",
+                        "on-error-container": "#ffdad6",
+                        "on-secondary-container": "#00344e",
+                        "surface-container-lowest": "#0a0e13",
+                        "inverse-surface": "#e0e2ea",
+                        "surface-tint": "#c0c1ff",
+                        "on-tertiary-fixed-variant": "#7b2f00",
+                        "outline-variant": "#464555",
+                        "inverse-primary": "#494bd6",
+                        "tertiary-container": "#a44100",
+                        "secondary-fixed": "#c9e6ff",
+                        "primary-fixed": "#e1e0ff",
+                        "on-secondary": "#00344d",
+                        "on-tertiary-container": "#ffd2be",
+                        "on-surface": "#e0e2ea",
+                        "outline": "#918fa1",
+                        "on-primary-fixed-variant": "#2f2ebe",
+                        "primary": "#c0c1ff",
+                        "on-primary-container": "#d9d8ff",
+                        "secondary-fixed-dim": "#89ceff",
+                        "background": "#101419",
+                        "surface": "#101419",
+                        "error-container": "#93000a",
+                        "on-primary-fixed": "#07006c",
+                        "error": "#ffb4ab",
+                        "inverse-on-surface": "#2d3136",
+                        "tertiary-fixed": "#ffdbcc",
+                        "primary-fixed-dim": "#c0c1ff",
+                        "surface-container": "#1c2025",
+                        "on-background": "#e0e2ea",
+                        "surface-container-highest": "#31353b",
+                        "surface-bright": "#36393f",
+                        "surface-container-high": "#262a30",
+                        "secondary": "#89ceff",
+                        "on-surface-variant": "#c7c4d8",
+                        "tertiary-fixed-dim": "#ffb695",
+                        "secondary-container": "#00a2e6"
+                    },
+                    fontFamily: {
+                        "headline": ["Inter"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .tnum { font-variant-numeric: tabular-nums; }
+        .glass-prism {
+            background: rgba(49, 53, 59, 0.4);
+            backdrop-filter: blur(24px);
+            border: 0.5px solid rgba(145, 143, 161, 0.15);
+        }
+        .gradient-primary {
+            background: linear-gradient(135deg, #4b4dd8 0%, #00a2e6 100%);
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body selection:bg-primary/30">
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full z-50 bg-[#101419]/80 backdrop-blur-xl flex justify-between items-center px-8 py-3 w-full font-['Inter'] tnum antialiased">
+<div class="flex items-center gap-8">
+<span class="text-xl font-bold tracking-tight text-slate-100">Digital Luminescence</span>
+<div class="hidden md:flex items-center gap-6">
+<a class="text-slate-400 hover:text-indigo-300 transition-colors duration-200" href="#">Dashboard</a>
+<a class="text-slate-400 hover:text-indigo-300 transition-colors duration-200" href="#">Markets</a>
+<a class="text-indigo-400 border-b-2 border-indigo-500 pb-1 hover:text-indigo-300 transition-colors duration-200" href="#">Goals</a>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="relative group">
+<span class="absolute inset-y-0 left-3 flex items-center text-outline">
+<span class="material-symbols-outlined text-sm">search</span>
+</span>
+<input class="bg-surface-container-lowest border-none rounded-lg pl-10 pr-4 py-1.5 text-sm focus:ring-1 focus:ring-primary w-64 transition-all" placeholder="Search vaulted assets..." type="text"/>
+</div>
+<button class="text-slate-400 hover:text-indigo-300 transition-colors duration-200 p-1">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button class="text-slate-400 hover:text-indigo-300 transition-colors duration-200 p-1">
+<span class="material-symbols-outlined" data-icon="account_circle">account_circle</span>
+</button>
+</div>
+</nav>
+<div class="flex min-h-screen pt-16">
+<!-- SideNavBar -->
+<aside class="h-screen w-64 left-0 top-0 fixed bg-[#0a0e13] flex flex-col gap-y-4 py-8 border-r border-[#262a30]/15 font-['Inter'] font-medium tracking-wide">
+<div class="px-6 mb-8 mt-12">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center overflow-hidden">
+<img alt="User profile" class="w-full h-full object-cover" data-alt="close-up portrait of a professional woman with a minimalist aesthetic in a high-end office environment with soft bokeh" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDiEiWV4VAO_wpn_LllTWqfb1jnbH_znAVvJAV9tyDvmgzOWwwT2o9q4rIQ77U7pw6BaMpSEAPX-PbxbCliKPu20NiiU_IMWoE-F-WpJagZtSp0SgO9Wq5JdZpOOiXqfCJZcYIsOUeHelft1a2oqvNA6b_L2yGKbTkEcXJmvts7f9NeMdGmF_WVWCEoKcvClEDyg34CoNmeM2MrNj0SbIOgvsGkDjtXBWLICKpfetZ5p4y1nLU7Zc8Ganvv7_Sp1cQydpvSjOtxKKwM"/>
+</div>
+<div>
+<p class="text-lg font-black text-slate-50 leading-tight">The Vault</p>
+<p class="text-[10px] uppercase tracking-widest text-primary font-bold">Obsidian Tier</p>
+</div>
+</div>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center gap-4 text-slate-500 pl-4 py-3 hover:bg-[#262a30] hover:text-slate-100 transition-all duration-300 group" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span>Dashboard</span>
+</a>
+<a class="flex items-center gap-4 text-slate-500 pl-4 py-3 hover:bg-[#262a30] hover:text-slate-100 transition-all duration-300 group" href="#">
+<span class="material-symbols-outlined" data-icon="receipt_long">receipt_long</span>
+<span>Transactions</span>
+</a>
+<a class="flex items-center gap-4 text-slate-500 pl-4 py-3 hover:bg-[#262a30] hover:text-slate-100 transition-all duration-300 group" href="#">
+<span class="material-symbols-outlined" data-icon="query_stats">query_stats</span>
+<span>Analytics</span>
+</a>
+<a class="flex items-center gap-4 text-slate-500 pl-4 py-3 hover:bg-[#262a30] hover:text-slate-100 transition-all duration-300 group" href="#">
+<span class="material-symbols-outlined" data-icon="auto_awesome">auto_awesome</span>
+<span>AI Assistant</span>
+</a>
+<a class="flex items-center gap-4 text-indigo-400 font-bold border-l-4 border-indigo-500 pl-4 py-3 group" href="#">
+<span class="material-symbols-outlined" data-icon="flag">flag</span>
+<span>Goals</span>
+</a>
+<a class="flex items-center gap-4 text-slate-500 pl-4 py-3 hover:bg-[#262a30] hover:text-slate-100 transition-all duration-300 group" href="#">
+<span class="material-symbols-outlined" data-icon="account_balance_wallet">account_balance_wallet</span>
+<span>Budgets</span>
+</a>
+</nav>
+<div class="px-4 mt-auto">
+<button class="w-full py-3 rounded-lg bg-surface-container-high text-primary font-bold text-sm flex items-center justify-center gap-2 hover:translate-x-1 transition-all">
+<span class="material-symbols-outlined text-sm" data-icon="bolt">bolt</span>
+                    AI Insights
+                </button>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="flex-1 ml-64 p-8 max-w-7xl mx-auto">
+<!-- Header Section -->
+<header class="flex justify-between items-end mb-12">
+<div>
+<h1 class="text-[3.5rem] font-bold leading-none tracking-tighter text-on-surface mb-2">Wealth Objectives</h1>
+<p class="text-outline font-medium">Strategic allocation and milestone tracking for the Obsidian portfolio.</p>
+</div>
+<div class="flex gap-4">
+<button class="px-6 py-3 rounded-lg bg-surface-container-high text-primary font-bold text-sm hover:opacity-90 active:scale-95 transition-all">
+                        New Budget
+                    </button>
+<button class="px-6 py-3 rounded-lg gradient-primary text-on-primary-container font-bold text-sm hover:opacity-90 active:scale-95 transition-all shadow-lg shadow-primary/20">
+                        Create New Goal
+                    </button>
+</div>
+</header>
+<div class="grid grid-cols-12 gap-8">
+<!-- Left Column: Budgets and Goals -->
+<div class="col-span-12 lg:col-span-8 space-y-12">
+<!-- Goal Tracking Section -->
+<section>
+<div class="flex items-center justify-between mb-6">
+<h2 class="text-xl font-semibold text-slate-100 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary" data-icon="target">target</span>
+                                Strategic Milestones
+                            </h2>
+<span class="text-xs font-bold uppercase tracking-widest text-outline">3 Active Goals</span>
+</div>
+<div class="space-y-4">
+<!-- Goal Card 1 -->
+<div class="p-6 rounded-xl bg-surface-container-high relative overflow-hidden group">
+<div class="absolute top-0 left-0 w-1 h-full bg-primary"></div>
+<div class="flex justify-between items-start mb-6">
+<div>
+<h3 class="text-lg font-bold text-slate-50">Retirement Fund</h3>
+<p class="text-xs text-outline font-medium uppercase tracking-tighter">Aggressive Growth Strategy</p>
+</div>
+<div class="text-right">
+<span class="text-2xl font-bold tnum text-slate-50">$842,500</span>
+<p class="text-[10px] text-outline uppercase">of $2,500,000 target</p>
+</div>
+</div>
+<div class="w-full h-2 bg-surface-container-lowest rounded-full overflow-hidden mb-6">
+<div class="h-full bg-primary rounded-full" style="width: 34%"></div>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-6">
+<div class="flex flex-col">
+<span class="text-[10px] text-outline uppercase font-bold">AI Projected Date</span>
+<span class="text-sm font-semibold text-tertiary">Oct 2042</span>
+</div>
+<div class="flex flex-col border-l border-outline/10 pl-6">
+<span class="text-[10px] text-outline uppercase font-bold">Monthly Velocity</span>
+<span class="text-sm font-semibold text-slate-200">+$4,200/mo</span>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<a class="text-sm font-bold text-primary hover:text-white transition-colors" href="#">View Strategy</a>
+<button class="px-5 py-2 rounded-lg bg-surface-container-highest text-slate-100 text-xs font-bold hover:bg-primary/20 transition-all">Contribute</button>
+</div>
+</div>
+</div>
+<!-- Goal Card 2 -->
+<div class="p-6 rounded-xl bg-surface-container-high relative overflow-hidden group">
+<div class="absolute top-0 left-0 w-1 h-full bg-secondary-container"></div>
+<div class="flex justify-between items-start mb-6">
+<div>
+<h3 class="text-lg font-bold text-slate-50">Kyoto Residence</h3>
+<p class="text-xs text-outline font-medium uppercase tracking-tighter">Real Estate Objective</p>
+</div>
+<div class="text-right">
+<span class="text-2xl font-bold tnum text-slate-50">$125,000</span>
+<p class="text-[10px] text-outline uppercase">of $450,000 target</p>
+</div>
+</div>
+<div class="w-full h-2 bg-surface-container-lowest rounded-full overflow-hidden mb-6">
+<div class="h-full bg-secondary-container rounded-full" style="width: 28%"></div>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-6">
+<div class="flex flex-col">
+<span class="text-[10px] text-outline uppercase font-bold">AI Projected Date</span>
+<span class="text-sm font-semibold text-tertiary">May 2026</span>
+</div>
+<div class="flex flex-col border-l border-outline/10 pl-6">
+<span class="text-[10px] text-outline uppercase font-bold">Monthly Velocity</span>
+<span class="text-sm font-semibold text-slate-200">+$2,850/mo</span>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<a class="text-sm font-bold text-primary hover:text-white transition-colors" href="#">View Strategy</a>
+<button class="px-5 py-2 rounded-lg bg-surface-container-highest text-slate-100 text-xs font-bold hover:bg-primary/20 transition-all">Contribute</button>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Budget Management Section -->
+<section>
+<div class="flex items-center justify-between mb-6">
+<h2 class="text-xl font-semibold text-slate-100 flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary" data-icon="analytics">analytics</span>
+                                Operational Budgets
+                            </h2>
+<div class="flex gap-2">
+<button class="p-1.5 rounded bg-surface-container-low text-outline hover:text-white transition-colors">
+<span class="material-symbols-outlined text-sm">grid_view</span>
+</button>
+<button class="p-1.5 rounded text-outline hover:text-white transition-colors">
+<span class="material-symbols-outlined text-sm">list</span>
+</button>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<!-- Budget Card: Dining -->
+<div class="p-5 rounded-xl bg-surface-container-low border border-outline-variant/10 hover:border-primary/20 transition-all group">
+<div class="flex justify-between items-start mb-4">
+<div class="p-2 rounded-lg bg-tertiary-container/10 text-tertiary">
+<span class="material-symbols-outlined" data-icon="restaurant">restaurant</span>
+</div>
+<button class="text-outline hover:text-white transition-colors">
+<span class="material-symbols-outlined text-sm">edit</span>
+</button>
+</div>
+<h4 class="text-sm font-bold text-slate-200 mb-1">Dining &amp; Lifestyle</h4>
+<div class="flex justify-between items-baseline mb-3">
+<span class="text-xl font-bold tnum text-error">$420</span>
+<span class="text-xs text-outline font-medium">/ $500 limit</span>
+</div>
+<div class="w-full h-1.5 bg-surface-container-lowest rounded-full overflow-hidden">
+<!-- Orange for nearing limit (84%) -->
+<div class="h-full bg-tertiary rounded-full" style="width: 84%"></div>
+</div>
+<p class="mt-3 text-[10px] text-tertiary font-bold uppercase tracking-tight">Warning: 84% Expended</p>
+</div>
+<!-- Budget Card: Tech -->
+<div class="p-5 rounded-xl bg-surface-container-low border border-outline-variant/10 hover:border-primary/20 transition-all group">
+<div class="flex justify-between items-start mb-4">
+<div class="p-2 rounded-lg bg-primary-container/10 text-primary">
+<span class="material-symbols-outlined" data-icon="devices">devices</span>
+</div>
+<button class="text-outline hover:text-white transition-colors">
+<span class="material-symbols-outlined text-sm">edit</span>
+</button>
+</div>
+<h4 class="text-sm font-bold text-slate-200 mb-1">Tech Subscriptions</h4>
+<div class="flex justify-between items-baseline mb-3">
+<span class="text-xl font-bold tnum text-slate-50">$125</span>
+<span class="text-xs text-outline font-medium">/ $300 limit</span>
+</div>
+<div class="w-full h-1.5 bg-surface-container-lowest rounded-full overflow-hidden">
+<!-- Green for under budget (42%) - Using primary for themed green-ish feel -->
+<div class="h-full bg-primary rounded-full" style="width: 42%"></div>
+</div>
+<p class="mt-3 text-[10px] text-primary font-bold uppercase tracking-tight">Healthy: 42% Expended</p>
+</div>
+<!-- Budget Card: Travel -->
+<div class="p-5 rounded-xl bg-surface-container-low border border-outline-variant/10 hover:border-primary/20 transition-all group">
+<div class="flex justify-between items-start mb-4">
+<div class="p-2 rounded-lg bg-error-container/10 text-error">
+<span class="material-symbols-outlined" data-icon="flight">flight</span>
+</div>
+<button class="text-outline hover:text-white transition-colors">
+<span class="material-symbols-outlined text-sm">edit</span>
+</button>
+</div>
+<h4 class="text-sm font-bold text-slate-200 mb-1">Business Travel</h4>
+<div class="flex justify-between items-baseline mb-3">
+<span class="text-xl font-bold tnum text-error">$1,450</span>
+<span class="text-xs text-outline font-medium">/ $1,200 limit</span>
+</div>
+<div class="w-full h-1.5 bg-surface-container-lowest rounded-full overflow-hidden">
+<!-- Red for exceeded (100%+) -->
+<div class="h-full bg-error rounded-full" style="width: 100%"></div>
+</div>
+<p class="mt-3 text-[10px] text-error font-bold uppercase tracking-tight">Alert: Limit Exceeded</p>
+</div>
+</div>
+</section>
+</div>
+<!-- Right Column: AI Intelligence Panel -->
+<div class="col-span-12 lg:col-span-4 space-y-6">
+<div class="glass-prism rounded-2xl p-6 sticky top-24">
+<div class="flex items-center gap-3 mb-8">
+<div class="w-8 h-8 rounded-full gradient-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-white text-lg" data-icon="auto_awesome">auto_awesome</span>
+</div>
+<h3 class="text-lg font-bold text-slate-50">PRISM Intelligence</h3>
+</div>
+<!-- Insight Card -->
+<div class="p-5 rounded-xl bg-surface-container-highest/50 mb-6 border-l-2 border-primary">
+<h4 class="text-xs font-bold text-primary uppercase mb-3">Budget Strategy</h4>
+<p class="text-sm text-slate-200 leading-relaxed italic">
+                                "Based on current velocity, you'll reach your <span class="text-white font-bold">House Fund</span> goal 2 months early by reallocating <span class="text-white font-bold">$150</span> from your Dining budget."
+                            </p>
+<button class="mt-4 w-full py-2.5 rounded-lg border border-primary/20 text-primary text-xs font-bold hover:bg-primary/10 transition-all">
+                                Execute Reallocation
+                            </button>
+</div>
+<!-- Settings Toggle -->
+<div class="space-y-4 pt-4 border-t border-outline-variant/10">
+<div class="flex items-center justify-between">
+<div>
+<p class="text-sm font-bold text-slate-100">Smart Alerts</p>
+<p class="text-[10px] text-outline">Notify when velocity shifts</p>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-11 h-6 bg-surface-container-lowest peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-slate-400 after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+</label>
+</div>
+<div class="flex items-center justify-between">
+<div>
+<p class="text-sm font-bold text-slate-100">Auto-Contribute</p>
+<p class="text-[10px] text-outline">Move surplus to highest goal</p>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input class="sr-only peer" type="checkbox"/>
+<div class="w-11 h-6 bg-surface-container-lowest peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-slate-400 after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+</label>
+</div>
+</div>
+<!-- Visual Insight -->
+<div class="mt-8">
+<img alt="Analytics Chart" class="w-full rounded-lg opacity-80 filter grayscale hover:grayscale-0 transition-all duration-500" data-alt="a dark-themed minimalist line graph with neon indigo and teal lines showing upward wealth projection on a deep black background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAn5o0qptU-BaHZxIeXPElzOgIEZ-sblk6n4AMriQDGzrNmx3eq7cq1iqufUeIrOS0aKf2Js_A9tCMw8uQ6Su-b___KMhgqX0ZWZ6WRmSRVX_qERJ1rRPWq6iiY4i-s-Orirj-HaifKNfF_COU7iSTSuq2QH2AQ3wC5bk4c1Gy66pZkB29EZ5A2xny9xNheNhRA8_RKXXzWRO1spNyl4U0myGAFygnrVzfkgG6cC6erbgT2X221CdMA50lCZj84uJtreAAbljRCSCrQ"/>
+<p class="mt-4 text-[10px] text-center text-outline uppercase tracking-widest font-bold">Portfolio Velocity Index: 1.42x</p>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

@@ -1,5 +1,5 @@
 import api from './api';
-import authService from './authService/authService';
+import authService from '@/services/authService/authService';
 import groupService from './groupService/groupService';
 
 /**

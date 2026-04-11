@@ -15,7 +15,7 @@ const transactionService = {
     try {
       const response = await api.get('/transactions/');
       const data = response.data || [];
-      
+
       // Map PascalCase (Backend) -> camelCase (UI)
       return data.map(tx => ({
         id: tx.ID || tx.id,
@@ -40,21 +40,21 @@ const transactionService = {
     try {
       const user = authService.getCurrentUser();
       console.log("[transactionService] Current Auth User:", user);
-      
+
       if (!user?.id) throw new Error("User not authenticated");
 
       // 1. Identify or Create a Group
       let groupId = data.GroupID || data.groupId || data.group_id;
-      
+
       if (!groupId) {
         const groups = await groupService.getGroups();
-        let personalGroup = groups.find(g => 
-          g.IsPersonal === true || 
-          g.isPersonal === true || 
+        let personalGroup = groups.find(g =>
+          g.IsPersonal === true ||
+          g.isPersonal === true ||
           g.Name?.toLowerCase().includes('personal') ||
           g.name?.toLowerCase().includes('personal')
         );
-        
+
         if (!personalGroup && groups.length > 0) {
           personalGroup = groups[0];
         }
@@ -66,7 +66,7 @@ const transactionService = {
             Currency: data.Currency || data.currency || "INR"
           });
         }
-        
+
         groupId = personalGroup?.ID || personalGroup?.id;
       }
 

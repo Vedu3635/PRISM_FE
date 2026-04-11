@@ -1,0 +1,58 @@
+# PRISM: AI-Powered Personal Finance SaaS - Product Requirements Document
+
+## 1. Project Overview
+PRISM is a high-fidelity, production-ready personal finance web application. It leverages AI to provide deep insights into spending habits, goal tracking, and financial health. The design is "dark-first," focusing on a sleek, high-contrast, yet eye-friendly aesthetic suitable for modern SaaS applications.
+
+## 2. Visual Identity & Theme (Dark-First)
+*   **Backgrounds:** Deep gray/black (#0B0F14, #121821).
+*   **Primary Accent:** Indigo/Blue gradient.
+*   **Semantic Colors:** Success (Green), Warning (Orange), Danger (Red).
+*   **Typography:** Inter (Sans-serif) with strong hierarchical contrast.
+*   **Grid:** 8px spacing system for consistent layout.
+
+## 3. Core User Flows & Screen Map
+
+### A. Authentication & Onboarding
+1.  **Login:** Email/Password, Social Auth, "Forgot Password" link.
+2.  **Signup:** Account creation with validation.
+3.  **Forgot Password:** Recovery flow.
+4.  **OTP/Verification:** Secure multi-factor authentication screen.
+5.  **Multi-step Onboarding:**
+    *   Step 1: Income Range selection.
+    *   Step 2: Spending Habit profiling.
+    *   Step 3: Financial Goals (e.g., Save for a house, Debt reduction).
+    *   *Includes progress indicators and skip options.*
+
+### B. Main Application Workspace
+1.  **Shell:** Collapsible sidebar navigation, Top bar (Search, Notifications, Profile).
+2.  **Dashboard:**
+    *   Balance overview cards.
+    *   Income vs. Expense charts (Interative).
+    *   Category breakdown (Donut chart).
+    *   Recent Transactions list.
+    *   AI Insights cards (Proactive financial advice).
+3.  **Transactions Module:**
+    *   Full list view with advanced filters (Date, Category, Method).
+    *   Search functionality.
+    *   Pagination/Infinite scroll.
+    *   Modals: Add/Edit Transaction, Delete Confirmation.
+4.  **Analytics & AI:**
+    *   Spending trends (Line charts).
+    *   AI Prediction graphs (Future balance forecasting).
+    *   Dedicated AI Assistant Chat Interface with prompt suggestions and insight panels.
+5.  **Goals & Budgets:**
+    *   Budget management (Create/Edit modals).
+    *   Progress tracking with visual alerts for limits.
+6.  **Settings & Profile:**
+    *   User profile management.
+    *   Theme toggle (Light/Dark).
+    *   Currency and Data Export settings.
+
+## 4. Component & Interaction System
+*   **UI Components:** Buttons (multiple states), Inputs (Search, Select, Date), Cards, Tables, Tabs, Badges, Tooltips, Avatars, Skeletons/Loaders.
+*   **Overlays:** Modals (Transaction, Budget, Goal), Confirmation Dialogs (Delete, Logout), Toasts (Success, Error, Info), Dropdowns (Profile, Filters).
+*   **UX Details:** Hover/Active states, keyboard accessibility, smooth transitions, and micro-interactions.
+
+## 5. Technical Alignment
+*   **Framework Ready:** Designed for React/Next.js + Tailwind CSS implementation.
+*   **Responsive:** Desktop-first with full mobile-responsive considerations.

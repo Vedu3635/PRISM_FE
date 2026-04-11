@@ -11,7 +11,7 @@ const groupService = {
       { id: 'g2', name: 'Goa Trip 2026', members: 8, balance: 45000, status: 'active', code: 'GOA26' },
       { id: 'g3', name: 'Family Weekend', members: 5, balance: -2000, status: 'warning', code: 'FAMWK' },
     ];
-    
+
     // Simulate API delay
     return new Promise(resolve => setTimeout(() => resolve(mockGroups), 500));
   },

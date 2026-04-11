@@ -20,13 +20,13 @@ const TransactionTable = ({ transactions, onView, onEdit, onDelete }) => {
            <MoreHorizontal className="h-8 w-8 text-muted-foreground" />
         </div>
         <h3 className="text-lg font-bold">No transactions found</h3>
-        <p className="text-sm text-muted-foreground max-w-[250px] mt-1">Start adding your expenses to see them logged here.</p>
+        <p className="text-sm text-muted-foreground max-w-62.5 mt-1">Start adding your expenses to see them logged here.</p>
       </div>
     );
   }
 
   return (
-    <div className="w-full overflow-hidden rounded-[32px] border border-border/50 bg-card/30 backdrop-blur-xl shadow-2xl">
+    <div className="w-full overflow-hidden rounded-4xl border border-border/50 bg-card/30 backdrop-blur-xl shadow-2xl">
       <div className="overflow-x-auto">
         <table className="w-full text-left border-collapse">
           <thead>
@@ -56,7 +56,7 @@ const TransactionTable = ({ transactions, onView, onEdit, onDelete }) => {
                     )}>
                       {tx.amount < 0 ? <ArrowUpRight className="h-4 w-4" /> : <ArrowDownLeft className="h-4 w-4" />}
                     </div>
-                    <span className="font-bold text-sm truncate max-w-[200px]">{tx.title}</span>
+                    <span className="font-bold text-sm truncate max-w-50">{tx.title}</span>
                   </div>
                 </td>
 

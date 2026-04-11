@@ -149,7 +149,7 @@ const TransactionPage = () => {
 
         {/* Main Content */}
         {isLoading ? (
-          <div className="h-[400px] flex items-center justify-center">
+          <div className="h-100 flex items-center justify-center">
             <Loader text="Syncing Records..." />
           </div>
         ) : (

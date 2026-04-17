@@ -3,9 +3,9 @@ import {
   signOut,
 } from 'firebase/auth';
 import { auth, googleProvider } from '../../config/firebase/firebase';
+
 import api from '../api';
 import Cookies from '../../utils/cookieUtils';
-
 
 /**
  * Standardizes the user object from the backend response.
@@ -15,13 +15,21 @@ const mapUser = (backendData) => {
   return {
     id: user.id || user.uid || user.ID || user.UID,
     email: user.email || user.Email,
-    name: user.name || user.displayName || user.username || user.DisplayName || user.Name || user.Username,
-    photoURL: user.photoURL || user.avatarUrl || user.PhotoURL || user.AvatarUrl,
+    name:
+      user.name ||
+      user.displayName ||
+      user.username ||
+      user.DisplayName ||
+      user.Name ||
+      user.Username,
+    photoURL:
+      user.photoURL ||
+      user.avatarUrl ||
+      user.PhotoURL ||
+      user.AvatarUrl,
     roles: user.roles || user.Roles || [],
-    // Add other relevant fields as needed
   };
 };
-
 
 /**
  * Sets authentication data in cookies.
@@ -38,19 +46,17 @@ const authService = {
    */
   signIn: async (email, password) => {
     try {
-      const response = await api.post('/auth/login', { 
-        email: email, 
-        password: password 
+      const response = await api.post('/auth/login', {
+        email,
+        password,
       });
-
 
       const { token, user, Token, User, id_token, idToken } = response.data;
       const authToken = token || Token || id_token || idToken;
       const userData = user || User;
-      
+
       setAuthSession(authToken, userData);
       return mapUser(userData);
-
     } catch (error) {
       console.error("Error signing in:", error.response?.data || error.message);
       throw error;
@@ -62,22 +68,19 @@ const authService = {
    */
   signUp: async (email, password, name) => {
     try {
-      // Mapping name to username or displayName as required by backend
-      const response = await api.post('/auth/signup', { 
-        email: email, 
-        password: password, 
+      const response = await api.post('/auth/signup', {
+        email,
+        password,
         username: name,
-        full_name: name 
+        full_name: name,
       });
-
 
       const { token, user, Token, User, id_token, idToken } = response.data;
       const authToken = token || Token || id_token || idToken;
       const userData = user || User;
-      
+
       setAuthSession(authToken, userData);
       return mapUser(userData);
-
     } catch (error) {
       console.error("Error signing up:", error.response?.data || error.message);
       throw error;
@@ -89,22 +92,45 @@ const authService = {
    */
   signInWithGoogle: async () => {
     try {
+      // ✅ Step 1: Google popup login
       const result = await signInWithPopup(auth, googleProvider);
-      const idToken = await result.user.getIdToken();
-      
-      // Verify the Firebase ID token with our backend
-      const response = await api.post('/auth/social', { id_token: idToken });
 
+      // ✅ Step 2: Extract user properly
+      const user = result.user;
 
-      const { token, user, Token, User, id_token, idToken: backendIdToken } = response.data;
-      const authToken = token || Token || id_token || backendIdToken || response.data.backendToken; // fallback
-      const userData = user || User;
-      
+      // ✅ Step 3: Get Firebase ID token (THIS is what backend needs)
+      const idToken = await user.getIdToken();
+
+      console.log("Firebase ID Token:", idToken);
+
+      // ✅ Step 4: Send token to backend
+      const response = await api.post('/auth/social', {
+        id_token: idToken,
+      });
+
+      const {
+        token,
+        user: backendUser,
+        Token,
+        User,
+        id_token,
+        idToken: backendIdToken,
+      } = response.data;
+
+      const authToken =
+        token || Token || id_token || backendIdToken || response.data.backendToken;
+
+      const userData = backendUser || User;
+
+      // ✅ Step 5: Store session
       setAuthSession(authToken, userData);
-      return mapUser(userData);
 
+      return mapUser(userData);
     } catch (error) {
-      console.error("Error with Google sign-in:", error.response?.data || error.message);
+      console.error(
+        "Error with Google sign-in:",
+        error.response?.data || error.message
+      );
       throw error;
     }
   },
@@ -134,7 +160,7 @@ const authService = {
       console.error("Error signing out:", error);
       throw error;
     }
-  }
+  },
 };
 
 export default authService;

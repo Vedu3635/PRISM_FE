@@ -1,25 +1,71 @@
 import api from '../api';
+import groupService from '../groupService/groupService';
 
 /**
  * Service to handle Budget-related operations.
+ * Aligned with backend snake_case for payloads and camelCase for UI.
  */
 const budgetService = {
   /**
-   * Fetch all monthly budgets.
+   * Fetch all budgets.
+   * Maps PascalCase/snake_case (Backend) -> camelCase (UI)
    */
   getBudgets: async () => {
-    const mockBudgets = [
-      { id: '1', name: 'Housing', limit: 45000, spent: 42000, color: 'bg-indigo-500' },
-      { id: '2', name: 'Food & Dining', limit: 15000, spent: 12500, color: 'bg-orange-500' },
-      { id: '3', name: 'Transportation', limit: 8000, spent: 9200, color: 'bg-rose-500' },
-      { id: '4', name: 'Entertainment', limit: 5000, spent: 1500, color: 'bg-purple-500' },
-      { id: '5', name: 'Utilities', limit: 10000, spent: 8700, color: 'bg-cyan-500' },
-    ];
-    return new Promise(resolve => setTimeout(() => resolve(mockBudgets), 500));
+    try {
+      const response = await api.get('/budgets');
+      const data = response.data || [];
+
+      return data.map(b => ({
+        id: b.id || b.ID,
+        category: b.category || b.Category || "General",
+        limit: parseFloat(b.limit || b.Limit || 0),
+        spent: parseFloat(b.spent || b.Spent || 0), // Assuming backend provides this, or fetch from analytics
+        period: b.period || b.Period || "monthly",
+        startDate: b.start_date || b.startDate || b.StartDate,
+        groupId: b.group_id || b.groupID || b.GroupID,
+        createdAt: b.created_at || b.createdAt || b.CreatedAt,
+        // Added for UI compatibility with existing dashboard
+        name: b.category || "Untitled Budget",
+        color: 'bg-primary' // Default color for new budgets
+      }));
+    } catch (error) {
+      console.error("Error fetching budgets:", error.response?.data || error.message);
+      return [];
+    }
   },
 
   /**
-   * Get budget analytics (Spend vs Limit distribution).
+   * Create a new budget limit.
+   * Payload aligns with backend requirements: category, group_id, limit, period, start_date.
+   */
+  createBudget: async (budgetData) => {
+    try {
+      // 1. Resolve Group ID if not provided
+      let groupId = budgetData.group_id || budgetData.groupId;
+      if (!groupId) {
+        const personalGroup = await groupService.getPersonalGroup();
+        groupId = personalGroup?.id;
+      }
+
+      const payload = {
+        category: budgetData.category,
+        group_id: groupId,
+        limit: parseFloat(budgetData.limit),
+        period: budgetData.period || "monthly",
+        start_date: new Date(budgetData.startDate || budgetData.start_date || new Date()).toISOString()
+      };
+
+      console.log("[budgetService] POST Payload:", payload);
+      const response = await api.post('/budgets/', payload);
+      return response.data;
+    } catch (error) {
+      console.error("Error creating budget:", error.response?.data || error.message);
+      throw error;
+    }
+  },
+
+  /**
+   * Mock analytics for dashboard until backend supports it.
    */
   getBudgetAnalytics: async () => {
     const mockDistribution = [
@@ -29,7 +75,7 @@ const budgetService = {
       { name: 'Entertainment', value: 1500 },
       { name: 'Others', value: 8700 },
     ];
-    
+
     const mockTrend = [
       { week: 'Week 1', spent: 15000, budget: 20000 },
       { week: 'Week 2', spent: 22000, budget: 20000 },
@@ -38,14 +84,6 @@ const budgetService = {
     ];
 
     return new Promise(resolve => setTimeout(() => resolve({ distribution: mockDistribution, trend: mockTrend }), 500));
-  },
-
-  /**
-   * Create a new budget limit.
-   */
-  createBudget: async (budgetData) => {
-    console.log('Creating Budget:', budgetData);
-    return new Promise(resolve => setTimeout(() => resolve({ id: Date.now().toString(), ...budgetData }), 500));
   }
 };
 

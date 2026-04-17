@@ -5,12 +5,13 @@ import ChartsCarousel from '@/components/commonUI/ChartsCarousel';
 import TransactionTableMini from '@/components/commonUI/TransactionTableMini';
 import budgetService from '@/services/budgetService/budgetService';
 import Loader from '@/components/commonUI/Loader';
+import BudgetModal from '@/components/budgets/BudgetModal';
 import { PieChart, Wallet, Calendar, Plus, Filter, ArrowUpRight } from 'lucide-react';
 import { 
   PieChart as RePieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend,
   BarChart, Bar, XAxis, YAxis, CartesianGrid
 } from 'recharts';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/utils/cn';
 
 const COLORS = ['#818cf8', '#10b981', '#f59e0b', '#ef4444', '#06b6d4', '#8b5cf6'];
@@ -19,27 +20,44 @@ const BudgetsPage = () => {
   const [budgets, setBudgets] = useState([]);
   const [analytics, setAnalytics] = useState({ distribution: [], trend: [] });
   const [isLoading, setIsLoading] = useState(true);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editingBudget, setEditingBudget] = useState(null);
+
+  const fetchData = async () => {
+    setIsLoading(true);
+    try {
+      const [budgetsData, analyticsData] = await Promise.all([
+        budgetService.getBudgets(),
+        budgetService.getBudgetAnalytics()
+      ]);
+      setBudgets(budgetsData);
+      setAnalytics(analyticsData);
+    } catch (error) {
+      console.error("Failed to load budgets data:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const [budgetsData, analyticsData] = await Promise.all([
-          budgetService.getBudgets(),
-          budgetService.getBudgetAnalytics()
-        ]);
-        setBudgets(budgetsData);
-        setAnalytics(analyticsData);
-      } catch (error) {
-        console.error("Failed to load budgets data:", error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
     fetchData();
   }, []);
 
+  const handleCreateBudget = async (budgetData) => {
+    try {
+      await budgetService.createBudget(budgetData);
+      setIsModalOpen(false);
+      fetchData(); // Refresh list
+    } catch (error) {
+      console.error("Failed to create budget:", error);
+    }
+  };
+
   const headerActions = [
-    { label: 'Set Budget', variant: 'primary', icon: Plus, onClick: () => alert('Set Budget Clicked') },
+    { label: 'Set Budget', variant: 'primary', icon: Plus, onClick: () => {
+      setEditingBudget(null);
+      setIsModalOpen(true);
+    }},
     { label: 'Add Category', variant: 'secondary', icon: Filter, onClick: () => alert('Add Category Clicked') },
     { label: 'History', variant: 'secondary', icon: Calendar, onClick: () => alert('History Clicked') },
   ];
@@ -175,6 +193,13 @@ const BudgetsPage = () => {
           subtitle="Direct categorization of daily spends"
         />
       </div>
+
+      <BudgetModal 
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onSave={handleCreateBudget}
+        initialData={editingBudget}
+      />
     </AppLayout>
   );
 };

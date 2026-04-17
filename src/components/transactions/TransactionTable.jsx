@@ -35,6 +35,7 @@ const TransactionTable = ({ transactions, onView, onEdit, onDelete }) => {
               <th className="px-6 py-5 text-[10px] font-black uppercase tracking-widest text-muted-foreground">Date</th>
               <th className="px-6 py-5 text-[10px] font-black uppercase tracking-widest text-muted-foreground">Category</th>
               <th className="px-6 py-5 text-[10px] font-black uppercase tracking-widest text-muted-foreground">Amount</th>
+              <th className="px-6 py-5 text-[10px] font-black uppercase tracking-widest text-muted-foreground">Status</th>
               <th className="px-6 py-5 text-[10px] font-black uppercase tracking-widest text-muted-foreground text-right">Actions</th>
             </tr>
           </thead>
@@ -56,7 +57,10 @@ const TransactionTable = ({ transactions, onView, onEdit, onDelete }) => {
                     )}>
                       {tx.amount < 0 ? <ArrowUpRight className="h-4 w-4" /> : <ArrowDownLeft className="h-4 w-4" />}
                     </div>
-                    <span className="font-bold text-sm truncate max-w-50">{tx.title}</span>
+                    <div>
+                      <span className="font-bold text-sm block truncate max-w-[200px]">{tx.title}</span>
+                      {tx.notes && <span className="text-[10px] text-muted-foreground truncate max-w-[150px] block">{tx.notes}</span>}
+                    </div>
                   </div>
                 </td>
 
@@ -81,9 +85,19 @@ const TransactionTable = ({ transactions, onView, onEdit, onDelete }) => {
                 <td className="px-6 py-4">
                   <span className={cn(
                     "font-black text-sm",
-                    tx.amount < 0 ? "text-foreground" : "text-emerald-500"
+                    tx.amount < 0 ? "text-rose-500" : "text-emerald-500"
                   )}>
-                    {tx.amount < 0 ? '-' : '+'} ₹ {Math.abs(tx.amount).toLocaleString('en-IN', { minimumFractionDigits: 2 })}
+                    {tx.amount < 0 ? '-' : '+'} {tx.currency === 'INR' || !tx.currency ? '₹' : tx.currency} {Math.abs(tx.amount).toLocaleString('en-IN', { minimumFractionDigits: 2 })}
+                  </span>
+                </td>
+
+                {/* Status */}
+                <td className="px-6 py-4">
+                  <span className={cn(
+                    "px-2 py-0.5 rounded-md text-[9px] font-black uppercase tracking-tighter",
+                    tx.status === 'active' ? "bg-emerald-500/10 text-emerald-500" : "bg-amber-500/10 text-amber-500"
+                  )}>
+                    {tx.status || 'Active'}
                   </span>
                 </td>
 

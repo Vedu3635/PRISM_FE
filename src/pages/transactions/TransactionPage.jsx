@@ -62,7 +62,9 @@ const TransactionPage = () => {
   };
 
   const handleDelete = async (id) => {
-    const targetId = id || modalState.activeTransaction?.id;
+    // Determine the correct ID. If id is an event object (from a direct onClick), ignore it.
+    const validId = (typeof id === 'string' || typeof id === 'number') ? id : null;
+    const targetId = validId || modalState.activeTransaction?.id;
     if (!targetId) return;
     
     if (window.confirm("Are you sure you want to delete this transaction record?")) {

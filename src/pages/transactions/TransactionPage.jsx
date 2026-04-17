@@ -120,31 +120,65 @@ const TransactionPage = () => {
         </div>
 
         {/* Quick Stats Bar */}
-        {!isLoading && transactions.length > 0 && (
+        {!isLoading && transactions.length > 0 ? (
           <motion.div 
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="grid grid-cols-2 md:grid-cols-4 gap-4"
+            className="grid grid-cols-2 lg:grid-cols-4 gap-4"
           >
-            <div className="p-4 rounded-3xl bg-card border border-border/50 flex flex-col items-center justify-center">
-              <span className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Total Logged</span>
-              <span className="text-lg font-black mt-1 font-mono">{transactions.length}</span>
+            <div className="p-6 rounded-[32px] bg-card border border-border/50 flex flex-col hover:bg-white/5 transition-colors group">
+              <span className="text-[10px] font-black uppercase tracking-widest text-muted-foreground mb-4">Total Logged</span>
+              <div className="flex items-end justify-between">
+                <span className="text-3xl font-black font-mono leading-none">{transactions.length}</span>
+                <div className="p-2 rounded-xl bg-primary/10 text-primary">
+                  <Filter className="h-4 w-4" />
+                </div>
+              </div>
             </div>
-            <div className="p-4 rounded-3xl bg-emerald-500/5 border border-emerald-500/10 flex flex-col items-center justify-center">
-              <span className="text-[10px] font-black uppercase tracking-widest text-emerald-500">Net Flow</span>
-              <span className="text-lg font-black mt-1 text-emerald-500">
-                ₹ {transactions.reduce((acc, curr) => acc + curr.amount, 0).toLocaleString('en-IN')}
-              </span>
+
+            <div className="p-6 rounded-[32px] bg-emerald-500/5 border border-emerald-500/10 flex flex-col hover:bg-emerald-500/10 transition-colors">
+              <span className="text-[10px] font-black uppercase tracking-widest text-emerald-500 mb-4">Volume</span>
+              <div className="flex items-end justify-between">
+                <span className="text-3xl font-black font-mono leading-none text-emerald-500">
+                  ₹{transactions.reduce((acc, curr) => acc + curr.amount, 0).toLocaleString('en-IN')}
+                </span>
+                <div className="p-2 rounded-xl bg-emerald-500/10 text-emerald-500">
+                  <RefreshCcw className="h-4 w-4" />
+                </div>
+              </div>
             </div>
-            <div className="p-4 rounded-3xl bg-white/5 border border-border/50 hidden md:flex flex-col items-center justify-center opacity-40">
-              <span className="text-[10px] font-black uppercase tracking-widest text-muted-foreground flex items-center gap-1"><Filter className="h-3 w-3" /> Type Filter</span>
-              <span className="text-xs font-bold mt-1 uppercase">Not active</span>
+
+            <div className="p-6 rounded-[32px] bg-card border border-border/50 flex flex-col hover:bg-white/5 transition-colors">
+              <span className="text-[10px] font-black uppercase tracking-widest text-muted-foreground mb-4">Top Category</span>
+              <div className="flex items-end justify-between">
+                <span className="text-xl font-black uppercase truncate max-w-[150px]">
+                  {Object.entries(transactions.reduce((acc, curr) => {
+                    acc[curr.category] = (acc[curr.category] || 0) + 1;
+                    return acc;
+                  }, {})).sort((a, b) => b[1] - a[1])[0]?.[0] || 'N/A'}
+                </span>
+                <div className="p-2 rounded-xl bg-primary/10 text-primary">
+                  <Download className="h-4 w-4" />
+                </div>
+              </div>
             </div>
-             <div className="p-4 rounded-3xl bg-white/5 border border-border/50 hidden md:flex flex-col items-center justify-center opacity-40">
-              <span className="text-[10px] font-black uppercase tracking-widest text-muted-foreground flex items-center gap-1"><Filter className="h-3 w-3" /> Cat Filter</span>
-              <span className="text-xs font-bold mt-1 uppercase">Not active</span>
+
+             <div className="p-6 rounded-[32px] bg-card border border-border/50 flex flex-col hover:bg-white/5 transition-colors">
+              <span className="text-[10px] font-black uppercase tracking-widest text-muted-foreground mb-4">Most Recent</span>
+              <div className="flex items-end justify-between">
+                <span className="text-sm font-bold opacity-80">
+                  {transactions[0]?.transactedAt ? new Date(transactions[0].transactedAt).toLocaleDateString('en-IN', { day: '2-digit', month: 'short' }) : 'Today'}
+                </span>
+                <div className="p-2 rounded-xl bg-primary/10 text-primary">
+                  <Plus className="h-4 w-4" />
+                </div>
+              </div>
             </div>
           </motion.div>
+        ) : !isLoading && (
+          <div className="p-12 rounded-[32px] bg-card/50 border border-dashed border-border/50 flex flex-col items-center justify-center text-center">
+            <p className="text-muted-foreground text-sm font-medium">No transaction activity recorded yet.</p>
+          </div>
         )}
 
         {/* Main Content */}

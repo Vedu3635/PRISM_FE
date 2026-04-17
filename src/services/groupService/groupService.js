@@ -9,15 +9,6 @@ const groupService = {
    * List all groups the user belongs to.
    */
   getGroups: async () => {
-    // Mock data for groups
-    const mockGroups = [
-      { id: 'g1', name: 'Apartment 402', members: 4, balance: 12500, status: 'active', code: 'APT402' },
-      { id: 'g2', name: 'Goa Trip 2026', members: 8, balance: 45000, status: 'active', code: 'GOA26' },
-      { id: 'g3', name: 'Family Weekend', members: 5, balance: -2000, status: 'warning', code: 'FAMWK' },
-    ];
-    
-    // Simulate API delay
-    return new Promise(resolve => setTimeout(() => resolve(mockGroups), 500));
     try {
       const response = await api.get('/groups/');
       const data = response.data || [];
@@ -46,9 +37,17 @@ const groupService = {
    */
   getPersonalGroup: async () => {
     try {
-      const groups = await groupService.getGroups();
-      return groups.find(g => g.type === 'personal') || groups[0];
+      const response = await api.get('/users/me/personal-group');
+      const g = response.data;
+      if (!g) return null;
+      return {
+        id: g.ID || g.id,
+        name: g.Name || g.name || "Personal",
+        type: g.Type || g.type || "personal",
+        currency: g.Currency || g.currency || "INR"
+      };
     } catch (error) {
+      console.error("Error fetching personal group:", error.response?.data || error.message);
       return null;
     }
   },
@@ -60,7 +59,7 @@ const groupService = {
   createGroup: async (groupData) => {
     try {
       const user = authService.getCurrentUser();
-      
+
       const payload = {
         name: groupData.name,
         description: groupData.description || "",

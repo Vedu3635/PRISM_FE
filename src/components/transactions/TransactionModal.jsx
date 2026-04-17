@@ -12,10 +12,7 @@ import {
 } from 'lucide-react';
 import { cn } from '@/utils/cn';
 import groupService from '@/services/groupService/groupService';
-
-const categories = [
-  'Food', 'Travel', 'Shopping', 'Entertainment', 'Utilities', 'Health', 'Subscription', 'Income', 'General'
-];
+import api from '@/services/api';
 
 const TransactionModal = ({ 
   isOpen, 
@@ -28,32 +25,37 @@ const TransactionModal = ({
   const [formData, setFormData] = useState({
     title: '',
     amount: '',
-    category: 'General',
+    category_id: '',
     date: new Date().toISOString().split('T')[0],
     notes: '',
     currency: 'INR',
     group_id: '',
-    receipt_url: ''
+    receipt_url: '',
+    type: 'expense'
   });
 
   const [groups, setGroups] = useState([]);
+  const [categories, setCategories] = useState([]);
   const [errors, setErrors] = useState({});
 
   useEffect(() => {
-    const fetchGroups = async () => {
+    const fetchDropdownData = async () => {
       try {
         const data = await groupService.getGroups();
         setGroups(data || []);
-        if (data && data.length > 0 && !formData.group_id) {
-          setFormData(prev => ({ ...prev, group_id: data[0].id || data[0].ID }));
-        }
       } catch (error) {
         console.error("Failed to fetch groups for modal");
+      }
+      try {
+        const res = await api.get('/categories');
+        setCategories(res.data || []);
+      } catch (error) {
+        console.error("Failed to fetch categories");
       }
     };
     
     if (isOpen) {
-      fetchGroups();
+      fetchDropdownData();
     }
   }, [isOpen]);
 
@@ -62,23 +64,25 @@ const TransactionModal = ({
       setFormData({
         title: initialData.title || '',
         amount: initialData.amount || '',
-        category: initialData.category || 'General',
+        category_id: initialData.category_id || initialData.category?.id || initialData.category?.ID || '',
         date: initialData.transactedAt ? new Date(initialData.transactedAt).toISOString().split('T')[0] : new Date().toISOString().split('T')[0],
         notes: initialData.notes || '',
         currency: initialData.currency || 'INR',
         group_id: initialData.group_id || initialData.groupId || '',
-        receipt_url: initialData.receipt_url || ''
+        receipt_url: initialData.receipt_url || '',
+        type: initialData.type || 'expense'
       });
     } else {
       setFormData({
         title: '',
         amount: '',
-        category: 'General',
+        category_id: '',
         date: new Date().toISOString().split('T')[0],
         notes: '',
         currency: 'INR',
-        group_id: groups.length > 0 ? (groups[0].id || groups[0].ID) : '',
-        receipt_url: ''
+        group_id: '',
+        receipt_url: '',
+        type: 'expense'
       });
     }
   }, [initialData, isOpen]);
@@ -87,7 +91,7 @@ const TransactionModal = ({
     const newErrors = {};
     if (!formData.title.trim()) newErrors.title = "Title is required";
     if (!formData.amount || formData.amount <= 0) newErrors.amount = "Valid amount is required";
-    if (!formData.category) newErrors.category = "Category is required";
+    if (!formData.category_id) newErrors.category_id = "Category is required";
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -107,7 +111,7 @@ const TransactionModal = ({
 
   return (
     <AnimatePresence>
-      <div className="fixed inset-0 z-100 flex items-center justify-center p-4">
+      <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
         {/* Backdrop with Blur */}
         <motion.div
           initial={{ opacity: 0 }}
@@ -144,6 +148,33 @@ const TransactionModal = ({
 
           {/* Form */}
           <form onSubmit={handleSubmit} className="p-8 space-y-6">
+
+            {/* Type Toggle */}
+            <div className="flex p-1 bg-white/5 border border-border/50 rounded-2xl w-full">
+              <button
+                type="button"
+                disabled={isView}
+                onClick={() => setFormData({ ...formData, type: 'expense' })}
+                className={cn(
+                  "flex-1 py-2 text-sm font-bold rounded-xl transition-all",
+                  formData.type === 'expense' ? "bg-rose-500/20 text-rose-500" : "text-muted-foreground hover:text-foreground"
+                )}
+              >
+                Expense
+              </button>
+              <button
+                type="button"
+                disabled={isView}
+                onClick={() => setFormData({ ...formData, type: 'income' })}
+                className={cn(
+                  "flex-1 py-2 text-sm font-bold rounded-xl transition-all",
+                  formData.type === 'income' ? "bg-emerald-500/20 text-emerald-500" : "text-muted-foreground hover:text-foreground"
+                )}
+              >
+                Income
+              </button>
+            </div>
+
             {/* Title Input */}
             <div className="space-y-2">
               <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-1">Label</label>
@@ -223,10 +254,10 @@ const TransactionModal = ({
                   value={formData.group_id}
                   onChange={(e) => setFormData({ ...formData, group_id: e.target.value })}
                 >
+                  <option value="">Personal</option>
                   {groups.map(g => (
                     <option key={g.id || g.ID} value={g.id || g.ID}>{g.name || g.Name}</option>
                   ))}
-                  {!groups.length && <option value="">Personal</option>}
                 </select>
               </div>
 
@@ -261,10 +292,15 @@ const TransactionModal = ({
                       "w-full h-12 bg-white/5 border border-border/50 rounded-2xl pl-12 pr-4 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-purple-500 transition-all appearance-none",
                       isView && "opacity-80"
                     )}
-                    value={formData.category}
-                    onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+                    value={formData.category_id}
+                    onChange={(e) => setFormData({ ...formData, category_id: e.target.value })}
                   >
-                    {categories.map(cat => <option key={cat} value={cat} className="bg-card">{cat}</option>)}
+                    <option value="">Select Category</option>
+                    {categories.map(cat => (
+                      <option key={cat.ID || cat.id} value={cat.ID || cat.id} className="bg-card">
+                        {cat.Name || cat.name}
+                      </option>
+                    ))}
                   </select>
                 </div>
               </div>
@@ -313,7 +349,7 @@ const TransactionModal = ({
                   </button>
                   <button 
                     type="submit"
-                    className="flex-2 h-12 rounded-2xl bg-primary text-primary-foreground font-black text-sm shadow-lg shadow-primary/20 hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center gap-2"
+                    className="flex-[2] h-12 rounded-2xl bg-primary text-primary-foreground font-black text-sm shadow-lg shadow-primary/20 hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center gap-2"
                   >
                     <Save className="h-4 w-4" />
                     {isEdit ? 'Update Entry' : 'Create Record'}
@@ -323,7 +359,7 @@ const TransactionModal = ({
                 <>
                   <button 
                     type="button"
-                    onClick={onDelete}
+                    onClick={() => onDelete()}
                     className="flex-1 h-12 rounded-2xl bg-rose-500/10 text-rose-500 border border-rose-500/20 font-black text-sm hover:bg-rose-500/20 transition-all flex items-center justify-center gap-2"
                   >
                     <Trash2 className="h-4 w-4" />
@@ -332,7 +368,7 @@ const TransactionModal = ({
                   <button 
                     type="button"
                     onClick={onClose}
-                    className="flex-2 h-12 rounded-2xl bg-primary text-primary-foreground font-black text-sm shadow-lg shadow-primary/20 hover:scale-[1.02] transition-all"
+                    className="flex-[2] h-12 rounded-2xl bg-primary text-primary-foreground font-black text-sm shadow-lg shadow-primary/20 hover:scale-[1.02] transition-all"
                   >
                     Close Log
                   </button>

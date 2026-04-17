@@ -3,144 +3,149 @@ import authService from './authService/authService';
 import groupService from './groupService/groupService';
 
 /**
- * Service to handle all transaction-related API operations.
- * Strictly aligned with Backend PascalCase conventions, with snake_case fallbacks for safety.
+ * Utility: Safe getter for mixed casing
  */
+const pick = (obj, keys, defaultValue = null) => {
+  for (const key of keys) {
+    if (obj?.[key] !== undefined && obj?.[key] !== null) {
+      return obj[key];
+    }
+  }
+  return defaultValue;
+};
+
+/**
+ * Utility: Safe number parsing
+ */
+const toNumber = (value, fallback = 0) => {
+  const num = Number(value);
+  return isNaN(num) ? fallback : num;
+};
+
 const transactionService = {
-  /**
-   * Fetch all transactions for the current user.
-   * Maps PascalCase backend keys to camelCase UI fields.
-   */
+
+  // ========================
+  // GET TRANSACTIONS
+  // ========================
   getTransactions: async () => {
     try {
-      const response = await api.get('/transactions/');
-      const data = response.data || [];
+      const { data = [] } = await api.get('/transactions/');
 
-      // Map PascalCase (Backend) -> camelCase (UI)
       return data.map(tx => ({
-        id: tx.ID || tx.id,
-        title: tx.Title || tx.title || "Untitled",
-        amount: parseFloat(tx.Amount || tx.amount || 0),
-        category: tx.Category || tx.category || "General",
-        date: tx.TransactedAt || tx.transactedAt || tx.createdAt || new Date().toISOString(),
-        currency: tx.Currency || tx.currency || "INR",
-        type: tx.Type || tx.type || "expense",
-        notes: tx.Notes || tx.notes || ""
+        id: pick(tx, ['ID', 'id']),
+        title: pick(tx, ['Title', 'title'], 'Untitled'),
+        amount: toNumber(pick(tx, ['Amount', 'amount'], 0)),
+        category: pick(tx, ['Category', 'category'], 'General'),
+        transactedAt: pick(tx, ['TransactedAt', 'transactedAt', 'createdAt'], new Date().toISOString()),
+        currency: pick(tx, ['Currency', 'currency'], 'INR'),
+        type: pick(tx, ['Type', 'type'], 'expense'),
+        status: pick(tx, ['Status', 'status'], 'active'),
+        notes: pick(tx, ['Notes', 'notes'], '')
       }));
+
     } catch (error) {
       console.error("Error fetching transactions:", error.response?.data || error.message);
       throw error;
     }
   },
 
-  /**
-   * Create a new transaction with Dual-Casing payload (PascalCase + snake_case fallback).
-   */
+  // ========================
+  // CREATE TRANSACTION
+  // ========================
   createTransaction: async (data) => {
     try {
       const user = authService.getCurrentUser();
-      console.log("[transactionService] Current Auth User:", user);
-
       if (!user?.id) throw new Error("User not authenticated");
 
-      // 1. Identify or Create a Group
-      let groupId = data.GroupID || data.groupId || data.group_id;
+      const amount = toNumber(data.amount || data.Amount);
+      if (amount <= 0) throw new Error("Invalid transaction amount");
+
+      // Resolve Group (delegated logic)
+      let groupId = data.group_id || data.groupId || data.GroupID;
 
       if (!groupId) {
         const groups = await groupService.getGroups();
-        let personalGroup = groups.find(g =>
-          g.IsPersonal === true ||
-          g.isPersonal === true ||
-          g.Name?.toLowerCase().includes('personal') ||
-          g.name?.toLowerCase().includes('personal')
-        );
 
-        if (!personalGroup && groups.length > 0) {
-          personalGroup = groups[0];
-        }
+        let group =
+          groups.find(g => g.IsPersonal || g.isPersonal) ||
+          groups[0];
 
-        if (!personalGroup) {
-          personalGroup = await groupService.createGroup({
+        if (!group) {
+          group = await groupService.createGroup({
             Name: "Personal",
             Type: "personal",
-            Currency: data.Currency || data.currency || "INR"
+            Currency: data.currency || "INR"
           });
         }
 
-        groupId = personalGroup?.ID || personalGroup?.id;
+        groupId = pick(group, ['ID', 'id']);
       }
 
-      if (!groupId) throw new Error("Failed to assign a valid GroupID");
+      if (!groupId) throw new Error("Group resolution failed");
 
-      const amount = parseFloat(data.amount || data.Amount);
-
-      // 2. Prepare Payload (Dual-Casing for maximum compatibility)
       const payload = {
-        // PascalCase (Internal Observed)
-        Title: data.title || data.Title,
-        Amount: amount,
-        Category: data.category || data.Category,
-        Currency: data.currency || data.Currency || "INR",
-        GroupID: groupId,
-        PaidBy: user.id,
-        TransactedAt: data.date ? new Date(data.date).toISOString() : new Date().toISOString(),
-        Notes: data.notes || data.Notes || "",
-        SplitType: "equal",
-        Participants: [
-          {
-            UserID: user.id,
-            OwedAmount: amount
-          }
-        ],
-        // snake_case (Swagger doc aliases)
+        amount,
+        category: data.category || "General",
+        currency: data.currency || "INR",
+        goal_id: data.goal_id || null,
         group_id: groupId,
+        notes: data.notes || "",
         paid_by: user.id,
-        transacted_at: data.date ? new Date(data.date).toISOString() : new Date().toISOString(),
-        notes: data.notes || data.Notes || "",
-        split_type: "equal",
-        participants: [
-          {
-            user_id: user.id,
-            owed_amount: amount
-          }
-        ]
+        participants: data.participants?.length
+          ? data.participants
+          : [{
+              user_id: user.id,
+              owed_amount: amount
+            }],
+        receipt_url: data.receipt_url || null,
+        split_type: data.split_type || "equal",
+        title: data.title?.trim(),
+        transacted_at: data.date
+          ? new Date(data.date).toISOString()
+          : new Date().toISOString()
       };
 
-      console.log("[transactionService] Sending Payload:", JSON.stringify(payload, null, 2));
       const response = await api.post('/transactions/', payload);
       return response.data;
+
     } catch (error) {
       console.error("Error creating transaction:", error.response?.data || error.message);
       throw error;
     }
   },
 
-  /**
-   * Update an existing transaction.
-   */
+  // ========================
+  // UPDATE
+  // ========================
   updateTransaction: async (id, data) => {
     try {
+      if (!id) throw new Error("Transaction ID required");
+
       const payload = {
-        Title: data.title || data.Title,
-        Category: data.category || data.Category,
-        Notes: data.notes || data.Notes,
+        Title: data.title,
+        Category: data.category,
+        Notes: data.notes
       };
 
-      const response = await api.put(`/transactions/${id}/`, payload);
-      return response.data;
+      const { data: res } = await api.put(`/transactions/${id}/`, payload);
+      return res;
+
     } catch (error) {
       console.error("Error updating transaction:", error.response?.data || error.message);
       throw error;
     }
   },
 
-  /**
-   * Soft-delete a transaction.
-   */
+  // ========================
+  // DELETE
+  // ========================
   deleteTransaction: async (id) => {
     try {
-      const response = await api.delete(`/transactions/${id}/`);
-      return response.data;
+      if (!id) throw new Error("Transaction ID required");
+
+      const { data } = await api.delete(`/transactions/${id}/`);
+      return data;
+
     } catch (error) {
       console.error("Error deleting transaction:", error.response?.data || error.message);
       throw error;

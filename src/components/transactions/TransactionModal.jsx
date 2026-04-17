@@ -11,6 +11,7 @@ import {
   AlertCircle
 } from 'lucide-react';
 import { cn } from '@/utils/cn';
+import groupService from '@/services/groupService/groupService';
 
 const categories = [
   'Food', 'Travel', 'Shopping', 'Entertainment', 'Utilities', 'Health', 'Subscription', 'Income', 'General'
@@ -29,10 +30,32 @@ const TransactionModal = ({
     amount: '',
     category: 'General',
     date: new Date().toISOString().split('T')[0],
-    notes: ''
+    notes: '',
+    currency: 'INR',
+    group_id: '',
+    receipt_url: ''
   });
 
+  const [groups, setGroups] = useState([]);
   const [errors, setErrors] = useState({});
+
+  useEffect(() => {
+    const fetchGroups = async () => {
+      try {
+        const data = await groupService.getGroups();
+        setGroups(data || []);
+        if (data && data.length > 0 && !formData.group_id) {
+          setFormData(prev => ({ ...prev, group_id: data[0].id || data[0].ID }));
+        }
+      } catch (error) {
+        console.error("Failed to fetch groups for modal");
+      }
+    };
+    
+    if (isOpen) {
+      fetchGroups();
+    }
+  }, [isOpen]);
 
   useEffect(() => {
     if (initialData) {
@@ -41,7 +64,10 @@ const TransactionModal = ({
         amount: initialData.amount || '',
         category: initialData.category || 'General',
         date: initialData.transactedAt ? new Date(initialData.transactedAt).toISOString().split('T')[0] : new Date().toISOString().split('T')[0],
-        notes: initialData.notes || ''
+        notes: initialData.notes || '',
+        currency: initialData.currency || 'INR',
+        group_id: initialData.group_id || initialData.groupId || '',
+        receipt_url: initialData.receipt_url || ''
       });
     } else {
       setFormData({
@@ -49,7 +75,10 @@ const TransactionModal = ({
         amount: '',
         category: 'General',
         date: new Date().toISOString().split('T')[0],
-        notes: ''
+        notes: '',
+        currency: 'INR',
+        group_id: groups.length > 0 ? (groups[0].id || groups[0].ID) : '',
+        receipt_url: ''
       });
     }
   }, [initialData, isOpen]);
@@ -141,7 +170,9 @@ const TransactionModal = ({
               <div className="space-y-2">
                 <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-1">Amount</label>
                 <div className="relative group">
-                  <IndianRupee className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground group-focus-within:text-emerald-500 transition-colors" />
+                  <span className="absolute left-4 top-1/2 -translate-y-1/2 text-xs font-black text-muted-foreground group-focus-within:text-emerald-500 transition-colors">
+                    {formData.currency === 'INR' ? '₹' : formData.currency === 'USD' ? '$' : formData.currency === 'EUR' ? '€' : '£'}
+                  </span>
                   <input
                     disabled={isView}
                     type="number"
@@ -157,6 +188,46 @@ const TransactionModal = ({
                   />
                 </div>
                 {errors.amount && <span className="text-[10px] text-rose-500 font-bold ml-1">{errors.amount}</span>}
+              </div>
+
+              {/* Currency */}
+              <div className="space-y-2">
+                <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-1">Currency</label>
+                <select
+                  disabled={isView}
+                  className={cn(
+                    "w-full h-12 bg-white/5 border border-border/50 rounded-2xl px-4 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all appearance-none",
+                    isView && "opacity-80"
+                  )}
+                  value={formData.currency}
+                  onChange={(e) => setFormData({ ...formData, currency: e.target.value })}
+                >
+                  <option value="INR">INR (₹)</option>
+                  <option value="USD">USD ($)</option>
+                  <option value="EUR">EUR (€)</option>
+                  <option value="GBP">GBP (£)</option>
+                </select>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-6">
+              {/* Group Selection */}
+              <div className="space-y-2">
+                <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-1">Assign to Group</label>
+                <select
+                  disabled={isView}
+                  className={cn(
+                    "w-full h-12 bg-white/5 border border-border/50 rounded-2xl px-4 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all appearance-none",
+                    isView && "opacity-80"
+                  )}
+                  value={formData.group_id}
+                  onChange={(e) => setFormData({ ...formData, group_id: e.target.value })}
+                >
+                  {groups.map(g => (
+                    <option key={g.id || g.ID} value={g.id || g.ID}>{g.name || g.Name}</option>
+                  ))}
+                  {!groups.length && <option value="">Personal</option>}
+                </select>
               </div>
 
               {/* Date */}
@@ -178,22 +249,39 @@ const TransactionModal = ({
               </div>
             </div>
 
-            {/* Category */}
-            <div className="space-y-2">
-              <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-1">Category</label>
-              <div className="relative group">
-                <Tag className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground group-focus-within:text-purple-500 transition-colors" />
-                <select
+            {/* Category & Receipt */}
+            <div className="grid grid-cols-2 gap-6">
+              <div className="space-y-2">
+                <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-1">Category</label>
+                <div className="relative group">
+                  <Tag className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground group-focus-within:text-purple-500 transition-colors" />
+                  <select
+                    disabled={isView}
+                    className={cn(
+                      "w-full h-12 bg-white/5 border border-border/50 rounded-2xl pl-12 pr-4 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-purple-500 transition-all appearance-none",
+                      isView && "opacity-80"
+                    )}
+                    value={formData.category}
+                    onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+                  >
+                    {categories.map(cat => <option key={cat} value={cat} className="bg-card">{cat}</option>)}
+                  </select>
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-1">Receipt URL (Optional)</label>
+                <input
                   disabled={isView}
+                  type="text"
+                  placeholder="https://..."
                   className={cn(
-                    "w-full h-12 bg-white/5 border border-border/50 rounded-2xl pl-12 pr-4 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-purple-500 transition-all appearance-none",
+                    "w-full h-12 bg-white/5 border border-border/50 rounded-2xl px-4 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all",
                     isView && "opacity-80"
                   )}
-                  value={formData.category}
-                  onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                >
-                  {categories.map(cat => <option key={cat} value={cat} className="bg-card">{cat}</option>)}
-                </select>
+                  value={formData.receipt_url}
+                  onChange={(e) => setFormData({ ...formData, receipt_url: e.target.value })}
+                />
               </div>
             </div>
 

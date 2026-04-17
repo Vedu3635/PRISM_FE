@@ -3,10 +3,64 @@ import AppLayout from '@/components/layout/AppLayout';
 import FeatureHeader from '@/components/commonUI/FeatureHeader';
 import TransactionTableMini from '@/components/commonUI/TransactionTableMini';
 import groupService from '@/services/groupService/groupService';
+import GroupModal from '@/components/groups/GroupModal';
 import Loader from '@/components/commonUI/Loader';
-import { Users, UserPlus, Share2, Plus, Info, ShieldCheck, Mail } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { 
+  Users, UserPlus, Share2, Plus, Info, ShieldCheck, Mail, 
+  MoreVertical, Edit3, Trash2, Copy, CheckCircle2, Filter, Tag, Calendar
+} from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/utils/cn';
+
+const KebabMenu = ({ onEdit, onDelete, onCopyCode }) => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <div className="relative">
+      <button 
+        onClick={(e) => { e.stopPropagation(); setIsOpen(!isOpen); }}
+        className="p-2 rounded-xl bg-white/5 opacity-0 group-hover:opacity-100 transition-all hover:bg-white/10"
+      >
+        <MoreVertical className="h-4 w-4 text-muted-foreground" />
+      </button>
+
+      <AnimatePresence>
+        {isOpen && (
+          <>
+            <div className="fixed inset-0 z-40" onClick={() => setIsOpen(false)} />
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, transformOrigin: 'top right' }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              className="absolute right-0 mt-2 w-48 rounded-2xl bg-card border border-border shadow-2xl z-50 overflow-hidden"
+            >
+              <div className="py-1">
+                <button 
+                  onClick={(e) => { e.stopPropagation(); onEdit(); setIsOpen(false); }}
+                  className="w-full px-4 py-3 text-left text-xs font-black uppercase tracking-widest hover:bg-primary/10 flex items-center gap-3 transition-colors"
+                >
+                  <Edit3 className="h-4 w-4 text-primary" /> Edit Group
+                </button>
+                <button 
+                  onClick={(e) => { e.stopPropagation(); onCopyCode(); setIsOpen(false); }}
+                  className="w-full px-4 py-3 text-left text-xs font-black uppercase tracking-widest hover:bg-primary/10 flex items-center gap-3 transition-colors border-t border-border/30"
+                >
+                  <Copy className="h-4 w-4 text-emerald-500" /> Copy Code
+                </button>
+                <button 
+                  onClick={(e) => { e.stopPropagation(); onDelete(); setIsOpen(false); }}
+                  className="w-full px-4 py-3 text-left text-xs font-black uppercase tracking-widest hover:bg-rose-500/10 text-rose-500 flex items-center gap-3 transition-colors border-t border-border/30"
+                >
+                  <Trash2 className="h-4 w-4" /> Delete Group
+                </button>
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+};
 
 const GroupsPage = () => {
   const [groups, setGroups] = useState([]);
@@ -14,33 +68,69 @@ const GroupsPage = () => {
   const [invitationCode, setInvitationCode] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const [isJoining, setIsJoining] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editingGroup, setEditingGroup] = useState(null);
+  const [selectedGroupIds, setSelectedGroupIds] = useState([]);
+  const [selectedCategories, setSelectedCategories] = useState([]);
+  const [selectedDate, setSelectedDate] = useState({ 
+    month: new Date().getMonth() + 1, 
+    year: new Date().getFullYear() 
+  });
+
+  const fetchData = async () => {
+    setIsLoading(true);
+    try {
+      const groupsData = await groupService.getGroups();
+      setGroups(groupsData);
+      
+      // Fetch transactions for each group individually to avoid 400 Bad Request
+      const txPromises = groupsData.map(group => 
+        groupService.getGroupTransactions(group.id, group.name)
+      );
+      
+      const txResults = await Promise.all(txPromises);
+      const allTx = txResults.flat();
+      
+      setTransactions(allTx);
+      
+      // Initialize filters if empty
+      if (selectedGroupIds.length === 0) setSelectedGroupIds(groupsData.map(g => g.id));
+    } catch (error) {
+      console.error("Failed to load groups data:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const [groupsData, txData] = await Promise.all([
-          groupService.getGroups(),
-          groupService.getGroupTransactions('all')
-        ]);
-        setGroups(groupsData);
-        setTransactions(txData);
-      } catch (error) {
-        console.error("Failed to load groups data:", error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
     fetchData();
   }, []);
+
+  // Filter Categories derived from transactions or static fallback
+  const availableCategories = React.useMemo(() => {
+    return transactions.length > 0 
+      ? [...new Set(transactions.map(t => t.category))]
+      : ['Food', 'Travel', 'Shopping', 'Entertainment', 'Utilities', 'Health', 'Subscription', 'Income', 'General'];
+  }, [transactions]);
+
+  // Filtering Logic
+  const filteredTransactions = transactions.filter(tx => {
+    const txDate = new Date(tx.date);
+    const matchesGroup = selectedGroupIds.length === 0 || selectedGroupIds.includes(tx.groupId);
+    const matchesCategory = selectedCategories.length === 0 || selectedCategories.includes(tx.category);
+    const matchesMonth = txDate.getMonth() + 1 === parseInt(selectedDate.month);
+    const matchesYear = txDate.getFullYear() === parseInt(selectedDate.year);
+    
+    return matchesGroup && matchesCategory && matchesMonth && matchesYear;
+  });
 
   const handleJoinGroup = async () => {
     if (!invitationCode.trim()) return;
     setIsJoining(true);
     try {
-      const newGroup = await groupService.joinGroup(invitationCode);
-      setGroups([...groups, newGroup]);
+      await groupService.joinGroup(invitationCode);
+      await fetchData();
       setInvitationCode('');
-      alert(`Successfully joined ${newGroup.name}!`);
     } catch (error) {
       alert(error.message);
     } finally {
@@ -48,17 +138,53 @@ const GroupsPage = () => {
     }
   };
 
+  const handleSaveGroup = async (formData) => {
+    setIsLoading(true);
+    try {
+      if (editingGroup) {
+        await groupService.updateGroup(editingGroup.id, formData);
+      } else {
+        await groupService.createGroup(formData);
+      }
+      await fetchData();
+      setIsModalOpen(false);
+      setEditingGroup(null);
+    } catch (error) {
+      alert(`Failed to ${editingGroup ? 'update' : 'create'} group. Please try again.`);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleDeleteGroup = async (group) => {
+    if (window.confirm(`Are you sure you want to delete "${group.name}"? This action cannot be undone.`)) {
+      setIsLoading(true);
+      try {
+        await groupService.deleteGroup(group.id);
+        await fetchData();
+      } catch (error) {
+        alert("Failed to delete group.");
+      } finally {
+        setIsLoading(false);
+      }
+    }
+  };
+
+  const handleCopyCode = (code) => {
+    navigator.clipboard.writeText(code);
+    alert("Invitation code copied to clipboard!");
+  };
+
   const headerActions = [
-    { label: 'Create Group', variant: 'primary', icon: Plus, onClick: () => alert('Create Group Clicked') },
+    { label: 'Create Group', variant: 'primary', icon: Plus, onClick: () => { setEditingGroup(null); setIsModalOpen(true); } },
     { label: 'Invite People', variant: 'secondary', icon: Mail, onClick: () => alert('Invite People Clicked') },
-    { label: 'Manage Members', variant: 'secondary', icon: Info, onClick: () => alert('Manage Clicked') },
   ];
 
-  if (isLoading) return <AppLayout><div className="h-[80vh] flex items-center justify-center"><Loader text="Preparing your collaborative ledgers..." /></div></AppLayout>;
+  if (isLoading && groups.length === 0) return <AppLayout><div className="h-[80vh] flex items-center justify-center"><Loader text="Preparing your collaborative ledgers..." /></div></AppLayout>;
 
   return (
     <AppLayout>
-      <div className="space-y-10 pb-20 font-inter">
+      <div className="space-y-10 pb-20 font-inter text-foreground">
         <FeatureHeader 
           title="Groups & Split" 
           description="Collaborate, share expenses, and maintain transparency with your circles."
@@ -75,8 +201,8 @@ const GroupsPage = () => {
             <UserPlus className="h-6 w-6" />
           </div>
           <div className="flex-1 text-center md:text-left">
-            <h3 className="text-lg font-black tracking-tight">Got an Invite?</h3>
-            <p className="text-xs text-muted-foreground font-bold uppercase tracking-widest mt-0.5">Enter the invitation code to join your group</p>
+            <h3 className="text-lg font-black tracking-tight uppercase">Got an Invite?</h3>
+            <p className="text-[10px] text-muted-foreground font-bold uppercase tracking-widest mt-0.5">Enter the invitation code to join your group</p>
           </div>
           <div className="flex w-full md:w-auto items-center gap-3">
             <input 
@@ -113,15 +239,18 @@ const GroupsPage = () => {
                   </div>
                   <div>
                     <h3 className="text-lg font-black tracking-tight group-hover:text-primary transition-colors">{group.name}</h3>
-                    <div className="flex items-center gap-1.5 text-xs font-bold text-muted-foreground uppercase tracking-widest mt-0.5">
+                    <div className="flex items-center gap-1.5 text-[10px] font-black text-muted-foreground uppercase tracking-widest mt-0.5">
                       <ShieldCheck className="h-3 w-3 text-emerald-500" />
                       {group.members} Members
                     </div>
                   </div>
                 </div>
-                <button className="p-2 rounded-xl bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity">
-                  <Share2 className="h-4 w-4" />
-                </button>
+                
+                <KebabMenu 
+                  onEdit={() => { setEditingGroup(group); setIsModalOpen(true); }}
+                  onDelete={() => handleDeleteGroup(group)}
+                  onCopyCode={() => handleCopyCode(group.code)}
+                />
               </div>
 
               <div className="space-y-6">
@@ -132,7 +261,7 @@ const GroupsPage = () => {
                       "text-2xl font-black font-mono tracking-tighter",
                       group.balance > 0 ? "text-emerald-500" : group.balance < 0 ? "text-rose-500" : "text-foreground"
                     )}>
-                      {group.balance > 0 && '+'}₹ {group.balance.toLocaleString('en-IN')}
+                      {group.balance > 0 && '+'} {group.currency === 'INR' ? '₹' : '$'} {Math.abs(group.balance).toLocaleString('en-IN')}
                     </p>
                   </div>
                   <div className="text-right">
@@ -150,14 +279,129 @@ const GroupsPage = () => {
           ))}
         </div>
 
+        {/* Filter Section */}
+        <div className="bg-card/50 border border-border/30 rounded-[32px] p-6 space-y-4">
+          <div className="flex flex-col lg:flex-row items-center justify-between gap-6">
+            <div className="flex items-center gap-4 w-full lg:w-auto">
+              <div className="p-3 rounded-2xl bg-primary/10 text-primary">
+                <Filter className="h-5 w-5" />
+              </div>
+              <div>
+                <h3 className="text-sm font-black uppercase tracking-widest">Advanced Filters</h3>
+                <p className="text-[10px] text-muted-foreground font-bold uppercase tracking-widest">Refine your ledger view</p>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 w-full lg:w-auto">
+              {/* Group Multi-select */}
+              <div className="space-y-1.5">
+                <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-1">Groups</label>
+                <div className="relative group">
+                  <select 
+                    multiple
+                    className="w-full md:w-48 h-10 bg-white/5 border border-border/50 rounded-xl px-3 text-[10px] font-bold focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all appearance-none overflow-hidden hover:bg-white/10"
+                    value={selectedGroupIds}
+                    onChange={(e) => {
+                      const values = Array.from(e.target.selectedOptions, option => option.value);
+                      setSelectedGroupIds(values);
+                    }}
+                  >
+                    {groups.map(g => <option key={g.id} value={g.id} className="py-1 px-2">{g.name}</option>)}
+                  </select>
+                  <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none opacity-50 group-focus-within:text-primary">
+                    <Users className="h-3 w-3" />
+                  </div>
+                </div>
+              </div>
+
+              {/* Category Multi-select */}
+              <div className="space-y-1.5">
+                <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-1">Categories</label>
+                <div className="relative group">
+                  <select 
+                    multiple
+                    className="w-full md:w-48 h-10 bg-white/5 border border-border/50 rounded-xl px-3 text-[10px] font-bold focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all appearance-none overflow-hidden hover:bg-white/10"
+                    value={selectedCategories}
+                    onChange={(e) => {
+                      const values = Array.from(e.target.selectedOptions, option => option.value);
+                      setSelectedCategories(values);
+                    }}
+                  >
+                    {availableCategories.map(cat => <option key={cat} value={cat} className="py-1 px-2">{cat}</option>)}
+                  </select>
+                  <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none opacity-50 group-focus-within:text-primary">
+                    <Tag className="h-3 w-3" />
+                  </div>
+                </div>
+              </div>
+
+              {/* Date Filter (Month/Year) */}
+              <div className="space-y-1.5">
+                <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-1">Month & Year</label>
+                <div className="flex gap-2 relative group">
+                  <select 
+                    className="flex-1 h-10 bg-white/5 border border-border/50 rounded-xl px-3 text-[10px] font-bold focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all appearance-none hover:bg-white/10"
+                    value={selectedDate.month}
+                    onChange={(e) => setSelectedDate(prev => ({ ...prev, month: e.target.value }))}
+                  >
+                    {Array.from({ length: 12 }, (_, i) => (
+                      <option key={i + 1} value={i + 1} className="bg-card">
+                        {new Date(0, i).toLocaleString('default', { month: 'short' })}
+                      </option>
+                    ))}
+                  </select>
+                  <select 
+                    className="flex-1 h-10 bg-white/5 border border-border/50 rounded-xl px-3 text-[10px] font-bold focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all appearance-none hover:bg-white/10"
+                    value={selectedDate.year}
+                    onChange={(e) => setSelectedDate(prev => ({ ...prev, year: e.target.value }))}
+                  >
+                    {[2023, 2024, 2025, 2026].map(year => (
+                      <option key={year} value={year} className="bg-card">{year}</option>
+                    ))}
+                  </select>
+                  <div className="absolute -right-1 -top-1 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity">
+                    <Calendar className="h-3 w-3 text-primary" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="pt-2 flex justify-end">
+             <button 
+              onClick={() => {
+                setSelectedGroupIds(groups.map(g => g.id));
+                setSelectedCategories([]);
+                setSelectedDate({ month: new Date().getMonth() + 1, year: new Date().getFullYear() });
+              }}
+              className="text-[9px] font-black uppercase tracking-widest text-muted-foreground hover:text-primary transition-colors underline"
+             >
+               Reset Filters
+             </button>
+          </div>
+        </div>
+
         {/* Group Consolidated Transaction Table */}
         <TransactionTableMini 
-          transactions={transactions} 
+          transactions={filteredTransactions} 
           title="Group Activity Ledger"
-          subtitle="Consolidated view of all group movements"
-          columns={['label', 'date', 'paidBy', 'amount']}
+          subtitle={`Viewing ${filteredTransactions.length} of ${transactions.length} movements`}
+          columns={['paidBy', 'date', 'label', 'amount', 'groupName']}
+          labels={{
+            paidBy: "Who",
+            date: "When",
+            label: "Why",
+            amount: "How much",
+            groupName: "Group Name"
+          }}
         />
       </div>
+
+      <GroupModal 
+        isOpen={isModalOpen}
+        initialData={editingGroup}
+        onClose={() => { setIsModalOpen(false); setEditingGroup(null); }}
+        onSave={handleSaveGroup}
+      />
     </AppLayout>
   );
 };

@@ -64,11 +64,7 @@ const transactionService = {
       let groupId = data.group_id || data.groupId || data.GroupID;
 
       if (!groupId) {
-        const groups = await groupService.getGroups();
-
-        let group =
-          groups.find(g => g.IsPersonal || g.isPersonal) ||
-          groups[0];
+        let group = await groupService.getPersonalGroup();
 
         if (!group) {
           group = await groupService.createGroup({
@@ -85,7 +81,8 @@ const transactionService = {
 
       const payload = {
         amount,
-        category: data.category || "General",
+        type: data.type || "expense",
+        category_id: data.category_id || null,
         currency: data.currency || "INR",
         goal_id: data.goal_id || null,
         group_id: groupId,
